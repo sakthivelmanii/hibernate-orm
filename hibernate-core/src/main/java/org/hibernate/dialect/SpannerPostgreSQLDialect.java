@@ -14,6 +14,8 @@ import org.hibernate.dialect.lock.spi.ConnectionLockTimeoutStrategy;
 import org.hibernate.dialect.lock.spi.LockTimeoutType;
 import org.hibernate.dialect.lock.spi.LockingSupport;
 import org.hibernate.dialect.lock.spi.OuterJoinLockingType;
+import org.hibernate.dialect.sequence.SequenceSupport;
+import org.hibernate.dialect.sequence.SpannerPostgreSQLSequenceSupport;
 import org.hibernate.dialect.sql.ast.SpannerPostgreSQLSqlAstTranslator;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
@@ -33,6 +35,7 @@ import org.hibernate.type.descriptor.sql.spi.DdlTypeRegistry;
 
 import java.sql.Types;
 
+import static java.lang.String.join;
 import static org.hibernate.sql.ast.internal.NonLockingClauseStrategy.NON_CLAUSE_STRATEGY;
 
 public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
@@ -70,6 +73,8 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 				typeContributions.getTypeConfiguration().getDdlTypeRegistry();
 
 		ddlTypeRegistry.addDescriptor( new DdlTypeImpl( Types.FLOAT, "real", this ) );
+		ddlTypeRegistry.addDescriptor( new DdlTypeImpl( Types.NUMERIC, "numeric", this ) );
+		ddlTypeRegistry.addDescriptor( new DdlTypeImpl( Types.TINYINT, "bigint", this ) );
 	}
 
 	@Override
@@ -81,6 +86,28 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 				return new SpannerPostgreSQLSqlAstTranslator<>( sessionFactory, statement );
 			}
 		};
+	}
+
+	@Override
+	public String getAddForeignKeyConstraintString(
+			String constraintName,
+			String[] foreignKey,
+			String referencedTable,
+			String[] primaryKey,
+			boolean referencesPrimaryKey) {
+		final StringBuilder res = new StringBuilder( 30 );
+		// Reference Primary key always
+		res.append( " add constraint " )
+				.append( quote( constraintName ) )
+				.append( " foreign key (" )
+				.append( join( ", ", foreignKey ) )
+				.append( ") references " )
+				.append( referencedTable )
+				.append( " (" )
+				.append( join( ", ", primaryKey ) )
+				.append( ')' );
+
+		return res.toString();
 	}
 
 	@Override
@@ -104,6 +131,26 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	@Override
 	public String getBeforeDropStatement() {
 		return null;
+	}
+
+	@Override
+	public String getCascadeConstraintsString() {
+		return "";
+	}
+
+	@Override
+	public SequenceSupport getSequenceSupport() {
+		return SpannerPostgreSQLSequenceSupport.INSTANCE;
+	}
+
+	@Override
+	public boolean supportsIfExistsBeforeConstraintName() {
+		return false;
+	}
+
+	@Override
+	public boolean supportsIfExistsAfterAlterTable() {
+		return false;
 	}
 
 	@Override
