@@ -74,6 +74,7 @@ dependencies {
     testRuntimeOnly jdbcLibs.mssql
     testRuntimeOnly jdbcLibs.informix
     testRuntimeOnly jdbcLibs.cockroachdb
+    testRuntimeOnly jdbcLibs.spannerpgsql
     testRuntimeOnly jdbcLibs.gaussdb
     testRuntimeOnly jdbcLibs.sybase
     testRuntimeOnly jdbcLibs.teradata
