@@ -7,7 +7,9 @@ package org.hibernate.dialect;
 import jakarta.persistence.Timeout;
 import org.hibernate.LockOptions;
 import org.hibernate.Timeouts;
+import org.hibernate.boot.Metadata;
 import org.hibernate.boot.model.TypeContributions;
+import org.hibernate.boot.model.relational.SqlStringGenerationContext;
 import org.hibernate.dialect.lock.PessimisticLockStyle;
 import org.hibernate.dialect.lock.internal.LockingSupportSimple;
 import org.hibernate.dialect.lock.spi.ConnectionLockTimeoutStrategy;
@@ -17,8 +19,12 @@ import org.hibernate.dialect.lock.spi.OuterJoinLockingType;
 import org.hibernate.dialect.sequence.SequenceSupport;
 import org.hibernate.dialect.sequence.SpannerPostgreSQLSequenceSupport;
 import org.hibernate.dialect.sql.ast.SpannerPostgreSQLSqlAstTranslator;
+import org.hibernate.dialect.unique.UniqueDelegate;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Table;
+import org.hibernate.mapping.UniqueKey;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.sql.ast.SqlAstTranslator;
 import org.hibernate.sql.ast.SqlAstTranslatorFactory;
@@ -39,6 +45,8 @@ import static java.lang.String.join;
 import static org.hibernate.sql.ast.internal.NonLockingClauseStrategy.NON_CLAUSE_STRATEGY;
 
 public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
+
+	private static final UniqueDelegate NOOP_UNIQUE_DELEGATE = new DoNothingUniqueDelegate();
 
 	LockingSupport spannerLockingSupport =
 			new LockingSupportSimple(
@@ -126,6 +134,16 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
 		return super.resolveSqlTypeDescriptor(
 				columnTypeName, jdbcTypeCode, precision, scale, jdbcTypeRegistry );
+	}
+
+	@Override
+	public boolean canBatchTruncate() {
+		return false;
+	}
+
+	@Override
+	public String getTruncateTableStatement(String tableName) {
+		return "delete from " + tableName;
 	}
 
 	@Override
@@ -251,6 +269,40 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		}
 		if ( millis == Timeouts.NO_WAIT_MILLI ) {
 			throw new UnsupportedOperationException( "Spanner does not support no wait." );
+		}
+	}
+
+	@Override
+	public UniqueDelegate getUniqueDelegate() {
+		return NOOP_UNIQUE_DELEGATE;
+	}
+
+	/**
+	 * A no-op delegate for generating Unique-Constraints. Cloud Spanner offers unique-restrictions
+	 * via interleaved indexes with the "UNIQUE" option. This is not currently supported.
+	 *
+	 * @author Chengyuan Zhao
+	 */
+	static class DoNothingUniqueDelegate implements UniqueDelegate {
+
+		@Override
+		public String getColumnDefinitionUniquenessFragment(Column column, SqlStringGenerationContext context) {
+			return "";
+		}
+
+		@Override
+		public String getTableCreationUniqueConstraintsFragment(Table table, SqlStringGenerationContext context) {
+			return "";
+		}
+
+		@Override
+		public String getAlterTableToAddUniqueKeyCommand(UniqueKey uniqueKey, Metadata metadata, SqlStringGenerationContext context) {
+			return "";
+		}
+
+		@Override
+		public String getAlterTableToDropUniqueKeyCommand(UniqueKey uniqueKey, Metadata metadata, SqlStringGenerationContext context) {
+			return "";
 		}
 	}
 }
