@@ -12,10 +12,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Version;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.bytecode.enhancement.extension.BytecodeEnhanced;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,6 +38,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 )
 @SessionFactory
 @BytecodeEnhanced(runNotEnhancedAsWell = true)
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class,
+		reason = "Currently spanner doesn't support tables without primary key")
 public class MergeTest {
 
 	@AfterEach
