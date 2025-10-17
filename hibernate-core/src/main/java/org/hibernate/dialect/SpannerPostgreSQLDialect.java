@@ -5,6 +5,7 @@
 package org.hibernate.dialect;
 
 import jakarta.persistence.Timeout;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.hibernate.LockOptions;
 import org.hibernate.Timeouts;
 import org.hibernate.boot.Metadata;
@@ -19,6 +20,7 @@ import org.hibernate.dialect.lock.spi.OuterJoinLockingType;
 import org.hibernate.dialect.sequence.SequenceSupport;
 import org.hibernate.dialect.sequence.SpannerPostgreSQLSequenceSupport;
 import org.hibernate.dialect.sql.ast.SpannerPostgreSQLSqlAstTranslator;
+import org.hibernate.dialect.temptable.TemporaryTableStrategy;
 import org.hibernate.dialect.unique.UniqueDelegate;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
@@ -97,6 +99,21 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 				return new SpannerPostgreSQLSqlAstTranslator<>( sessionFactory, statement );
 			}
 		};
+	}
+
+	@Override
+	public TemporaryTableStrategy getLocalTemporaryTableStrategy() {
+		return null;
+	}
+
+	@Override
+	public @Nullable TemporaryTableStrategy getGlobalTemporaryTableStrategy() {
+		return null;
+	}
+
+	@Override
+	public TemporaryTableStrategy getPersistentTemporaryTableStrategy() {
+		return null;
 	}
 
 	@Override
