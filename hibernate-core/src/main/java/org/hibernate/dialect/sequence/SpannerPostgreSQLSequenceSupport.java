@@ -21,6 +21,11 @@ public class SpannerPostgreSQLSequenceSupport implements SequenceSupport {
 	}
 
 	@Override
+	public String getRestartSequenceString(String sequenceName, long startWith) {
+		return "alter sequence " + sequenceName + " restart counter with " + startWith;
+	}
+
+	@Override
 	public String getCreateSequenceString(String sequenceName) throws MappingException {
 		return "create sequence " + sequenceName + " bit_reversed_positive";
 	}

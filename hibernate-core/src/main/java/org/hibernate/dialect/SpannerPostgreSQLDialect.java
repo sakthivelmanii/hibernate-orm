@@ -43,6 +43,9 @@ import java.sql.Types;
 
 import static java.lang.String.join;
 import static org.hibernate.sql.ast.internal.NonLockingClauseStrategy.NON_CLAUSE_STRATEGY;
+import static org.hibernate.type.SqlTypes.BLOB;
+import static org.hibernate.type.SqlTypes.CLOB;
+import static org.hibernate.type.SqlTypes.NCLOB;
 
 public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
@@ -93,6 +96,17 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 					SessionFactoryImplementor sessionFactory, Statement statement) {
 				return new SpannerPostgreSQLSqlAstTranslator<>( sessionFactory, statement );
 			}
+		};
+	}
+
+	@Override
+	protected String columnType(int sqlTypeCode) {
+		return switch (sqlTypeCode) {
+			// TODO(sakthivelmani): Decide if we need to put type modifier
+			case SqlTypes.TIME -> "character varying";
+			case SqlTypes.TIMESTAMP, SqlTypes.TIMESTAMP_UTC, SqlTypes.TIMESTAMP_WITH_TIMEZONE -> "timestamp with time zone";
+			case BLOB, CLOB, NCLOB -> "bytea";
+			default -> super.columnType(sqlTypeCode);
 		};
 	}
 
