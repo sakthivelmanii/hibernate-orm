@@ -163,8 +163,7 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	protected String columnType(int sqlTypeCode) {
 		return switch (sqlTypeCode) {
 			// TODO(sakthivelmani): Decide if we need to put type modifier
-			case SqlTypes.TIME -> "character varying";
-			case SqlTypes.TIMESTAMP, SqlTypes.TIMESTAMP_UTC, SqlTypes.TIMESTAMP_WITH_TIMEZONE -> "timestamp with time zone";
+			case SqlTypes.TIME, SqlTypes.TIMESTAMP, SqlTypes.TIMESTAMP_UTC, SqlTypes.TIMESTAMP_WITH_TIMEZONE -> "timestamp with time zone";
 			case BLOB, CLOB, NCLOB -> "bytea";
 			default -> super.columnType(sqlTypeCode);
 		};
