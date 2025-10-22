@@ -12,9 +12,11 @@ import org.hibernate.LockMode;
 import org.hibernate.ScrollMode;
 import org.hibernate.Transaction;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 		xmlMappings = "org/hibernate/orm/test/stateless/Document.hbm.xml"
 )
 @SessionFactory
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class)
 public class StatelessSessionTest {
 
 	@AfterEach
