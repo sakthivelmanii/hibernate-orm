@@ -39,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @RequiresDialect(PostgreSQLDialect.class)
 @RequiresDialect(OracleDialect.class)
 @RequiresDialect(DB2Dialect.class)
+
 public class RecordStructEmbeddableTest {
 
 	@BeforeEach

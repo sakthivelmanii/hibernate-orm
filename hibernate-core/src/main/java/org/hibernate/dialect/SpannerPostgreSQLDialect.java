@@ -15,6 +15,7 @@ import org.hibernate.boot.model.FunctionContributions;
 import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.boot.model.relational.SqlStringGenerationContext;
 import org.hibernate.boot.spi.MetadataBuildingContext;
+import org.hibernate.dialect.function.PostgreSQLTruncRoundFunction;
 import org.hibernate.dialect.identity.IdentityColumnSupport;
 import org.hibernate.dialect.identity.SpannerPostgreSQLIdentityColumnSupport;
 import org.hibernate.dialect.lock.PessimisticLockStyle;
@@ -26,6 +27,7 @@ import org.hibernate.dialect.lock.spi.OuterJoinLockingType;
 import org.hibernate.dialect.sequence.SequenceSupport;
 import org.hibernate.dialect.sequence.SpannerPostgreSQLSequenceSupport;
 import org.hibernate.dialect.sql.ast.SpannerPostgreSQLSqlAstTranslator;
+import org.hibernate.dialect.temptable.PersistentTemporaryTableStrategy;
 import org.hibernate.dialect.temptable.TemporaryTableStrategy;
 import org.hibernate.dialect.unique.UniqueDelegate;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
@@ -37,7 +39,13 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.UniqueKey;
 import org.hibernate.mapping.Value;
 import org.hibernate.mapping.ValueVisitor;
+import org.hibernate.metamodel.mapping.EntityMappingType;
+import org.hibernate.metamodel.spi.RuntimeModelCreationContext;
 import org.hibernate.query.sqm.function.SqmFunctionRegistry;
+import org.hibernate.query.sqm.mutation.internal.temptable.PersistentTableInsertStrategy;
+import org.hibernate.query.sqm.mutation.internal.temptable.PersistentTableMutationStrategy;
+import org.hibernate.query.sqm.mutation.spi.SqmMultiTableInsertStrategy;
+import org.hibernate.query.sqm.mutation.spi.SqmMultiTableMutationStrategy;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.sql.ast.SqlAstTranslator;
 import org.hibernate.sql.ast.SqlAstTranslatorFactory;
@@ -118,7 +126,16 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
 		SqmFunctionRegistry functionRegistry = functionContributions.getFunctionRegistry();
 
+		functionRegistry.register(
+				"round", new PostgreSQLTruncRoundFunction( "round", false ));
+
 		// Remove unsupported PG functions
+
+		functionRegistry.unregister( "array_append" );
+		functionRegistry.register(
+				"round", new PostgreSQLTruncRoundFunction( "round", true )
+		);
+
 		functionRegistry.unregister( "xmlagg" );
 		functionRegistry.unregister( "xmlelement" );
 		functionRegistry.unregister( "xmlcomment" );
@@ -180,6 +197,36 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	}
 
 	@Override
+	public boolean supportsWindowFunctions() {
+		return false;
+	}
+
+
+	@Override
+	public boolean supportsNonQueryWithCTE() {
+		return false;
+	}
+
+	@Override
+	public boolean supportsRecursiveCTE() {
+		return false;
+	}
+
+	@Override
+	public SqmMultiTableMutationStrategy getFallbackSqmMutationStrategy(
+			EntityMappingType rootEntityDescriptor,
+			RuntimeModelCreationContext runtimeModelCreationContext) {
+		return new PersistentTableMutationStrategy( rootEntityDescriptor, runtimeModelCreationContext );
+	}
+
+	@Override
+	public SqmMultiTableInsertStrategy getFallbackSqmInsertStrategy(
+			EntityMappingType rootEntityDescriptor,
+			RuntimeModelCreationContext runtimeModelCreationContext) {
+		return new PersistentTableInsertStrategy( rootEntityDescriptor, runtimeModelCreationContext );
+	}
+
+	@Override
 	public TemporaryTableStrategy getLocalTemporaryTableStrategy() {
 		return null;
 	}
@@ -191,7 +238,7 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
 	@Override
 	public TemporaryTableStrategy getPersistentTemporaryTableStrategy() {
-		return null;
+		return new PersistentTemporaryTableStrategy( this );
 	}
 
 	@Override
