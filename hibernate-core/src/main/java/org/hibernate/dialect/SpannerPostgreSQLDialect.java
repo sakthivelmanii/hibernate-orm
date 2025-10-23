@@ -62,8 +62,10 @@ import java.util.List;
 import static java.lang.String.join;
 import static org.hibernate.sql.ast.internal.NonLockingClauseStrategy.NON_CLAUSE_STRATEGY;
 import static org.hibernate.type.SqlTypes.BLOB;
+import static org.hibernate.type.SqlTypes.CHAR;
 import static org.hibernate.type.SqlTypes.CLOB;
 import static org.hibernate.type.SqlTypes.NCLOB;
+import static org.hibernate.type.SqlTypes.VARCHAR;
 
 public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
@@ -108,10 +110,6 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		super( version );
 	}
 
-	public SpannerPostgreSQLDialect(DatabaseVersion version, PostgreSQLDriverKind driverKind) {
-		super( version, driverKind );
-	}
-
 	@Override
 	public void initializeFunctionRegistry(FunctionContributions functionContributions) {
 		super.initializeFunctionRegistry( functionContributions );
@@ -127,11 +125,6 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		functionRegistry.unregister( "xmlquery_postgresql" );
 		functionRegistry.unregister( "xmlexists" );
 		functionRegistry.unregister( "xmltable" );
-	}
-
-	@Override
-	public DatabaseVersion getVersion() {
-		return DatabaseVersion.make( 17 );
 	}
 
 	@Override
@@ -204,6 +197,7 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 			// TODO(sakthivelmani): Decide if we need to put type modifier
 			case SqlTypes.TIME, SqlTypes.TIMESTAMP, SqlTypes.TIMESTAMP_UTC, SqlTypes.TIMESTAMP_WITH_TIMEZONE -> "timestamp with time zone";
 			case BLOB, CLOB, NCLOB -> "bytea";
+			case CHAR -> columnType( VARCHAR );
 			default -> super.columnType(sqlTypeCode);
 		};
 	}
