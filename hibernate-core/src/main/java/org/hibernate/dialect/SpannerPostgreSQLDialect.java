@@ -124,6 +124,7 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		functionRegistry.unregister( "xmlcomment" );
 		functionRegistry.unregister( "xmlforest" );
 		functionRegistry.unregister( "xmlconcat" );
+		functionRegistry.unregister( "xmlpi" );
 		functionRegistry.unregister( "xmlquery_postgresql" );
 		functionRegistry.unregister( "xmlexists" );
 		functionRegistry.unregister( "xmltable" );
