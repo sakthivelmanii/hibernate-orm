@@ -61,10 +61,12 @@ import java.util.List;
 
 import static java.lang.String.join;
 import static org.hibernate.sql.ast.internal.NonLockingClauseStrategy.NON_CLAUSE_STRATEGY;
+import static org.hibernate.type.SqlTypes.BIGINT;
 import static org.hibernate.type.SqlTypes.BLOB;
 import static org.hibernate.type.SqlTypes.CHAR;
 import static org.hibernate.type.SqlTypes.CLOB;
 import static org.hibernate.type.SqlTypes.NCLOB;
+import static org.hibernate.type.SqlTypes.SMALLINT;
 import static org.hibernate.type.SqlTypes.VARCHAR;
 
 public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
@@ -196,8 +198,8 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		return switch (sqlTypeCode) {
 			// TODO(sakthivelmani): Decide if we need to put type modifier
 			case SqlTypes.TIME, SqlTypes.TIMESTAMP, SqlTypes.TIMESTAMP_UTC, SqlTypes.TIMESTAMP_WITH_TIMEZONE -> "timestamp with time zone";
-			case BLOB, CLOB, NCLOB -> "bytea";
-			case CHAR -> columnType( VARCHAR );
+			case BLOB, CLOB, NCLOB, CHAR -> columnType( VARCHAR );
+			case SMALLINT ->  columnType( BIGINT );
 			default -> super.columnType(sqlTypeCode);
 		};
 	}

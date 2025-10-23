@@ -6,7 +6,6 @@ package org.hibernate.dialect.sql.ast;
 
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.sql.ast.tree.Statement;
-import org.hibernate.sql.ast.tree.predicate.ExistsPredicate;
 import org.hibernate.sql.ast.tree.predicate.LikePredicate;
 import org.hibernate.sql.exec.spi.JdbcOperation;
 
@@ -16,11 +15,6 @@ public class SpannerPostgreSQLSqlAstTranslator<T extends JdbcOperation>
 	public SpannerPostgreSQLSqlAstTranslator(
 			SessionFactoryImplementor sessionFactory, Statement statement) {
 		super(sessionFactory, statement);
-	}
-
-	@Override
-	public void visitExistsPredicate(ExistsPredicate existsPredicate) {
-		existsPredicate.accept( this );
 	}
 
 	@Override
