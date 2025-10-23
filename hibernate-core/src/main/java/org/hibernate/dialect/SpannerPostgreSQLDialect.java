@@ -11,6 +11,7 @@ import org.hibernate.LockOptions;
 import org.hibernate.MappingException;
 import org.hibernate.Timeouts;
 import org.hibernate.boot.Metadata;
+import org.hibernate.boot.model.FunctionContributions;
 import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.boot.model.relational.SqlStringGenerationContext;
 import org.hibernate.boot.spi.MetadataBuildingContext;
@@ -36,6 +37,7 @@ import org.hibernate.mapping.Table;
 import org.hibernate.mapping.UniqueKey;
 import org.hibernate.mapping.Value;
 import org.hibernate.mapping.ValueVisitor;
+import org.hibernate.query.sqm.function.SqmFunctionRegistry;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.sql.ast.SqlAstTranslator;
 import org.hibernate.sql.ast.SqlAstTranslatorFactory;
@@ -111,8 +113,35 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	}
 
 	@Override
+	public void initializeFunctionRegistry(FunctionContributions functionContributions) {
+		super.initializeFunctionRegistry( functionContributions );
+
+		SqmFunctionRegistry functionRegistry = functionContributions.getFunctionRegistry();
+
+		// Remove unsupported PG functions
+		functionRegistry.unregister( "xmlagg" );
+		functionRegistry.unregister( "xmlelement" );
+		functionRegistry.unregister( "xmlcomment" );
+		functionRegistry.unregister( "xmlforest" );
+		functionRegistry.unregister( "xmlconcat" );
+		functionRegistry.unregister( "xmlquery_postgresql" );
+		functionRegistry.unregister( "xmlexists" );
+		functionRegistry.unregister( "xmltable" );
+	}
+
+	@Override
+	public DatabaseVersion getVersion() {
+		return DatabaseVersion.make( 17 );
+	}
+
+	@Override
 	public IdentityColumnSupport getIdentityColumnSupport() {
 		return SpannerPostgreSQLIdentityColumnSupport.INSTANCE;
+	}
+
+	@Override
+	public boolean supportsCaseInsensitiveLike() {
+		return false;
 	}
 
 	@Override
@@ -142,6 +171,16 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	@Override
 	public Exporter<Table> getTableExporter() {
 		return spannerTableExporter;
+	}
+
+	@Override
+	public String currentTimestamp() {
+		return currentTimestampWithTimeZone();
+	}
+
+	@Override
+	public String currentTime() {
+		return currentTimestampWithTimeZone();
 	}
 
 	@Override
