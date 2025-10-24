@@ -73,8 +73,10 @@ import static org.hibernate.type.SqlTypes.BIGINT;
 import static org.hibernate.type.SqlTypes.BLOB;
 import static org.hibernate.type.SqlTypes.CHAR;
 import static org.hibernate.type.SqlTypes.CLOB;
+import static org.hibernate.type.SqlTypes.INTEGER;
 import static org.hibernate.type.SqlTypes.NCLOB;
 import static org.hibernate.type.SqlTypes.SMALLINT;
+import static org.hibernate.type.SqlTypes.TINYINT;
 import static org.hibernate.type.SqlTypes.VARCHAR;
 
 public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
@@ -145,6 +147,8 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		functionRegistry.unregister( "xmlquery_postgresql" );
 		functionRegistry.unregister( "xmlexists" );
 		functionRegistry.unregister( "xmltable" );
+
+		functionRegistry.unregister( "generate_series" );
 	}
 
 	@Override
@@ -247,7 +251,7 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 			// TODO(sakthivelmani): Decide if we need to put type modifier
 			case SqlTypes.TIME, SqlTypes.TIMESTAMP, SqlTypes.TIMESTAMP_UTC, SqlTypes.TIMESTAMP_WITH_TIMEZONE -> "timestamp with time zone";
 			case BLOB, CLOB, NCLOB, CHAR -> columnType( VARCHAR );
-			case SMALLINT ->  columnType( BIGINT );
+			case SMALLINT, INTEGER, TINYINT ->  columnType( BIGINT );
 			default -> super.columnType(sqlTypeCode);
 		};
 	}
