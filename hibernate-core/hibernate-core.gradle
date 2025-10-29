@@ -291,6 +291,9 @@ tasks.withType( Test.class ).each { test ->
         // Since Oracle TestPilot databases run on separate machines, use all threads for testing
         test.maxParallelForks = Runtime.runtime.availableProcessors()
         test.systemProperty 'maxParallelForks', test.maxParallelForks
+    } else if ( project.db == "spannerpgsql" ) {
+        // Spanner Emulator doesn't support parallel transactions
+        test.systemProperty 'maxParallelForks', 1
     }
 }
 

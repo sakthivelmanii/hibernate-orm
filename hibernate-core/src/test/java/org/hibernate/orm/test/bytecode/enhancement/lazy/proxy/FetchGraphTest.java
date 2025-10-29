@@ -14,6 +14,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.ScrollableResults;
 import org.hibernate.annotations.LazyGroup;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.spi.PersistentAttributeInterceptable;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.proxy.HibernateProxy;
@@ -28,6 +29,7 @@ import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.Setting;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -154,6 +156,8 @@ public class FetchGraphTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class,
+			reason = "Spanner JDBC driver doesn't support scrollable resultset")
 	public void basicTypeLazyGroup(SessionFactoryScope scope) {
 
 		scope.inSession(
@@ -240,6 +244,8 @@ public class FetchGraphTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class,
+			reason = "Spanner JDBC driver doesn't support scrollable resultset")
 	public void testFetchingScroll(SessionFactoryScope scope) {
 		final StatisticsImplementor stats = scope.getSessionFactory().getStatistics();
 		stats.clear();
@@ -303,6 +309,8 @@ public class FetchGraphTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class,
+			reason = "Spanner JDBC driver doesn't support scrollable resultset")
 	public void testFetchingScroll2(SessionFactoryScope scope) {
 		final StatisticsImplementor stats = scope.getSessionFactory().getStatistics();
 		stats.clear();

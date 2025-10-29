@@ -14,6 +14,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.cfg.AvailableSettings;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.bytecode.enhancement.extension.BytecodeEnhanced;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -99,7 +100,7 @@ public class ManyToOneTestReusedColumn {
 	public void testSelect(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
-					Fridge fridge = session.getReference( Fridge.class, 1 );
+					Fridge fridge = session.getReference( Fridge.class, SequenceHelper.getId( scope, 1L ) );
 
 					for ( Container container : fridge.getContainers() ) {
 						if ( container instanceof FruitContainer ) {

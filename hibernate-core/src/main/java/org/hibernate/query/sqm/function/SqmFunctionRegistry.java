@@ -142,6 +142,14 @@ public class SqmFunctionRegistry {
 	}
 
 	/**
+	 * Unregister a function descriptor by name
+	 */
+	public void unregister(String registrationKey) {
+		functionMap.remove( registrationKey );
+		alternateKeyMap.remove(  registrationKey );
+	}
+
+	/**
 	 * Register a set-returning function descriptor by name
 	 */
 	public SqmSetReturningFunctionDescriptor register(String registrationKey, SqmSetReturningFunctionDescriptor function) {

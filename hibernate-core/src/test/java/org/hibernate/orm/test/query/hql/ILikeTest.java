@@ -11,7 +11,9 @@ import org.hibernate.query.Query;
 
 import org.hibernate.testing.orm.domain.StandardDomainModel;
 import org.hibernate.testing.orm.domain.gambit.BasicEntity;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -31,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 		standardModels = StandardDomainModel.GAMBIT
 )
 @SessionFactory
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsCaseInsensitiveLike.class)
 public class ILikeTest {
 
 	@BeforeAll

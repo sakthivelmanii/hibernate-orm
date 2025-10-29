@@ -170,7 +170,7 @@ class IndexBinder {
 				hasFormula = true;
 			}
 		}
-		if ( unique && !hasFormula ) {
+		if ( unique && !hasFormula && getDialect().supportsUniqueConstraintInColumnDefinition()) {
 			final String keyName = getImplicitNamingStrategy().determineUniqueKeyName( source ).render( getDialect() );
 			final UniqueKey uniqueKey = table.getOrCreateUniqueKey( keyName );
 			uniqueKey.setExplicit( true );

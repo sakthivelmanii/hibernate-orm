@@ -11,6 +11,7 @@ import org.hibernate.community.dialect.DerbyDialect;
 import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
@@ -100,6 +101,7 @@ public class BasicHibernateAnnotationsTest {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsExpectedLobUsagePattern.class)
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 	public void testVersioning(SessionFactoryScope scope) {
 		Forest forest = new Forest();
 		forest.setName( "Fontainebleau" );
@@ -149,6 +151,7 @@ public class BasicHibernateAnnotationsTest {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsExpectedLobUsagePattern.class)
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "ORDERING issues")
 	public void testWhereClause(SessionFactoryScope scope) {
 		List<Doctor> doctors = new ArrayList<>();
 

@@ -14,6 +14,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -26,6 +27,7 @@ import org.hibernate.mapping.RootClass;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.Value;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 
@@ -46,6 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @RequiresDialectFeature(feature = SupportsSequences.class)
 @BaseUnitTest
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support increasing sequences")
 public class SequenceStyleGeneratorBehavesLikeSequenceHiloGeneratorWithZeroIncrementSizeTest {
 	private static final String TEST_SEQUENCE = "test_sequence";
 

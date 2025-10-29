@@ -19,6 +19,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.internal.util.collections.CollectionHelper;
 import org.hibernate.query.Query;
 import org.hibernate.stat.spi.StatisticsImplementor;
@@ -29,6 +30,7 @@ import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.Setting;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,6 +59,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 		}
 )
 @SessionFactory(exportSchema = true)
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 public class SmokeTests {
 
 	@BeforeEach

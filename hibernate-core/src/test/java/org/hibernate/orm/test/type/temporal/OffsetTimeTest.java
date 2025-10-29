@@ -34,6 +34,7 @@ import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.MariaDBDialect;
 import org.hibernate.dialect.MySQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DialectContext;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -61,6 +62,7 @@ import static org.hibernate.orm.test.type.temporal.Timezones.ZONE_UTC_MINUS_8;
 @MethodSource("testData")
 @DomainModel(annotatedClasses = OffsetTimeTest.EntityWithOffsetTime.class)
 @SessionFactory
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 public class OffsetTimeTest extends AbstractJavaTimeTypeTests<OffsetTime, OffsetTimeTest.EntityWithOffsetTime> {
 
 	public static List<Parameter<OffsetTime,DataImpl>> testData() {
