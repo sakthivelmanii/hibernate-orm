@@ -14,7 +14,9 @@ import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 
 import org.hibernate.testing.orm.domain.StandardDomainModel;
 import org.hibernate.testing.orm.domain.gambit.BasicEntity;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -171,6 +173,7 @@ public class ILikeCriteriaTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsCaseInsensitiveLike.class)
 	public void testIlike(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -192,6 +195,7 @@ public class ILikeCriteriaTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsCaseInsensitiveLike.class)
 	public void testIlikeEscape(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -223,6 +227,7 @@ public class ILikeCriteriaTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsCaseInsensitiveLike.class)
 	public void testNotIlike(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -244,6 +249,7 @@ public class ILikeCriteriaTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsCaseInsensitiveLike.class)
 	public void testNotIlikeEscape(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

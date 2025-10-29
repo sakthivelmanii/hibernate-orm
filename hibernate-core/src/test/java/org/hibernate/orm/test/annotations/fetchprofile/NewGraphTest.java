@@ -9,6 +9,7 @@ import org.hibernate.annotations.NaturalId;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.graph.GraphSemantic;
 import org.hibernate.graph.RootGraph;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.query.SelectionQuery;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -41,23 +42,23 @@ public class NewGraphTest {
 			s.persist(e);
 		});
 
-		F f = scope.fromSession( s -> s.byId(F.class).load(1) );
+		F f = scope.fromSession( s -> s.byId(F.class).load(SequenceHelper.getId( scope, 1L )) );
 		assertFalse( isInitialized( f.g ) );
 		assertFalse( isInitialized( f.es ) );
 		F ff = scope.fromSession( s -> {
 			RootGraph<F> graph = s.createEntityGraph(F.class);
 			graph.addAttributeNodes("g", "es");
-			return s.byId(F.class).withFetchGraph(graph).load(1);
+			return s.byId(F.class).withFetchGraph(graph).load(SequenceHelper.getId( scope, 1L ));
 		});
 		assertTrue( isInitialized( ff.g ) );
 		assertTrue( isInitialized( ff.es ) );
 
-		E e = scope.fromSession( s -> s.byId(E.class).load(1) );
+		E e = scope.fromSession( s -> s.byId(E.class).load(SequenceHelper.getId( scope, 1L )) );
 		assertFalse( isInitialized( e.f ) );
 		E ee = scope.fromSession( s -> {
 			RootGraph<E> graph = s.createEntityGraph(E.class);
 			graph.addAttributeNodes("f");
-			return s.byId(E.class).withFetchGraph(graph).load(1);
+			return s.byId(E.class).withFetchGraph(graph).load(SequenceHelper.getId( scope, 1L ));
 		});
 		assertTrue( isInitialized( ee.f ) );
 	}
@@ -74,23 +75,23 @@ public class NewGraphTest {
 			s.persist(e);
 		});
 
-		F f = scope.fromSession( s -> s.find(F.class, 1) );
+		F f = scope.fromSession( s -> s.find(F.class, SequenceHelper.getId( scope, 1L )) );
 		assertFalse( isInitialized( f.g ) );
 		assertFalse( isInitialized( f.es ) );
 		F ff = scope.fromSession( s -> {
 			RootGraph<F> graph = s.createEntityGraph(F.class);
 			graph.addAttributeNodes("g", "es");
-			return s.find(graph, 1);
+			return s.find(graph, SequenceHelper.getId( scope, 1L ));
 		});
 		assertTrue( isInitialized( ff.g ) );
 		assertTrue( isInitialized( ff.es ) );
 
-		E e = scope.fromSession( s -> s.find(E.class, 1) );
+		E e = scope.fromSession( s -> s.find(E.class, SequenceHelper.getId( scope, 1L )) );
 		assertFalse( isInitialized( e.f ) );
 		E ee = scope.fromSession( s -> {
 			RootGraph<E> graph = s.createEntityGraph(E.class);
 			graph.addAttributeNodes("f");
-			return s.find(graph, 1);
+			return s.find(graph, SequenceHelper.getId( scope, 1L ));
 		});
 		assertTrue( isInitialized( ee.f ) );
 	}
@@ -109,23 +110,23 @@ public class NewGraphTest {
 
 		SessionFactoryImplementor factory = scope.getSessionFactory();
 
-		F f = factory.fromStatelessSession( s -> s.get(F.class, 1L) );
+		F f = factory.fromStatelessSession( s -> s.get(F.class, SequenceHelper.getId( scope, 1L ) ) );
 		assertFalse( isInitialized( f.g ) );
 		assertFalse( isInitialized( f.es ) );
 		F ff = factory.fromStatelessSession( s -> {
 			RootGraph<F> graph = s.createEntityGraph(F.class);
 			graph.addAttributeNodes("g", "es");
-			return s.get(graph, 1L);
+			return s.get(graph, SequenceHelper.getId( scope, 1L ) );
 		});
 		assertTrue( isInitialized( ff.g ) );
 		assertTrue( isInitialized( ff.es ) );
 
-		E e = factory.fromStatelessSession( s -> s.get(E.class, 1L) );
+		E e = factory.fromStatelessSession( s -> s.get(E.class, SequenceHelper.getId( scope, 1L ) ) );
 		assertFalse( isInitialized( e.f ) );
 		E ee = factory.fromStatelessSession( s -> {
 			RootGraph<E> graph = s.createEntityGraph(E.class);
 			graph.addAttributeNodes("f");
-			return s.get(graph, 1L);
+			return s.get(graph, SequenceHelper.getId( scope, 1L ) );
 		});
 		assertTrue( isInitialized( ee.f ) );
 	}
@@ -213,14 +214,14 @@ public class NewGraphTest {
 		});
 
 		F f = scope.fromSession(s ->
-				s.createSelectionQuery("from F where id = 1", F.class)
+				s.createSelectionQuery("from F where id = " + SequenceHelper.getId( scope, 1L ), F.class)
 						.getSingleResult());
 		assertFalse( isInitialized( f.g ) );
 		assertFalse( isInitialized( f.es ) );
 		F ff = scope.fromSession(s -> {
 			RootGraph<F> graph = s.createEntityGraph(F.class);
 			graph.addAttributeNodes("g", "es");
-			return s.createSelectionQuery("from F where id = 1", F.class)
+			return s.createSelectionQuery("from F where id = " + SequenceHelper.getId( scope, 1L ), F.class)
 					.setEntityGraph(graph, GraphSemantic.FETCH)
 					.getSingleResult();
 		});
@@ -228,13 +229,13 @@ public class NewGraphTest {
 		assertTrue( isInitialized( ff.es ) );
 
 		E e = scope.fromSession(s ->
-				s.createSelectionQuery("from E where id = 1", E.class)
+				s.createSelectionQuery("from E where id = " + SequenceHelper.getId( scope, 1L ), E.class)
 						.getSingleResult());
 		assertFalse( isInitialized( e.f ) );
 		E ee = scope.fromSession(s -> {
 			RootGraph<E> graph = s.createEntityGraph(E.class);
 			graph.addAttributeNodes("f");
-			return s.createSelectionQuery("from E where id = 1", E.class)
+			return s.createSelectionQuery("from E where id = " + SequenceHelper.getId( scope, 1L ), E.class)
 					.setEntityGraph(graph, GraphSemantic.LOAD)
 					.getSingleResult();
 		});
@@ -254,27 +255,27 @@ public class NewGraphTest {
 		});
 
 		F f = scope.fromSession(s ->
-				s.createSelectionQuery("from F where id = 1", F.class)
+				s.createSelectionQuery("from F where id = " + SequenceHelper.getId( scope, 1L ), F.class)
 						.getSingleResult());
 		assertFalse( isInitialized( f.g ) );
 		assertFalse( isInitialized( f.es ) );
 		F ff = scope.fromSession(s -> {
 			RootGraph<F> graph = s.createEntityGraph(F.class);
 			graph.addAttributeNodes("g", "es");
-			return s.createSelectionQuery("from F where id = 1", graph)
+			return s.createSelectionQuery("from F where id = " + SequenceHelper.getId( scope, 1L ), graph)
 					.getSingleResult();
 		});
 		assertTrue( isInitialized( ff.g ) );
 		assertTrue( isInitialized( ff.es ) );
 
 		E e = scope.fromSession(s ->
-				s.createSelectionQuery("from E where id = 1", E.class)
+				s.createSelectionQuery("from E where id = " + SequenceHelper.getId( scope, 1L ), E.class)
 						.getSingleResult());
 		assertFalse( isInitialized( e.f ) );
 		E ee = scope.fromSession(s -> {
 			RootGraph<E> graph = s.createEntityGraph(E.class);
 			graph.addAttributeNodes("f");
-			return s.createSelectionQuery("from E where id = 1", graph)
+			return s.createSelectionQuery("from E where id = " + SequenceHelper.getId( scope, 1L ), graph)
 					.getSingleResult();
 		});
 		assertTrue( isInitialized( ee.f ) );

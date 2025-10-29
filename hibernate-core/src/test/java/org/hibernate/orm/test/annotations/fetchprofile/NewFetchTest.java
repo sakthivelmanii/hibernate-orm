@@ -12,9 +12,11 @@ import jakarta.persistence.OneToMany;
 import org.hibernate.annotations.FetchProfile;
 import org.hibernate.annotations.FetchProfileOverride;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -53,6 +55,7 @@ public class NewFetchTest {
 	static final String JOIN_PROFILE = "join-profile";
 	static final String OLD_SUBSELECT_PROFILE = "old-subselect-profile";
 
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support incremental sequence support")
 	@Test void test(SessionFactoryScope scope) {
 		scope.inTransaction( s-> {
 			G g = new G();
@@ -84,6 +87,7 @@ public class NewFetchTest {
 		assertTrue( isInitialized( ee.f ) );
 	}
 
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support incremental sequence support")
 	@Test void testById(SessionFactoryScope scope) {
 		scope.inTransaction( s-> {
 			G g = new G();
@@ -163,6 +167,7 @@ public class NewFetchTest {
 		assertTrue( isInitialized( ee.f ) );
 	}
 
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support incremental sequence support")
 	@Test void testQuery(SessionFactoryScope scope) {
 		scope.inTransaction( s-> {
 			G g = new G();
