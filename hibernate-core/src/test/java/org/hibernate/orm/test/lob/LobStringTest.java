@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.Query;
 
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -17,6 +18,7 @@ import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.RequiresDialect;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,6 +44,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @RequiresDialect(PostgreSQLDialect.class)
 @DomainModel(annotatedClasses = LobStringTest.TestEntity.class)
 @SessionFactory
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LOB functions")
 public class LobStringTest {
 
 	private static final int LONG_STRING_SIZE = 3999;
