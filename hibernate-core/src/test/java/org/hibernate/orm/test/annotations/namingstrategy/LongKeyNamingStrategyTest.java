@@ -15,15 +15,21 @@ import jakarta.persistence.UniqueConstraint;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.testing.ServiceRegistryBuilder;
 import org.hibernate.testing.orm.junit.BaseUnitTest;
 import org.hibernate.testing.orm.junit.JiraKey;
+import org.hibernate.testing.orm.junit.RequiresDialect;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test harness for HHH-11089.
@@ -49,6 +55,7 @@ public class LongKeyNamingStrategyTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class)
 	public void testWithCustomNamingStrategy() {
 		Metadata metadata = new MetadataSources( serviceRegistry )
 				.addAnnotatedClass( Address.class )
@@ -68,6 +75,26 @@ public class LongKeyNamingStrategyTest {
 		var index = metadata.getEntityBinding( Address.class.getName() ).getTable().getIndexes().values().iterator()
 				.next();
 		assertThat( index.getName() ).isEqualTo( "IDX_way_longer_than_the_30_cha" );
+	}
+
+	@Test
+	@RequiresDialect( value = SpannerPostgreSQLDialect.class)
+	public void testWithCustomNamingStrategy2() throws Exception {
+		Metadata metadata = new MetadataSources( serviceRegistry )
+				.addAnnotatedClass(Address.class)
+				.addAnnotatedClass(Person.class)
+				.getMetadataBuilder()
+				.applyImplicitNamingStrategy( new LongIdentifierNamingStrategy() )
+				.build();
+
+		var foreignKey = metadata.getEntityBinding(Address.class.getName()).getTable().getForeignKeyCollection().iterator().next();
+		assertEquals( "FK_way_longer_than_the_30_char", foreignKey.getName() );
+
+		Iterator<org.hibernate.mapping.Index> iterator = metadata.getEntityBinding(Address.class.getName()).getTable().getIndexes().values().iterator();
+		var index = iterator.next();
+		assertEquals( "UK_way_longer_than_the_30_char", index.getName() );
+		index = iterator.next();
+		assertEquals( "IDX_way_longer_than_the_30_cha", index.getName() );
 	}
 
 	@Entity(name = "Address")

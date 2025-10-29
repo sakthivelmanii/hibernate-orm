@@ -1300,6 +1300,13 @@ abstract public class DialectFeatureChecks {
 		}
 	}
 
+	public static class SupportsUniqueConstraintInColumnDefinition implements DialectFeatureCheck {
+		@Override
+		public boolean apply(Dialect dialect) {
+			return dialect.supportsUniqueConstraintInColumnDefinition();
+		}
+	}
+
 	public static class SupportsNClob implements DialectFeatureCheck {
 		@Override
 		public boolean apply(Dialect dialect) {

@@ -6,15 +6,16 @@ package org.hibernate.orm.test.annotations.quote.resultsetmappings;
 
 import org.hibernate.cfg.Environment;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.Setting;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 
 /**
  * @author Steve Ebersole
@@ -28,6 +29,7 @@ import org.junit.jupiter.api.Test;
 @ServiceRegistry(
 		settings = @Setting(name = Environment.GLOBALLY_QUOTED_IDENTIFIERS, value = "true")
 )
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support explicit quoting in nextval function")
 public class ExplicitSqlResultSetMappingTest {
 	private String queryString = null;
 

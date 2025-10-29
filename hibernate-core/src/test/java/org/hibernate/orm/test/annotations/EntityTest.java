@@ -22,6 +22,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.OracleDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.type.StandardBasicTypes;
 
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -195,6 +196,7 @@ public class EntityTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support unique constraint")
 	public void testUniqueConstraint(SessionFactoryScope scope) {
 		int id = 5;
 		Sky sky = new Sky();

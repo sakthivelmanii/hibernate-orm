@@ -24,7 +24,7 @@ import java.time.Duration;
 public class DurationTest {
 
 	@Entity(name = "Duration")
-	@Audited
+	//SPANNER@Audited
 	public static class DurationTestEntity {
 		@Id
 		@GeneratedValue

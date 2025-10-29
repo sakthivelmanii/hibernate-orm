@@ -10,6 +10,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.annotations.LazyGroup;
 import org.hibernate.cfg.AvailableSettings;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.bytecode.enhancement.extension.BytecodeEnhanced;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -73,7 +74,7 @@ public class BasicAttributesLazyGroupTest {
 	@Test
 	public void testLoad(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
-			final Review review = session.getReference( Review.class, 1L );
+			final Review review = session.getReference( Review.class, SequenceHelper.getId( scope, 1L ) );
 
 			assertFalse( Hibernate.isPropertyInitialized( review, "rating" ) );
 			assertFalse( Hibernate.isPropertyInitialized( review, "comment" ) );
@@ -88,7 +89,7 @@ public class BasicAttributesLazyGroupTest {
 	@Test
 	public void testLoad2(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
-			final Review review = session.getReference( Review.class, 1L );
+			final Review review = session.getReference( Review.class, SequenceHelper.getId( scope, 1L ) );
 
 			assertFalse( Hibernate.isPropertyInitialized( review, "rating" ) );
 			assertFalse( Hibernate.isPropertyInitialized( review, "comment" ) );
@@ -103,7 +104,7 @@ public class BasicAttributesLazyGroupTest {
 	@Test
 	public void testLoad3(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
-			final Review review = session.getReference( Review.class, 1L );
+			final Review review = session.getReference( Review.class, SequenceHelper.getId( scope, 1L ) );
 
 			assertThat( review.getComment(), is( "My first review" ) );
 			assertThat( review.getRating(), is( Rating.ONE ) );
@@ -113,7 +114,7 @@ public class BasicAttributesLazyGroupTest {
 	@Test
 	public void testLoad4(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
-			final Review review = session.getReference( Review.class, 1L );
+			final Review review = session.getReference( Review.class, SequenceHelper.getId( scope, 1L ) );
 			assertThat( review.getRating(), is( Rating.ONE ) );
 			assertThat( review.getComment(), is( "My first review" ) );
 		} );

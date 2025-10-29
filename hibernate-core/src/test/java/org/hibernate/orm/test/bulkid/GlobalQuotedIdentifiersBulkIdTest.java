@@ -12,6 +12,7 @@ import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.query.sqm.mutation.internal.inline.InlineMutationStrategy;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -100,7 +101,7 @@ public class GlobalQuotedIdentifiersBulkIdTest {
 							"WHERE u.id IN :userIds"
 					)
 					.setParameter( "date", Timestamp.valueOf( "2018-06-03 00:00:00" ) )
-					.setParameter( "userIds", Arrays.asList( 1L, 2L, 3L ) )
+					.setParameter( "userIds", Arrays.asList( SequenceHelper.getId( scope, 1L ), SequenceHelper.getId( scope, 2L ), SequenceHelper.getId( scope, 3L ) ) )
 					.executeUpdate();
 
 			assertThat( updateCount ).isEqualTo( 3 );

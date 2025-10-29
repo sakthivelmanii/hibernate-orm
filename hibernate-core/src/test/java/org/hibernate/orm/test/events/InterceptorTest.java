@@ -16,8 +16,10 @@ import org.hibernate.Interceptor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.testing.util.ServiceRegistryUtil;
 
 import org.hibernate.type.Type;
@@ -70,6 +72,7 @@ public class InterceptorTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner bit_reversed_positive doesn't have increment value")
 	public void testSessionFactoryInterceptor() {
 
 		Serializable customerId = 1L;

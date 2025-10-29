@@ -15,6 +15,7 @@ import org.hibernate.boot.model.relational.Namespace;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.Index;
 import org.hibernate.mapping.UniqueKey;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -23,6 +24,8 @@ import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Brett Meyer
@@ -97,6 +100,17 @@ public class ConstraintTest {
 					if ( column.getName().equals( "explicit" ) ) {
 						foundCount++;
 						assertThat( uk.getName() ).isEqualTo( EXPLICIT_UK_NAME );
+					}
+				}
+
+				for ( Index index : table.getIndexes().values() ) {
+					assertTrue( index.getName().length() <= MAX_NAME_LENGTH );
+
+					// ensure the randomly generated constraint name doesn't
+					// happen if explicitly given
+					if ( index.getName().equals( "uk_explicit" ) ) {
+						foundCount++;
+						assertEquals( EXPLICIT_UK_NAME, index.getName() );
 					}
 				}
 			}
