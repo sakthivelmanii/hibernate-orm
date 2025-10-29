@@ -5758,6 +5758,14 @@ public abstract class Dialect implements ConversionContext, TypeContributor, Fun
 		return null;
 	}
 
+	/*
+	 * @return true if database supports adding unique constraints in the column
+	 * definition while creating a table.
+	 */
+	public boolean supportsUniqueConstraintInColumnDefinition() {
+		return true;
+	}
+
 	/**
 	 * Pluggable strategy for determining the {@link Size} to use for
 	 * columns of a given SQL type.

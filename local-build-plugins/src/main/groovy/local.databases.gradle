@@ -389,12 +389,9 @@ ext {
                     'jdbc.driver': 'com.google.cloud.spanner.jdbc.JdbcDriver',
                     'jdbc.user'  : 'root',
                     'jdbc.pass'  : '',
-                    'jdbc.url'   : 'jdbc:cloudspanner://' + dbHost + ':9010/projects/proj/instances/inst/databases/data?lenient=true;autoconfigemulator=true;dialect=postgresql;',
+                    'jdbc.url'   : 'jdbc:cloudspanner://' + dbHost + ':9010/projects/proj/instances/inst/databases/data?lenient=true;autoconfigemulator=true;dialect=postgresql;defaultsequencekind=bit_reversed_positive;',
                     'jdbc.datasource': 'com.google.cloud.spanner.jdbc.JdbcDriver',
-//                    'jdbc.datasource' : 'org.postgresql.Driver',
-//                        'jdbc.datasource' : 'org.postgresql.ds.PGSimpleDataSource',
-                    // Configure the for-update clause to use proper locks: https://github.com/cockroachdb/cockroach/issues/88995
-                    'connection.init_sql' : ''//set enable_durable_locking_for_serializable = on; set optimizer_use_lock_op_for_serializable = on;'
+                    'connection.init_sql' : ''
             ],
             firebird : [
                     'db.dialect' : 'org.hibernate.community.dialect.FirebirdDialect',
