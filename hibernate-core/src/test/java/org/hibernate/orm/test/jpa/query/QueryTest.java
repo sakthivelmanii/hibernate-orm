@@ -33,6 +33,7 @@ import org.hibernate.community.dialect.GaussDBDialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.PostgresPlusDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.orm.test.jpa.BaseEntityManagerFunctionalTestCase;
@@ -1029,6 +1030,7 @@ public class QueryTest extends BaseEntityManagerFunctionalTestCase {
 	}
 
 	@Test
+	@org.hibernate.testing.orm.junit.SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LIKE...ESCAPE clause")
 	public void testEscapeCharacter() throws Exception {
 		final Item item = new Item( "Mouse", "Micro_oft mouse" );
 		final Item item2 = new Item( "Computer", "Dell computer" );
@@ -1129,6 +1131,7 @@ public class QueryTest extends BaseEntityManagerFunctionalTestCase {
 	}
 
 	@Test
+	@org.hibernate.testing.orm.junit.SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing timestampz with date function timestamptz_eq_date")
 	public void testExplicitPositionalParameter() throws Exception {
 		EntityManager em = getOrCreateEntityManager();
 		em.getTransaction().begin();

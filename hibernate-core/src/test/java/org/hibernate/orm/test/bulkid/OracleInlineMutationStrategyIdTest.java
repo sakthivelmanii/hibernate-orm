@@ -4,6 +4,7 @@
  */
 package org.hibernate.orm.test.bulkid;
 
+
 /**
  * Special test that tries to update 1100 rows. Oracle only supports up to 1000 parameters per in-predicate,
  * so we want to test if this scenario works.

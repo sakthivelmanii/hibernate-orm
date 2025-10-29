@@ -6,7 +6,7 @@ package org.hibernate.dialect.sql.ast;
 
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.sql.ast.tree.Statement;
-import org.hibernate.sql.ast.tree.predicate.ExistsPredicate;
+import org.hibernate.sql.ast.tree.cte.CteMaterialization;
 import org.hibernate.sql.ast.tree.predicate.LikePredicate;
 import org.hibernate.sql.exec.spi.JdbcOperation;
 
@@ -19,24 +19,12 @@ public class SpannerPostgreSQLSqlAstTranslator<T extends JdbcOperation>
 	}
 
 	@Override
-	public void visitExistsPredicate(ExistsPredicate existsPredicate) {
-		existsPredicate.accept( this );
+	protected void renderMaterializationHint(CteMaterialization materialization) {
+		// NO-OP
 	}
 
 	@Override
 	public void visitLikePredicate(LikePredicate likePredicate) {
-		// Since Spanner doesn't support escape character, we are skipping escape character
-		likePredicate.getMatchExpression().accept(this);
-		if (likePredicate.isNegated()) {
-			appendSql(" not");
-		}
-		if (likePredicate.isCaseSensitive()) {
-			appendSql(" like ");
-		} else {
-			appendSql(WHITESPACE);
-			appendSql(getDialect().getCaseInsensitiveLike());
-			appendSql(WHITESPACE);
-		}
-		likePredicate.getPattern().accept(this);
+		super.visitLikePredicate( likePredicate );
 	}
 }
