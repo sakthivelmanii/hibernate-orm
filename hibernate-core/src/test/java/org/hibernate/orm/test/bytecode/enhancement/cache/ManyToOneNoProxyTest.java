@@ -11,6 +11,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.cfg.AvailableSettings;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.bytecode.enhancement.extension.BytecodeEnhanced;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -103,7 +104,7 @@ public class ManyToOneNoProxyTest {
 	public void testSelect(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
-					User user = session.getReference( User.class, 1 );
+					User user = session.getReference( User.class, SequenceHelper.getId( scope, 1L ) );
 
 					assertThat( user ).isNotNull();
 					assertThat( user.getName() ).isEqualTo( ENTITY_A_NAME );

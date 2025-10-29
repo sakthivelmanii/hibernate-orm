@@ -4,6 +4,9 @@
  */
 package org.hibernate.orm.test.annotations.namingstrategy.charset;
 
+
+import java.util.Iterator;
+import java.util.Map;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
@@ -14,12 +17,15 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.internal.util.PropertiesHelper;
 import org.hibernate.orm.test.annotations.namingstrategy.LongIdentifierNamingStrategy;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.testing.ServiceRegistryBuilder;
 import org.hibernate.testing.orm.junit.BaseUnitTest;
 import org.hibernate.testing.orm.junit.JiraKey;
+import org.hibernate.testing.orm.junit.RequiresDialect;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -27,7 +33,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Vlad Mihalcea
@@ -55,6 +61,7 @@ public abstract class AbstractCharsetNamingStrategyTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class )
 	public void testWithCustomNamingStrategy() {
 		Metadata metadata = new MetadataSources( serviceRegistry )
 				.addAnnotatedClass( Address.class )
@@ -74,6 +81,26 @@ public abstract class AbstractCharsetNamingStrategyTest {
 		var index = metadata.getEntityBinding( Address.class.getName() ).getTable().getIndexes().values().iterator()
 				.next();
 		assertThat( index.getName() ).isEqualTo( expectedIndexName() );
+	}
+
+	@Test
+	@RequiresDialect( value = SpannerPostgreSQLDialect.class)
+	public void testWithCustomNamingStrategy2() throws Exception {
+		Metadata metadata = new MetadataSources( serviceRegistry )
+				.addAnnotatedClass(Address.class)
+				.addAnnotatedClass(Person.class)
+				.getMetadataBuilder()
+				.applyImplicitNamingStrategy( new LongIdentifierNamingStrategy() )
+				.build();
+
+		var foreignKey = metadata.getEntityBinding(Address.class.getName()).getTable().getForeignKeyCollection().iterator().next();
+		assertEquals( expectedForeignKeyName(), foreignKey.getName() );
+
+		Iterator<org.hibernate.mapping.Index> iterator = metadata.getEntityBinding(Address.class.getName()).getTable().getIndexes().values().iterator();
+		var index = iterator.next();
+		assertEquals( expectedUniqueKeyName(), index.getName() );
+		index = iterator.next();
+		assertEquals( expectedIndexName(), index.getName() );
 	}
 
 	protected abstract String expectedUniqueKeyName();

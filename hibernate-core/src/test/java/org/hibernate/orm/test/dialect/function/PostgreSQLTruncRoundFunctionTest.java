@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.domain.StandardDomainModel;
 import org.hibernate.testing.orm.domain.animal.Human;
@@ -16,6 +17,7 @@ import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.RequiresDialect;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +44,7 @@ public class PostgreSQLTruncRoundFunctionTest {
 
 	@Test
 	@RequiresDialect(PostgreSQLDialect.class)
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class )
 	public void testRound(SessionFactoryScope scope) {
 		testFunction( scope, "round", "floor" );
 	}

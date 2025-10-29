@@ -5,6 +5,7 @@
 package org.hibernate.orm.test.hql;
 
 import org.hibernate.community.dialect.DerbyDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SessionFactory
 @DomainModel
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support WHERE class without FROM")
 public class BooleanPredicateTest {
 	@Test void test(SessionFactoryScope scope) {
 		scope.inSession(session -> {
