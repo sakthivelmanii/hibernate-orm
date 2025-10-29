@@ -60,11 +60,16 @@ public class UniqueConstraintUnitTests extends BaseUnitTestCase {
 			}
 
 			assertTrue( "Could not find the expected tables.", tableA != null && tableB != null );
-			assertFalse(
-					tableA.getUniqueKeys().values().iterator().next().getName().equals(
-							tableB.getUniqueKeys().values().iterator().next().getName()
-					)
-			);
+			if ( !tableA.getUniqueKeys().keySet().isEmpty() ) {
+				assertFalse(
+						tableA.getUniqueKeys().values().iterator().next().getName().equals(
+								tableB.getUniqueKeys().values().iterator().next().getName()
+						)
+				);
+			} else {
+				assertFalse( tableA.getIndexes().values().iterator().next().getName().equals(
+						tableB.getIndexes().values().iterator().next().getName()) );
+			}
 		}
 		finally {
 			StandardServiceRegistryBuilder.destroy( ssr );

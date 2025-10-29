@@ -7,12 +7,15 @@ package org.hibernate.orm.test.annotations.quote.resultsetmappings;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.junit4.BaseCoreFunctionalTestCase;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.Test;
 
 /**
  * @author Steve Ebersole
  */
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support explicit quoting in nextval function")
 public class ExplicitSqlResultSetMappingTest extends BaseCoreFunctionalTestCase {
 	private String queryString = null;
 

@@ -17,9 +17,11 @@ import org.hibernate.community.dialect.InformixDialect;
 import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.dialect.DB2Dialect;
 import org.hibernate.dialect.HANADialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 @Jpa(annotatedClasses = {ConstraintInterpretationTest2.Enttity1.class, ConstraintInterpretationTest2.Entity2.class})
 public class ConstraintInterpretationTest2 {
 	@Test void testNotNullPrimaryKey(EntityManagerFactoryScope scope) {

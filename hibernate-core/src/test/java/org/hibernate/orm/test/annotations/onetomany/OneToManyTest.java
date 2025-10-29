@@ -31,6 +31,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
@@ -41,6 +42,7 @@ import org.hibernate.testing.DialectChecks;
 import org.hibernate.testing.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.junit4.BaseNonConfigCoreFunctionalTestCase;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.testing.util.ServiceRegistryUtil;
 
 import org.hibernate.orm.test.annotations.Customer;
@@ -91,6 +93,7 @@ public class OneToManyTest extends BaseNonConfigCoreFunctionalTestCase {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "ID doesn't fit into Integer")
 	public void testListWithBagSemanticAndOrderBy() throws Exception {
 		Session s;
 		Transaction tx;
@@ -141,6 +144,7 @@ public class OneToManyTest extends BaseNonConfigCoreFunctionalTestCase {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "ID doesn't fit into Integer")
 	public void testUnidirectionalDefault() throws Exception {
 		Session s;
 		Transaction tx;

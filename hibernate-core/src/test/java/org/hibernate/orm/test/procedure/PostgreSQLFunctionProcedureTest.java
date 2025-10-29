@@ -21,9 +21,11 @@ import org.hibernate.boot.model.relational.Namespace;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.PostgresPlusDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.jpa.HibernateHints;
 import org.hibernate.orm.test.jpa.BaseEntityManagerFunctionalTestCase;
 import org.hibernate.procedure.ProcedureCall;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.type.StandardBasicTypes;
 
 import org.hibernate.testing.RequiresDialect;
@@ -44,6 +46,7 @@ import static org.junit.Assert.fail;
  * @author Vlad Mihalcea
  */
 @RequiresDialect(PostgreSQLDialect.class)
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support callable functions")
 public class PostgreSQLFunctionProcedureTest extends BaseEntityManagerFunctionalTestCase {
 
 	@Override

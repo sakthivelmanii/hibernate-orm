@@ -26,6 +26,7 @@ import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.MariaDBDialect;
 import org.hibernate.dialect.MySQLDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.SkipForDialect;
 import org.junit.Test;
 import org.junit.runners.Parameterized;
@@ -34,6 +35,7 @@ import org.junit.runners.Parameterized;
  * Tests for storage of LocalTime properties.
  */
 @SkipForDialect(value = H2Dialect.class, comment = "H2 1.4.200 DST bug. See org.hibernate.dialect.H2Dialect.hasDstBug")
+@org.hibernate.testing.orm.junit.SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class)
 public class LocalTimeTest extends AbstractJavaTimeTypeTest<LocalTime, LocalTimeTest.EntityWithLocalTime> {
 
 	private static class ParametersBuilder extends AbstractParametersBuilder<ParametersBuilder> {

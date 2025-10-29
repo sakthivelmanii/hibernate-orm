@@ -17,10 +17,12 @@ import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.orm.test.jpa.BaseEntityManagerFunctionalTestCase;
 import org.hibernate.query.sqm.mutation.internal.inline.InlineMutationStrategy;
 
 import org.hibernate.testing.orm.junit.JiraKey;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,6 +33,7 @@ import static org.junit.Assert.assertEquals;
  * @author Vlad Mihalcea
  */
 @JiraKey( value = "HHH-12561" )
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "b/457756328")
 public class GlobalQuotedIdentifiersBulkIdTest extends BaseEntityManagerFunctionalTestCase {
 
 	@Override

@@ -15,6 +15,7 @@ import jakarta.persistence.UniqueConstraint;
 import org.hibernate.boot.model.relational.Namespace;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.ForeignKey;
+import org.hibernate.mapping.Index;
 import org.hibernate.mapping.UniqueKey;
 
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -93,6 +94,17 @@ public class ConstraintTest extends BaseNonConfigCoreFunctionalTestCase {
 					if ( column.getName().equals( "explicit" ) ) {
 						foundCount++;
 						assertEquals( EXPLICIT_UK_NAME, uk.getName() );
+					}
+				}
+
+				for ( Index index : table.getIndexes().values() ) {
+					assertTrue( index.getName().length() <= MAX_NAME_LENGTH );
+
+					// ensure the randomly generated constraint name doesn't
+					// happen if explicitly given
+					if ( index.getName().equals( "uk_explicit" ) ) {
+						foundCount++;
+						assertEquals( EXPLICIT_UK_NAME, index.getName() );
 					}
 				}
 			}

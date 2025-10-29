@@ -5,11 +5,13 @@
 package org.hibernate.orm.test.annotations.index.jpa;
 
 import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.boot.MetadataBuilder;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.internal.util.StringHelper;
 import org.hibernate.mapping.Bag;
 import org.hibernate.mapping.Column;
@@ -23,8 +25,11 @@ import org.hibernate.mapping.UniqueKey;
 import org.hibernate.metamodel.CollectionClassification;
 
 import org.hibernate.testing.junit4.BaseNonConfigCoreFunctionalTestCase;
+import org.hibernate.testing.orm.junit.RequiresDialect;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
@@ -47,6 +52,8 @@ public abstract class AbstractJPAIndexTest extends BaseNonConfigCoreFunctionalTe
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support"
+																			+ "unique constraint definition in the column")
 	public void testTableIndex() {
 		PersistentClass entity = metadata().getEntityBinding( Car.class.getName() );
 		Iterator itr = entity.getTable().getUniqueKeys().values().iterator();
@@ -69,6 +76,37 @@ public abstract class AbstractJPAIndexTest extends BaseNonConfigCoreFunctionalTe
 		assertEquals( "Car_idx", index.getName() );
 		assertEquals( 1, index.getColumnSpan() );
 		column = index.getColumns().iterator().next();
+		assertEquals( "since", column.getName() );
+		assertSame( entity.getTable(), index.getTable() );
+	}
+
+	@Test
+	@RequiresDialect(  SpannerPostgreSQLDialect.class )
+	public void testTableIndex2() {
+		// no unique keys in the table since spanner supports only unique indexes
+		PersistentClass entity = metadata().getEntityBinding( Car.class.getName() );
+		Iterator itr = entity.getTable().getUniqueKeys().values().iterator();
+		assertFalse( itr.hasNext() );
+
+		itr = entity.getTable().getIndexes().values().iterator();
+
+		assertTrue( itr.hasNext() );
+		Index index = (Index)itr.next();
+		assertTrue( index.isUnique() );
+		assertEquals( 2, index.getColumnSpan() );
+		List<String> columns = index.getColumns().stream()
+				.map( Column::getName ).toList();
+		assertThat(columns).hasSize( 2 )
+				.containsExactlyInAnyOrderElementsOf( List.of("brand", "producer" ));
+		assertSame( entity.getTable(), index.getTable() );
+
+		assertTrue( itr.hasNext() );
+		index = (Index)itr.next();
+		assertFalse( itr.hasNext() );
+		assertEquals( "Car_idx", index.getName() );
+		assertEquals( 1, index.getColumnSpan() );
+
+		Column column = index.getColumns().iterator().next();
 		assertEquals( "since", column.getName() );
 		assertSame( entity.getTable(), index.getTable() );
 	}

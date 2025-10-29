@@ -7,11 +7,13 @@ package org.hibernate.orm.test.compositeelement;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.Formula;
 
 import org.hibernate.testing.junit4.BaseNonConfigCoreFunctionalTestCase;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.Test;
 
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -23,6 +25,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * @author Gavin King
  */
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support ODBC functions")
 public class CompositeElementTest extends BaseNonConfigCoreFunctionalTestCase {
 
 	@Override

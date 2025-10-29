@@ -15,7 +15,9 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.CockroachDialect;
 
 import org.hibernate.dialect.MariaDBDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.junit4.BaseNonConfigCoreFunctionalTestCase;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.Test;
 
 import jakarta.persistence.Entity;
@@ -31,6 +33,7 @@ import static org.junit.Assert.fail;
 /**
  * @author Vlad Mihalcea
  */
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner Emulator doesn't support concurrent transactions")
 public class  BatchOptimisticLockingTest extends
 		BaseNonConfigCoreFunctionalTestCase {
 

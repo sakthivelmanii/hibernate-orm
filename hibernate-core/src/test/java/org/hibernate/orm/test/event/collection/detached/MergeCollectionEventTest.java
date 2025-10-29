@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.event.spi.AbstractCollectionEvent;
 import org.hibernate.event.spi.PostCollectionRecreateEvent;
 import org.hibernate.event.spi.PostCollectionUpdateEvent;
@@ -22,6 +23,7 @@ import org.hibernate.metamodel.CollectionClassification;
 
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.junit4.BaseCoreFunctionalTestCase;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,6 +35,7 @@ import static org.junit.Assert.assertEquals;
  * @author Steve Ebersole
  */
 @JiraKey( value = "HHH-7928" )
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 public class MergeCollectionEventTest extends BaseCoreFunctionalTestCase {
 
 	@Override

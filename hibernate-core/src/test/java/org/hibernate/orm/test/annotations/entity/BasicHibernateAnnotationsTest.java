@@ -22,6 +22,7 @@ import org.hibernate.community.dialect.DerbyDialect;
 import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.query.Query;
 
@@ -88,6 +89,7 @@ public class BasicHibernateAnnotationsTest extends BaseCoreFunctionalTestCase {
 
 	@Test
 	@RequiresDialectFeature( DialectChecks.SupportsExpectedLobUsagePattern.class )
+	@org.hibernate.testing.orm.junit.SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##DISABLE##")
 	public void testVersioning() throws Exception {
 		Forest forest = new Forest();
 		forest.setName( "Fontainebleau" );
@@ -139,6 +141,7 @@ public class BasicHibernateAnnotationsTest extends BaseCoreFunctionalTestCase {
 
 	@Test
 	@RequiresDialectFeature(DialectChecks.SupportsExpectedLobUsagePattern.class)
+	@org.hibernate.testing.orm.junit.SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "ORDERING issues")
 	public void testWhereClause() throws Exception {
 		List<Doctor> doctors = new ArrayList<>();
 

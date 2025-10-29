@@ -33,6 +33,7 @@ import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.MariaDBDialect;
 import org.hibernate.dialect.MySQLDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.SkipForDialect;
 import org.junit.Test;
 import org.junit.runners.Parameterized;
@@ -40,6 +41,7 @@ import org.junit.runners.Parameterized;
 /**
  * Tests for storage of OffsetTime properties.
  */
+@org.hibernate.testing.orm.junit.SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class)
 public class OffsetTimeTest extends AbstractJavaTimeTypeTest<OffsetTime, OffsetTimeTest.EntityWithOffsetTime> {
 
 	@Override

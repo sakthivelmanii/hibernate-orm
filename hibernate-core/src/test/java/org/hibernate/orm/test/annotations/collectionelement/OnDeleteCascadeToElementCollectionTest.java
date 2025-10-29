@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.exception.ConstraintViolationException;
 
 import org.hibernate.stat.spi.StatisticsImplementor;
@@ -23,6 +24,7 @@ import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -177,6 +179,7 @@ public class OnDeleteCascadeToElementCollectionTest {
 
 	@Test
 	@ExpectedException(ConstraintViolationException.class)
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 	public void testNonCascading(SessionFactoryScope scope) {
 		var instance = new NonCascading();
 

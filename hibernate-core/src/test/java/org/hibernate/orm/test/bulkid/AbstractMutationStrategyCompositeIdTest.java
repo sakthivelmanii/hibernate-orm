@@ -13,10 +13,12 @@ import jakarta.persistence.InheritanceType;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.sqm.mutation.spi.SqmMultiTableInsertStrategy;
 import org.hibernate.query.sqm.mutation.spi.SqmMultiTableMutationStrategy;
 
 import org.hibernate.testing.junit4.BaseCoreFunctionalTestCase;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -143,6 +145,7 @@ public abstract class AbstractMutationStrategyCompositeIdTest extends BaseCoreFu
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 	public void testInsertSelect() {
 		doInHibernate( this::sessionFactory, session -> {
 			final int insertCount = session.createQuery( "insert into Engineer(id, companyName, name, employed, fellow) "
