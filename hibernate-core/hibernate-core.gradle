@@ -157,7 +157,8 @@ task copyBundleResourcesXml (type: Copy) {
                 'jdbc.pass' : dbBundle[db]['jdbc.pass'].replace("&", "&amp;"),
                 'jdbc.url' : dbBundle[db]['jdbc.url'].replace("&", "&amp;"),
                 'jdbc.datasource' : dbBundle[db]['jdbc.datasource'].replace("&", "&amp;"),
-                'connection.init_sql' : dbBundle[db]['connection.init_sql'].replace("&", "&amp;")
+                'connection.init_sql' : dbBundle[db]['connection.init_sql'].replace("&", "&amp;"),
+                'sequence.mismatch_strategy' : dbBundle[db]['sequence.mismatch_strategy']?.replace("&", "&amp;") ?: 'EXCEPTION'
         ]
         ext.bundleTokens['buildDirName'] = project.relativePath( buildDir )
     }

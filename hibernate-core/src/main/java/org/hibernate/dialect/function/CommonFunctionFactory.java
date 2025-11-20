@@ -1604,6 +1604,14 @@ public class CommonFunctionFactory {
 		functionRegistry.registerAlternateKey( "length", "character_length" );
 	}
 
+	public void length_characterLength_spanner(String clobPattern) {
+		functionRegistry.register(
+				"character_length",
+				new LengthFunction( "character_length", "length(?1)", clobPattern, typeConfiguration )
+		);
+		functionRegistry.registerAlternateKey( "length", "character_length" );
+	}
+
 	/**
 	 * Transact SQL-style
 	 */
@@ -1706,6 +1714,15 @@ public class CommonFunctionFactory {
 				.register();
 	}
 
+	public void position_spanner() {
+		functionRegistry.patternDescriptorBuilder( "position", "strpos(?2,?1)" )
+				.setInvariantType(integerType)
+				.setExactArgumentCount( 2 )
+				.setParameterTypes(STRING, STRING)
+				.setArgumentListSignature( "(STRING pattern, STRING string)" )
+				.register();
+	}
+
 	public void locate() {
 		functionRegistry.namedDescriptorBuilder( "locate" )
 				.setInvariantType(integerType)
@@ -1726,6 +1743,20 @@ public class CommonFunctionFactory {
 				.setArgumentListSignature( "(STRING pattern, STRING string[, INTEGER start])" )
 				.register();
 		functionRegistry.registerAlternateKey( "locate", "charindex" );
+	}
+
+	/**
+	 * locate() for Spanner
+	 */
+	public void locate_Spanner() {
+		functionRegistry.registerBinaryTernaryPattern(
+						"locate",
+						integerType,
+						"strpos(?2, ?1)", "strpos(?2, substr(?1, ?3))",
+						STRING, STRING, INTEGER,
+						typeConfiguration
+				)
+				.setArgumentListSignature( "(STRING pattern, STRING string[, INTEGER start])" );
 	}
 
 	/**
@@ -2971,6 +3002,23 @@ public class CommonFunctionFactory {
 				"array_positions_list",
 				new OracleArrayPositionsFunction( true, typeConfiguration )
 		);
+	}
+
+	/**
+	 * Spanner PostgreSQL dialect array_length() function
+	 */
+	public void arrayLength_spanner() {
+		functionRegistry.patternDescriptorBuilder( "array_length", "array_length(?1, 1)" )
+				.setReturnTypeResolver( StandardFunctionReturnTypeResolvers.invariant( integerType ) )
+				.setArgumentsValidator(
+						StandardArgumentsValidators.composite(
+								StandardArgumentsValidators.exactly( 1 ),
+								ArrayArgumentValidator.DEFAULT_INSTANCE
+						)
+				)
+				.setArgumentListSignature( "(ARRAY array)" )
+				.register();
+		functionRegistry.register( "length", new DynamicDispatchFunction( functionRegistry, "character_length", "array_length" ) );
 	}
 
 	/**

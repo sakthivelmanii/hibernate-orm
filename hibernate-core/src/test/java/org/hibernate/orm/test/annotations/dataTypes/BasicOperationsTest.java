@@ -9,6 +9,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.Date;
 import java.util.Locale;
 
@@ -19,6 +20,7 @@ import org.hibernate.dialect.PostgresPlusDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.jdbc.Work;
+import org.hibernate.orm.SpannerHelper;
 import org.hibernate.type.descriptor.JdbcTypeNameMapper;
 
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
@@ -64,7 +66,7 @@ public class BasicOperationsTest {
 
 		scope.inTransaction(
 				session -> {
-					session.doWork( new ValidateSomeEntityColumns( session ) );
+					session.doWork( new ValidateSomeEntityColumns( session, scope ) );
 					session.doWork( new ValidateRowCount( session, SOME_ENTITY_TABLE_NAME, 0 ) );
 					session.doWork( new ValidateRowCount( session, SOME_OTHER_ENTITY_TABLE_NAME, 0 ) );
 
@@ -100,9 +102,11 @@ public class BasicOperationsTest {
 	// verify all the expected columns are created
 	class ValidateSomeEntityColumns implements Work {
 		private SessionImplementor s;
+		private SessionFactoryScope scope;
 
-		public ValidateSomeEntityColumns(SessionImplementor s) {
+		public ValidateSomeEntityColumns(SessionImplementor s, SessionFactoryScope scope) {
 			this.s = s;
+			this.scope = scope;
 		}
 
 		public void execute(Connection connection) throws SQLException {
@@ -110,7 +114,7 @@ public class BasicOperationsTest {
 			validateColumn( connection, "ID", java.sql.Types.DATE );
 
 			// timeData -> java.sql.Time (TIME)
-			validateColumn( connection, "TIMEDATA", java.sql.Types.TIME );
+			validateColumn( connection, "TIMEDATA", SpannerHelper.isSpannerDatabase( scope ) ? Types.TIMESTAMP : java.sql.Types.TIME );
 
 			// tsData -> java.sql.Timestamp (TIMESTAMP)
 			validateColumn( connection, "TSDATA", java.sql.Types.TIMESTAMP );

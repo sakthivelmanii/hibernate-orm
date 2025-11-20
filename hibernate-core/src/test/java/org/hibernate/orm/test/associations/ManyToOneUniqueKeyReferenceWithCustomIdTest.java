@@ -13,10 +13,12 @@ import jakarta.persistence.ManyToOne;
 import org.hibernate.HibernateException;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Type;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.usertype.EnhancedUserType;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,7 @@ import java.sql.Types;
 @DomainModel(annotatedClasses =
 		{ManyToOneUniqueKeyReferenceWithCustomIdTest.Phone.class, ManyToOneUniqueKeyReferenceWithCustomIdTest.User.class})
 @JiraKey("HHH-18764")
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't allow column/table names starting with `_`")
 public class ManyToOneUniqueKeyReferenceWithCustomIdTest {
 
 	@Test

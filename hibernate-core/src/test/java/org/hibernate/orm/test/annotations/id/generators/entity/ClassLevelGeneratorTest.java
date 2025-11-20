@@ -4,6 +4,7 @@
  */
 package org.hibernate.orm.test.annotations.id.generators.entity;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -36,7 +37,7 @@ public class ClassLevelGeneratorTest {
 			EntityWithAnonTableGenerator entity2 = new EntityWithAnonTableGenerator();
 			s.persist(entity1);
 			s.persist(entity2);
-			assertEquals(42, entity1.id);
+			assertEquals(SequenceHelper.getId( scope, 42L, 1L ), entity1.id );
 			assertEquals(70, entity2.id);
 		});
 	}

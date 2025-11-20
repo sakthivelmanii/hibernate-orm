@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 
 import org.hibernate.Hibernate;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.orm.SpannerHelper;
 import org.hibernate.query.Query;
 
 import org.hibernate.testing.jdbc.SQLStatementInspector;
@@ -98,8 +99,12 @@ public class EagerManyToOneStreamTest {
 		sqlStatementInterceptor.clear();
 		scope.inTransaction(
 				session -> {
+					StringBuilder sb = new StringBuilder("select c from Child as c ");
+					if ( SpannerHelper.isSpannerDatabase( scope ) ) {
+						sb.append( "order by c.id");
+					}
 					Query<Child> query = session
-							.createQuery( "select c from Child as c ", Child.class );
+							.createQuery( sb.toString(), Child.class );
 					try (Stream<Child> resultStream = query.getResultStream()) {
 
 						List<Child> children = resultStream.collect( Collectors.toList() );

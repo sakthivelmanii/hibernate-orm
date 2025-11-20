@@ -6,6 +6,7 @@ package org.hibernate.orm.test.id.uuid.annotation;
 
 import java.util.UUID;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.generator.Generator;
 import org.hibernate.id.uuid.StandardRandomStrategy;
@@ -29,6 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SessionFactory
 @SkipForDialect( dialectClass = SybaseDialect.class, matchSubTypes = true,
 		reason = "Skipped for Sybase to avoid problems with UUIDs potentially ending with a trailing 0 byte")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class UuidGeneratorAnnotationTests {
 	@Test
 	public void verifyRandomUuidGeneratorModel(DomainModelScope scope) {

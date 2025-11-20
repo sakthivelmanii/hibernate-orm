@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.hibernate.cfg.AvailableSettings;
 
+import org.hibernate.orm.SpannerHelper;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -75,8 +76,12 @@ public class EagerManyToOneBatchTest {
 		statementInspector.clear();
 		scope.inTransaction(
 				session -> {
+					StringBuilder query = new StringBuilder("select c from Child as c ");
+					if ( SpannerHelper.isSpannerDatabase(  scope ) ) {
+						query.append( "order by c.id");
+					}
 					List<Child> children = session
-							.createQuery( "select c from Child as c ", Child.class )
+							.createQuery(query.toString() , Child.class )
 							.getResultList();
 					// Child->parent is an eager manyToOne, so the queries to retrieve this association are executed immediately
 					// we have 2 more queries executed instead of 3 due to the DEFAULT_BATCH_FETCH_SIZE value

@@ -15,6 +15,7 @@ import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.SQLServerDialect;
 import org.hibernate.community.dialect.TiDBDialect;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
 
@@ -53,7 +54,7 @@ public class SelectGeneratorTest {
 					session.persist( e );
 
 					// this insert should happen immediately!
-					assertEquals( Long.valueOf( 1L ), e.getId(), "id not generated through forced insertion" );
+					assertEquals( Long.valueOf( SequenceHelper.getId( scope, 1L ) ), e.getId(), "id not generated through forced insertion" );
 
 					session.remove( e );
 				}

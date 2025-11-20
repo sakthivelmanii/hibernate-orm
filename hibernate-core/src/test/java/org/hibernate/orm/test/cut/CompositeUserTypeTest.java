@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.List;
 
-import org.hibernate.dialect.DB2Dialect;
 import org.hibernate.dialect.HSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -88,7 +88,7 @@ public class CompositeUserTypeTest {
 
 	@Test
 	@SkipForDialect(dialectClass = SybaseASEDialect.class, reason = "HHH-6788")
-	@SkipForDialect(dialectClass = DB2Dialect.class, reason = "HHH-6867")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "<reason>")
 	public void testCustomColumnReadAndWrite(SessionFactoryScope scope) {
 		final BigDecimal AMOUNT = new BigDecimal( 73000000d );
 		final BigDecimal AMOUNT_MILLIONS = AMOUNT.divide( new BigDecimal( 1000000d ) );

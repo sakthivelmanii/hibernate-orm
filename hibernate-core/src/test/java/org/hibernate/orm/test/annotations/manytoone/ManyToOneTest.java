@@ -5,6 +5,8 @@
 package org.hibernate.orm.test.annotations.manytoone;
 
 import org.hibernate.Hibernate;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.orm.test.annotations.Company;
 import org.hibernate.orm.test.annotations.Customer;
 import org.hibernate.orm.test.annotations.Discount;
@@ -16,6 +18,7 @@ import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.Setting;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -138,7 +141,7 @@ public class ManyToOneTest {
 		} );
 
 		factoryScope.inTransaction( (session) -> {
-			var discount = session.find( Discount.class, 1L );
+			var discount = session.find( Discount.class, SequenceHelper.getId( factoryScope, 1L ) );
 			assertNotNull( discount );
 			assertEquals( 20.12, discount.getDiscount(), 0.01 );
 			assertNotNull( discount.getOwner() );
@@ -151,7 +154,7 @@ public class ManyToOneTest {
 		} );
 
 		factoryScope.inTransaction( (session) -> {
-			var discount = session.find( Discount.class, 1L );
+			var discount = session.find( Discount.class, SequenceHelper.getId( factoryScope, 1L ) );
 			assertNotNull( discount );
 			assertNotNull( discount.getOwner() );
 			assertEquals( "Clooney", discount.getOwner().getName() );
@@ -173,19 +176,20 @@ public class ManyToOneTest {
 		} );
 
 		factoryScope.inTransaction( (session) -> {
-			var discount = session.find( Discount.class, 1L );
+			var discount = session.find( Discount.class, SequenceHelper.getId( factoryScope, 1L ) );
 			assertNotNull( discount );
 			assertFalse( Hibernate.isInitialized( discount.getOwner() ) );
 		} );
 
 		factoryScope.inTransaction( (session) -> {
-			var discount = session.getReference( Discount.class, 1L );
+			var discount = session.getReference( Discount.class, SequenceHelper.getId( factoryScope, 1L ) );
 			assertNotNull( discount );
 			assertFalse( Hibernate.isInitialized( discount.getOwner() ) );
 		} );
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
 	public void testCompositeFK(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction(  (session) -> {
 			var ppk = new ParentPk();
@@ -242,6 +246,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
 	public void testManyToOneNonPk(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( (session) -> {
 			var order = new Order();
@@ -263,6 +268,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
 	public void testManyToOneNonPkSecondaryTable(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( (session) -> {
 			var order = new Order();
@@ -284,6 +290,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
 	public void testTwoManyToOneNonPk(SessionFactoryScope factoryScope) {
 		//2 many-to-one non pk pointing to the same referencedColumnName should not fail
 		factoryScope.inTransaction( (session) -> {
@@ -307,6 +314,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
 	public void testFormulaOnOtherSide(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( (session) -> {
 			var frame = new Frame();
@@ -325,7 +333,7 @@ public class ManyToOneTest {
 		} );
 
 		factoryScope.inTransaction( (session) -> {
-			var frame = session.find( Frame.class, 1L );
+			var frame = session.find( Frame.class, SequenceHelper.getId( factoryScope, 1L ) );
 			assertEquals( 2, frame.getLenses().size() );
 			assertTrue( frame.getLenses().iterator().next().getLength() <= 1 / 1.2f );
 			assertTrue( frame.getLenses().iterator().next().getLength() >= 1 / 2.5f );

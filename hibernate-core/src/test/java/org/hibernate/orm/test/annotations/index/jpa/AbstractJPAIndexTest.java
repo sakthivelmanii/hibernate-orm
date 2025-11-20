@@ -19,22 +19,18 @@ import org.hibernate.mapping.Set;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.UniqueKey;
 import org.hibernate.metamodel.CollectionClassification;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.RequiresDialect;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.SettingProvider;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Strong Liu
@@ -64,8 +60,7 @@ public abstract class AbstractJPAIndexTest {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support"
-																			+ "unique constraint definition in the column")
+	@RequiresDialectFeature( feature = DialectFeatureChecks.SupportsUniqueConstraintInColumnDefinition.class)
 	public void testTableIndex(SessionFactoryScope scope) {
 		PersistentClass entity = scope.getMetadataImplementor().getEntityBinding( Car.class.getName() );
 		Iterator<UniqueKey> itr = entity.getTable().getUniqueKeys().values().iterator();
@@ -92,34 +87,29 @@ public abstract class AbstractJPAIndexTest {
 	}
 
 	@Test
-	@RequiresDialect(  SpannerPostgreSQLDialect.class )
+	@RequiresDialect(SpannerPostgreSQLDialect.class)
 	public void testTableIndex2(SessionFactoryScope scope) {
-		// no unique keys in the table since spanner supports only unique indexes
 		PersistentClass entity = scope.getMetadataImplementor().getEntityBinding( Car.class.getName() );
-		Iterator itr = entity.getTable().getUniqueKeys().values().iterator();
-		assertFalse( itr.hasNext() );
+		Iterator<Index> itr = entity.getTable().getIndexes().values().iterator();
+		assertThat( itr.hasNext() ).isTrue();
+		Index ukIndex = itr.next();
+		assertThat( itr.hasNext() ).isTrue();
+		assertThat( StringHelper.isNotEmpty( ukIndex.getName() ) ).isTrue();
+		assertThat( ukIndex.getColumnSpan() ).isEqualTo( 2 );
+		Column column = ukIndex.getColumns().get( 0 );
+		assertThat( column.getName() ).isEqualTo( "brand" );
+		column = ukIndex.getColumns().get( 1 );
+		assertThat( column.getName() ).isEqualTo( "producer" );
+		assertThat( ukIndex.getTable() ).isSameAs( entity.getTable() );
 
-		itr = entity.getTable().getIndexes().values().iterator();
-
-		assertTrue( itr.hasNext() );
-		Index index = (Index)itr.next();
-		assertTrue( index.isUnique() );
-		assertEquals( 2, index.getColumnSpan() );
-		List<String> columns = index.getColumns().stream()
-				.map( Column::getName ).toList();
-		assertThat(columns).hasSize( 2 )
-				.containsExactlyInAnyOrderElementsOf( List.of("brand", "producer" ));
-		assertSame( entity.getTable(), index.getTable() );
-
-		assertTrue( itr.hasNext() );
-		index = (Index)itr.next();
-		assertFalse( itr.hasNext() );
-		assertEquals( "Car_idx", index.getName() );
-		assertEquals( 1, index.getColumnSpan() );
-
-		Column column = index.getColumns().iterator().next();
-		assertEquals( "since", column.getName() );
-		assertSame( entity.getTable(), index.getTable() );
+		assertThat( itr.hasNext() ).isTrue();
+		Index index = itr.next();
+		assertThat( itr.hasNext() ).isFalse();
+		assertThat( index.getName() ).isEqualTo( "Car_idx" );
+		assertThat( index.getColumnSpan() ).isEqualTo( 1 );
+		column = index.getColumns().iterator().next();
+		assertThat( column.getName() ).isEqualTo( "since" );
+		assertThat( index.getTable() ).isSameAs( entity.getTable() );
 	}
 
 	@Test

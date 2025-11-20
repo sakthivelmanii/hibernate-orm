@@ -20,6 +20,7 @@
             <property name="hibernate.connection.password" value="@jdbc.pass@"/>
             <property name="hibernate.connection.url" value="@jdbc.url@"/>
             <property name="hibernate.connection.init_sql" value="@connection.init_sql@"/>
+            <property name="hibernate.id.sequence.increment_size_mismatch_strategy" value="@sequence.mismatch_strategy@"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
             <property name="hibernate.cache.region.factory_class" value="org.hibernate.testing.cache.CachingRegionFactory" />
         </properties>

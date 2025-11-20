@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
@@ -47,6 +48,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 		CriteriaMultiselectGroupByAndOrderByTest.Secondary.class,
 } )
 @SessionFactory
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support GROUP BY without aggregate function")
 public class CriteriaMultiselectGroupByAndOrderByTest {
 	@BeforeEach
 	public void setUp(SessionFactoryScope scope) {

@@ -15,6 +15,7 @@ import org.hibernate.dialect.HANADialect;
 import org.hibernate.community.dialect.DerbyDialect;
 import org.hibernate.community.dialect.GaussDBDialect;
 import org.hibernate.dialect.OracleDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.metamodel.mapping.internal.BasicAttributeMapping;
 import org.hibernate.metamodel.spi.MappingMetamodelImplementor;
@@ -50,6 +51,7 @@ import static org.hamcrest.Matchers.notNullValue;
  */
 @DomainModel(annotatedClasses = XmlMappingTests.EntityWithXml.class)
 @SessionFactory
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support SQLXML")
 public abstract class XmlMappingTests {
 
 	@ServiceRegistry(settings = @Setting(name = AvailableSettings.XML_FORMAT_MAPPER, value = "jaxb"))
