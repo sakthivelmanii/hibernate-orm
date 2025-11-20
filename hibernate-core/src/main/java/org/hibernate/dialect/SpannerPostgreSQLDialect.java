@@ -15,6 +15,9 @@ import org.hibernate.boot.model.FunctionContributions;
 import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.boot.model.relational.SqlStringGenerationContext;
 import org.hibernate.boot.spi.MetadataBuildingContext;
+import org.hibernate.dialect.aggregate.AggregateSupport;
+import org.hibernate.dialect.aggregate.SpannerPostgreSQLAggregateSupport;
+import org.hibernate.dialect.function.CommonFunctionFactory;
 import org.hibernate.dialect.function.PostgreSQLTruncRoundFunction;
 import org.hibernate.dialect.lock.PessimisticLockStyle;
 import org.hibernate.dialect.lock.internal.LockingSupportSimple;
@@ -63,6 +66,7 @@ import org.hibernate.type.MappingContext;
 import org.hibernate.type.Type;
 import org.hibernate.type.descriptor.jdbc.JdbcType;
 import org.hibernate.type.descriptor.jdbc.spi.JdbcTypeRegistry;
+import org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType;
 import org.hibernate.type.descriptor.sql.internal.DdlTypeImpl;
 import org.hibernate.type.descriptor.sql.spi.DdlTypeRegistry;
 
@@ -75,6 +79,8 @@ import static org.hibernate.type.SqlTypes.BIGINT;
 import static org.hibernate.type.SqlTypes.BLOB;
 import static org.hibernate.type.SqlTypes.CHAR;
 import static org.hibernate.type.SqlTypes.CLOB;
+import static org.hibernate.type.SqlTypes.DOUBLE;
+import static org.hibernate.type.SqlTypes.FLOAT;
 import static org.hibernate.type.SqlTypes.INTEGER;
 import static org.hibernate.type.SqlTypes.NCLOB;
 import static org.hibernate.type.SqlTypes.SMALLINT;
@@ -131,16 +137,42 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		super.initializeFunctionRegistry( functionContributions );
 
 		SqmFunctionRegistry functionRegistry = functionContributions.getFunctionRegistry();
+		final CommonFunctionFactory commonFunctionFactory = new CommonFunctionFactory(functionContributions);
 
 		functionRegistry.register(
 				"round", new PostgreSQLTruncRoundFunction( "round", false ));
+		// Register Spanner specific function
+
+		commonFunctionFactory.arrayLength_spanner();
+		commonFunctionFactory.length_characterLength_spanner("");
+		commonFunctionFactory.position_spanner();
+		commonFunctionFactory.locate_Spanner();
+
+		// Replace functions
+		commonFunctionFactory.jsonArrayAgg_postgresql( false );
+		commonFunctionFactory.jsonObjectAgg_postgresql( false );
 
 		// Remove unsupported PG functions
-
 		functionRegistry.unregister( "array_append" );
-		functionRegistry.register(
-				"round", new PostgreSQLTruncRoundFunction( "round", true )
-		);
+		functionRegistry.unregister( "array_fill" );
+		functionRegistry.unregister( "array_fill_list" );
+		functionRegistry.unregister( "array_trim" );
+		functionRegistry.unregister( "array_set" );
+		functionRegistry.unregister( "array_replace" );
+		functionRegistry.unregister( "array_remove" );
+		functionRegistry.unregister( "array_remove_index" );
+		functionRegistry.unregister( "array_prepend" );
+		functionRegistry.unregister( "array_position" );
+		functionRegistry.unregister( "array_positions" );
+
+		functionRegistry.unregister( "json_query" );
+		functionRegistry.unregister( "json_table" );
+		functionRegistry.unregister( "json_value" );
+		functionRegistry.unregister( "json_exists" );
+		functionRegistry.unregister( "json_object" );
+		functionRegistry.unregister( "json_objectagg" );
+		functionRegistry.unregister( "json_array_append" );
+		functionRegistry.unregister( "json_mergepatch" );
 
 		functionRegistry.unregister( "xmlagg" );
 		functionRegistry.unregister( "xmlelement" );
@@ -150,6 +182,7 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		functionRegistry.unregister( "xmlpi" );
 		functionRegistry.unregister( "xmlquery_postgresql" );
 		functionRegistry.unregister( "xmlexists" );
+		functionRegistry.unregister( "xmlquery" );
 		functionRegistry.unregister( "xmltable" );
 
 		functionRegistry.unregister( "generate_series" );
@@ -168,6 +201,13 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	}
 
 	@Override
+	protected String castType(int sqlTypeCode) {
+		//			case FLOAT -> "float4";
+		//			case DOUBLE -> "double precision";
+		return super.castType( sqlTypeCode );
+	}
+
+	@Override
 	protected void registerColumnTypes(
 			TypeContributions typeContributions, ServiceRegistry serviceRegistry) {
 		super.registerColumnTypes( typeContributions, serviceRegistry );
@@ -175,7 +215,9 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		final DdlTypeRegistry ddlTypeRegistry =
 				typeContributions.getTypeConfiguration().getDdlTypeRegistry();
 
-		ddlTypeRegistry.addDescriptor( new DdlTypeImpl( Types.FLOAT, "real", this ) );
+		ddlTypeRegistry.addDescriptor(CapacityDependentDdlType.builder( FLOAT, columnType( FLOAT ), castType( FLOAT ), this )
+				.withTypeCapacity( 24, "float4" )
+				.build());
 		ddlTypeRegistry.addDescriptor( new DdlTypeImpl( Types.NUMERIC, "numeric", this ) );
 		ddlTypeRegistry.addDescriptor( new DdlTypeImpl( Types.TINYINT, "bigint", this ) );
 	}
@@ -192,22 +234,56 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	}
 
 	@Override
+	public String getArrayTypeName(String javaElementTypeName, String elementTypeName, Integer maxLength) {
+		if(elementTypeName != null && elementTypeName.equals( "varchar" )) {
+			elementTypeName = "text";
+		}
+		return super.getArrayTypeName( javaElementTypeName, elementTypeName, maxLength );
+	}
+
+	@Override
+	public AggregateSupport getAggregateSupport() {
+		return SpannerPostgreSQLAggregateSupport.INSTANCE;
+	}
+
+	@Override
+	public boolean supportsUserDefinedTypes() {
+		return false;
+	}
+
+	@Override
+	public boolean supportsFilterClause() {
+		return false;
+	}
+
+	@Override
+	public boolean supportsRecursiveCycleUsingClause() {
+		return false;
+	}
+
+	@Override
+	public boolean supportsRecursiveSearchClause() {
+		return false;
+	}
+
+	@Override
 	public boolean supportsUniqueConstraintInColumnDefinition() {
 		return false;
 	}
 
 	@Override
-	public boolean supportsRowValueConstructorSyntax() {
+	public boolean supportsRowValueConstructorGtLtSyntax() {
 		return false;
 	}
 
-	@Override
-	public boolean supportsRowValueConstructorSyntaxInInList() {
-		return false;
-	}
-
+	// ALL subqueries with operators other than <>/!= are not supported
 	@Override
 	public boolean supportsRowValueConstructorSyntaxInQuantifiedPredicates() {
+		return false;
+	}
+
+	@Override
+	public boolean supportsRowValueConstructorSyntaxInInSubQuery() {
 		return false;
 	}
 
@@ -232,13 +308,25 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	}
 
 	@Override
-	public boolean supportsWindowFunctions() {
+	public boolean supportsLateral() {
 		return false;
 	}
 
 	@Override
-	public boolean supportsLateral() {
+	public boolean supportsFromClauseInUpdate() {
 		return false;
+	}
+
+	@Override
+	public int getMaxVarcharLength() {
+		//max is equivalent to 2_621_440
+		return 2_621_440;
+	}
+
+	@Override
+	public int getMaxVarbinaryLength() {
+		//max is equivalent 10 MiB
+		return 10_485_760;
 	}
 
 	@Override
@@ -297,6 +385,7 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		return switch (sqlTypeCode) {
 			case TIME, TIMESTAMP, TIMESTAMP_UTC, TIMESTAMP_WITH_TIMEZONE -> "timestamp with time zone";
 			case BLOB -> "bytea";
+			case DOUBLE -> "double precision";
 			case CLOB, NCLOB -> "character varying";
 			case CHAR -> columnType( VARCHAR );
 			case SMALLINT, INTEGER, TINYINT ->  columnType( BIGINT );
@@ -346,6 +435,16 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
 	@Override
 	public boolean canBatchTruncate() {
+		return false;
+	}
+
+	@Override
+	public String rowId(String rowId) {
+		return null;
+	}
+
+	@Override
+	public boolean supportsRowConstructor() {
 		return false;
 	}
 
@@ -482,6 +581,16 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
 	@Override
 	public boolean supportsDistinctFromPredicate() {
+		return false;
+	}
+
+	@Override
+	public boolean supportsNonQueryWithCTE() {
+		return false;
+	}
+
+	@Override
+	public boolean supportsRecursiveCTE() {
 		return false;
 	}
 

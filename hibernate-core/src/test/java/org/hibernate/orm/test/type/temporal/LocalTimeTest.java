@@ -15,6 +15,7 @@ import org.hibernate.dialect.HANADialect;
 import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.MariaDBDialect;
 import org.hibernate.dialect.MySQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DialectContext;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -46,6 +47,7 @@ import java.util.List;
 @DomainModel(annotatedClasses = LocalTimeTest.EntityWithLocalTime.class)
 @SessionFactory
 @SkipForDialect(dialectClass = H2Dialect.class, reason = "H2 1.4.200 DST bug. See org.hibernate.dialect.H2Dialect.hasDstBug")
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LocalTime")
 public class LocalTimeTest extends AbstractJavaTimeTypeTests<LocalTime, LocalTimeTest.EntityWithLocalTime> {
 
 	protected static List<Parameter<LocalTime, LocalTimeData>> testData() {

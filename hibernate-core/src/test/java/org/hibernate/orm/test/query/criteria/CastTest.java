@@ -4,8 +4,10 @@
  */
 package org.hibernate.orm.test.query.criteria;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,6 +33,7 @@ class CastTest {
 		} );
 	}
 
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner cast to float(24) is failing")
 	@Test void testCastFromString(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( entityManager -> {
 			var builder = entityManager.getCriteriaBuilder();

@@ -15,6 +15,7 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.HANADialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
@@ -321,6 +322,7 @@ public class QueryAndSQLTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestampz_ge_date function")
 	public void testClassQueries(SessionFactoryScope scope) {
 		Night n = new Night();
 		Calendar c = new GregorianCalendar();

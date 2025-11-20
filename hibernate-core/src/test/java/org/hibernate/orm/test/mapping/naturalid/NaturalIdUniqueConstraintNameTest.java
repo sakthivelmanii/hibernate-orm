@@ -10,9 +10,11 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.boot.MetadataSources;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.ServiceRegistryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -26,6 +28,8 @@ public class NaturalIdUniqueConstraintNameTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UNIQUE constraint"
+																			+ "at a column level")
 	public void testNaturalIdUsesUniqueConstraintName(ServiceRegistryScope registryScope) {
 		var metadata = new MetadataSources( registryScope.getRegistry() )
 				.addAnnotatedClasses( getAnnotatedClasses() )
@@ -44,6 +48,8 @@ public class NaturalIdUniqueConstraintNameTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UNIQUE constraint"
+																			+ "at a column level")
 	public void testNaturalIdUsesExplicitColumns(ServiceRegistryScope registryScope) {
 		var metadata = new MetadataSources( registryScope.getRegistry() )
 				.addAnnotatedClasses( getAnnotatedClasses() )

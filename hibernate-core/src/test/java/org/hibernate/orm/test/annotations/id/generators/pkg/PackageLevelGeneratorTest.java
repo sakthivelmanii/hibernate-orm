@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -34,9 +35,9 @@ public class PackageLevelGeneratorTest {
 			s.persist(entity2);
 			s.persist(entity3);
 			s.persist(entity4);
-			assertEquals(42, entity1.id);
-			assertEquals(42, entity2.id);
-			assertEquals(42, entity3.id);
+			assertEquals( SequenceHelper.getId( scope, 42, 1 ), entity1.id);
+			assertEquals( SequenceHelper.getId( scope, 42, 1 ), entity2.id);
+			assertEquals( SequenceHelper.getId( scope, 42, 1 ), entity3.id);
 			assertEquals(70, entity4.id);
 		});
 	}

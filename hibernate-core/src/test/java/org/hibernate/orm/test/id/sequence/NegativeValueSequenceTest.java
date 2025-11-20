@@ -15,6 +15,7 @@ import org.hibernate.Session;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.id.enhanced.NoopOptimizer;
 import org.hibernate.id.enhanced.Optimizer;
@@ -24,6 +25,7 @@ import org.hibernate.service.spi.ServiceRegistryImplementor;
 
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.logger.Triggerable;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.testing.orm.logger.LoggerInspectionExtension;
 import org.hibernate.testing.util.ServiceRegistryUtil;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Gail Badner
  */
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support negative identity sequences")
 public class NegativeValueSequenceTest {
 	@RegisterExtension
 	public LoggerInspectionExtension logInspection =

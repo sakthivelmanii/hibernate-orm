@@ -35,6 +35,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.PostgresPlusDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.procedure.ProcedureCall;
 import org.hibernate.procedure.ProcedureParameter;
 
@@ -79,6 +80,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @RequiresDialect( PostgreSQLDialect.class )
 @RequiresDialect( OracleDialect.class )
 @RequiresDialect( DB2Dialect.class )
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support custom TYPE")
 public class NestedStructEmbeddableTest implements AdditionalMappingContributor {
 
 	@Override

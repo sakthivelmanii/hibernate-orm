@@ -232,7 +232,7 @@ public class PatternRenderer {
 				final int index = paramIndexes[i] - 1;
 				final var arg = index < numberOfArguments ? args.get( index ) : null;
 				if ( arg != null || i == 0 ) {
-					sqlAppender.appendSql( chunks[i] );
+						sqlAppender.appendSql( chunks[i] );
 				}
 				if ( arg != null ) {
 					if ( caseWrapper

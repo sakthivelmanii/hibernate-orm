@@ -7,6 +7,7 @@ package org.hibernate.orm.test.collection.list;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.spi.ScrollableResultsImplementor;
 
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -14,6 +15,7 @@ import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -78,6 +80,7 @@ public class IterateOverListInTheSetMethodTest {
 
 	@Test
 	@JiraKey(value = "HHH-16184")
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
 	public void testScrollParentsWithoutChildren(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

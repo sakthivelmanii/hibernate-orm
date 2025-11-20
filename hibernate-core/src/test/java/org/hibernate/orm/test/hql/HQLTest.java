@@ -20,7 +20,9 @@ import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.query.QueryProducer;
 import org.hibernate.testing.orm.domain.userguide.Account;
 import org.hibernate.testing.orm.domain.userguide.AddressType;
@@ -1174,6 +1176,7 @@ public class HQLTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable resultsets")
 	public void test_hql_api_scroll_open_example(SessionFactoryScope factoryScope) {
 		//noinspection resource
 		ScrollableResults<Person> scrollableResults = factoryScope.fromTransaction( entityManager -> {
@@ -1254,7 +1257,7 @@ public class HQLTest {
 			Person person = entityManager.createQuery(
 				"select p " +
 				"from Person p " +
-				"where p.id = 1",
+				"where p.id = " + SequenceHelper.getId( factoryScope, 1L ),
 				Person.class)
 			.getSingleResult();
 			//end::hql-numeric-literals-example[]
@@ -1268,9 +1271,9 @@ public class HQLTest {
 
 			// simple integer literal, typed as a long
 			Person person = entityManager.createQuery(
-				"select p " +
-				"from Person p " +
-				"where p.id = 1L",
+							"select p " +
+							"from Person p " +
+							"where p.id = " + SequenceHelper.getId( factoryScope, 1L ),
 				Person.class)
 			.getSingleResult();
 			//end::hql-numeric-literals-example[]
@@ -1491,6 +1494,7 @@ public class HQLTest {
 	}
 
 	@Test
+	@SkipForDialect( reason = "Aggregate functions with FILTER clauses are not supported", dialectClass = SpannerPostgreSQLDialect.class)
 	public void test_hql_aggregate_functions_simple_filter_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-aggregate-functions-simple-filter-example[]
@@ -1805,6 +1809,7 @@ public class HQLTest {
 	@RequiresDialect(MySQLDialect.class)
 	@RequiresDialect(PostgreSQLDialect.class)
 	@RequiresDialect(OracleDialect.class)
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't supoprt bit_length")
 	public void test_hql_bit_length_function_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-native-function-example[]
@@ -2609,6 +2614,7 @@ public class HQLTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner only supports default ESCAPE character '\'")
 	public void test_hql_like_predicate_escape_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-like-predicate-escape-example[]

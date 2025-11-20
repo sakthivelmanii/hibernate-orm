@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.hibernate.Hibernate;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.orm.SpannerHelper;
 import org.hibernate.query.Query;
 
 import org.hibernate.testing.jdbc.SQLStatementInspector;
@@ -67,8 +68,12 @@ public class LazyManyToOneTest {
 		sqlStatementInterceptor.clear();
 		scope.inTransaction(
 				session -> {
+					StringBuilder sb = new StringBuilder( "select c from Child as c " );
+					if ( SpannerHelper.isSpannerDatabase( scope ) ) {
+						sb.append( "order by c.id" );
+					}
 					Query<Child> query = session
-							.createQuery( "select c from Child as c ", Child.class );
+							.createQuery( sb.toString(), Child.class );
 					List<Child> resultList = query.getResultList();
 					assertThat( sqlStatementInterceptor.getSqlQueries().size() ).isEqualTo( 1 );
 

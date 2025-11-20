@@ -176,6 +176,7 @@ public abstract class TransactionUtil {
 					if ( expectingToBlock ) {
 						fail( "Expecting `delete from " + tableName + "` to block due to locks" );
 					}
+					System.out.printf( "sql: %s\n", sql );
 				} );
 			} );
 		}

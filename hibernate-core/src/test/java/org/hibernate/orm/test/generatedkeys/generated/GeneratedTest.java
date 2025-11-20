@@ -10,6 +10,7 @@ import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.RequiresDialect;
@@ -55,11 +56,11 @@ public class GeneratedTest {
 					MyEntity e1 = new MyEntity( "entity-1" );
 					session.persist( e1 );
 					// this insert should happen immediately!
-					assertEquals( Long.valueOf( 1L ), e1.getId(), "id not generated through forced insertion" );
+					assertEquals( Long.valueOf( SequenceHelper.getId( scope, 1L ) ), e1.getId(), "id not generated through forced insertion" );
 
 					MyEntity e2 = new MyEntity( "entity-2" );
 					session.persist( e2 );
-					assertEquals( Long.valueOf( 2L ), e2.getId(), "id not generated through forced insertion" );
+					assertEquals( Long.valueOf( SequenceHelper.getId( scope, 2L ) ), e2.getId(), "id not generated through forced insertion" );
 
 					session.remove( e1 );
 					session.remove( e2 );
