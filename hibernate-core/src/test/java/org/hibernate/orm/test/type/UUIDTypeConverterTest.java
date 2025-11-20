@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import org.hibernate.community.dialect.InformixDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -41,6 +42,7 @@ import static org.hibernate.testing.util.uuid.SafeRandomUUIDGenerator.safeRandom
 @SessionFactory
 @JiraKey(value = "HHH-15417")
 @SkipForDialect(dialectClass = InformixDialect.class, reason = "Informix does not support unique / primary constraints on binary columns")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class UUIDTypeConverterTest {
 
 	@AfterEach

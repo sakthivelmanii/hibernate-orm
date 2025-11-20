@@ -24,7 +24,7 @@ import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.number.IsCloseTo.closeTo;
 import static org.junit.Assert.assertThat;
 
@@ -96,13 +96,13 @@ public class ColumnTransformerTest {
 							.createQuery( "select s from Staff s join fetch s.integers where s.id = :id", Staff.class )
 							.setParameter( "id", 12 )
 							.uniqueResult();
-					assertThat( staffWithElements.getIntegers(), contains( 1, 2, 3, 4 ) );
+					assertThat( staffWithElements.getIntegers(), containsInAnyOrder( 1, 2, 3, 4 ) );
 
 					final Staff staffWithElements2 = session
 							.createQuery( "select s from Staff s join fetch s.integers2 where s.id = :id", Staff.class )
 							.setParameter( "id", 16 )
 							.uniqueResult();
-					assertThat( staffWithElements2.getIntegers2(), contains( 5, 6, 7, 8 ) );
+					assertThat( staffWithElements2.getIntegers2(), containsInAnyOrder( 5, 6, 7, 8 ) );
 				}
 		);
 	}
@@ -153,7 +153,7 @@ public class ColumnTransformerTest {
 							.createNativeQuery( sqlString )
 							.getResultList();
 
-					assertThat( results, contains( 1-20, 2-20, 3-20, 4-20 ) );
+					assertThat( results, containsInAnyOrder( 1-20L, 2-20L, 3-20L, 4-20L ) );
 				}
 		);
 	}

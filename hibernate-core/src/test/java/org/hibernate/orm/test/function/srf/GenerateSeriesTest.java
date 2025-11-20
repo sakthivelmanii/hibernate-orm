@@ -5,6 +5,7 @@
 package org.hibernate.orm.test.function.srf;
 
 import jakarta.persistence.Tuple;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaFunctionRoot;
@@ -33,6 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DomainModel(standardModels = StandardDomainModel.LIBRARY)
 @SessionFactory
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsGenerateSeries.class)
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner supports generate_series but emulator"
+																		+ "currently doesn't support it")
 public class GenerateSeriesTest {
 
 	@BeforeAll
