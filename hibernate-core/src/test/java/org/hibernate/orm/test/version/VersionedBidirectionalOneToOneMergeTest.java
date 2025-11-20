@@ -6,6 +6,8 @@ package org.hibernate.orm.test.version;
 
 import java.util.UUID;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.testing.util.uuid.SafeRandomUUIDGenerator;
 
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -31,6 +33,7 @@ import jakarta.persistence.Version;
 public class VersionedBidirectionalOneToOneMergeTest {
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testMerge(SessionFactoryScope scope) {
 		AnotherTestEntity anotherTestEntity = new AnotherTestEntity();
 		scope.inTransaction(

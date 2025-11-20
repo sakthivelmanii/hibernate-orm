@@ -14,6 +14,7 @@ import org.hibernate.StaleObjectStateException;
 import org.hibernate.cfg.AvailableSettings;
 
 import org.hibernate.dialect.MariaDBDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.exception.SnapshotIsolationException;
 import org.hibernate.exception.TransactionSerializationException;
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -22,6 +23,7 @@ import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.Setting;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import jakarta.persistence.Column;
@@ -93,6 +95,7 @@ public class BatchUpdateAndVersionTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support concurrent modifications")
 	public void testFailedUpdate(SessionFactoryScope scope) {
 		scope.getSessionFactory().getSchemaManager().truncate();
 		scope.inTransaction(

@@ -21,6 +21,7 @@ import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.PostgresPlusDialect;
 import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaFunctionRoot;
@@ -63,6 +64,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @RequiresDialect(SQLServerDialect.class)
 @RequiresDialect(SybaseASEDialect.class)
 @RequiresDialect(HANADialect.class)
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support creating functions")
 public class CustomSetReturningFunctionTest implements AdditionalMappingContributor, FunctionContributor {
 
 	@Override

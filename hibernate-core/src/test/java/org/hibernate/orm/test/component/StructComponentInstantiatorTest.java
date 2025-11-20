@@ -12,12 +12,14 @@ import org.hibernate.annotations.Struct;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.jdbc.SharedDriverManagerTypeCacheClearingIntegrator;
 import org.hibernate.testing.orm.junit.BootstrapServiceRegistry;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.RequiresDialect;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,6 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SessionFactory
 @RequiresDialect(PostgreSQLDialect.class)
 @RequiresDialect(OracleDialect.class)
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support user-defined types")
 public class StructComponentInstantiatorTest {
 
 	@BeforeEach

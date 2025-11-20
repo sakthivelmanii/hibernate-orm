@@ -4,9 +4,11 @@
  */
 package org.hibernate.orm.test.annotations.identifiercollection;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,6 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 		}
 )
 @SessionFactory
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner Emulator doesn't support"
+																		+ "concurrent transactions")
 public class IdentifierCollectionTest {
 
 	@Test
