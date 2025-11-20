@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.PropertyValueException;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.exception.ConstraintViolationException;
 
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
@@ -16,6 +17,7 @@ import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -128,6 +130,7 @@ public class DetachedEntityWithNullVersionTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testMergeDetachedEntityWithUUIDId(SessionFactoryScope scope) {
 		UUIDIdItem item = new UUIDIdItem();
 		persistItem( scope, item );

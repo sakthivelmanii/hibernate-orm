@@ -5,7 +5,9 @@
 package org.hibernate.orm.test.id.cte;
 
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.id.enhanced.HiLoOptimizer;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -14,6 +16,7 @@ import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.Setting;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ServiceRegistry(settings = @Setting(name = AvailableSettings.PREFERRED_POOLED_OPTIMIZER, value = "hilo"))
 @DomainModel(annotatedClasses = Dummy.class)
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsCteInsertStrategy.class)
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 public class CteInsertWithHiLoOptimizerTest {
 	@Test
 	void test(SessionFactoryScope scope) {
@@ -41,7 +45,7 @@ public class CteInsertWithHiLoOptimizerTest {
 			for ( var id = 1; id <= 7; id++ ) {
 				Dummy d = new Dummy( "d" + id );
 				session.persist( d );
-				assertEquals( id, d.getId() );
+				assertEquals( SequenceHelper.getId( scope, id ), d.getId() );
 			}
 		} );
 

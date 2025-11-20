@@ -17,6 +17,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.SkipForDialect;
@@ -53,7 +54,7 @@ public class InterceptorTest {
 	@Test
 	public void testSessionInterceptor(SessionFactoryScope scope) {
 		EntityManagerFactory entityManagerFactory = scope.getSessionFactory();
-		Serializable customerId = 1L;
+		Serializable customerId = SequenceHelper.getId( scope, 1L );
 		//tag::events-interceptors-session-scope-example[]
 		SessionFactory sessionFactory = entityManagerFactory.unwrap( SessionFactory.class );
 		Session session = sessionFactory

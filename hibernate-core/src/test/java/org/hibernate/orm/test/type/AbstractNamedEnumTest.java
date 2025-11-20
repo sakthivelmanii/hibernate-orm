@@ -6,6 +6,8 @@ package org.hibernate.orm.test.type;
 
 
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.type.SqlTypes;
 
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -36,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 		AbstractNamedEnumTest.Weather.class,
 		AbstractNamedEnumTest.Sky.class
 })
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support custom type")
 public abstract class AbstractNamedEnumTest {
 
 	@Test public void testNamedEnum(SessionFactoryScope scope) {

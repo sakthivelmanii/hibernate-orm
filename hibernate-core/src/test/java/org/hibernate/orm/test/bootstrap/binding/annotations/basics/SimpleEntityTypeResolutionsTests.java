@@ -11,9 +11,11 @@ import java.util.Iterator;
 import jakarta.persistence.TemporalType;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.dialect.type.SpannerIntegerAsBigIntType;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
+import org.hibernate.orm.SpannerHelper;
 import org.hibernate.type.descriptor.java.IntegerJavaType;
 import org.hibernate.type.descriptor.jdbc.IntegerJdbcType;
 
@@ -42,8 +44,14 @@ public class SimpleEntityTypeResolutionsTests {
 			final BasicValue identifier = (BasicValue) simpleEntityBinding.getIdentifier();
 			assertThat( identifier.isValid( scope.getDomainModel() ), is( true ) );
 			final BasicValue.Resolution<?> resolution = identifier.resolve();
-			assertSame( IntegerJavaType.INSTANCE, resolution.getDomainJavaType() );
-			assertSame( IntegerJdbcType.INSTANCE, resolution.getJdbcType() );
+
+			if( SpannerHelper.isSpannerDatabase( scope ) ) {
+				assertSame( IntegerJavaType.INSTANCE, resolution.getDomainJavaType() );
+				assertSame( SpannerIntegerAsBigIntType.INSTANCE, resolution.getJdbcType() );
+			} else {
+				assertSame( IntegerJavaType.INSTANCE, resolution.getDomainJavaType() );
+				assertSame( IntegerJdbcType.INSTANCE, resolution.getJdbcType() );
+			}
 			assertThat( resolution.getJdbcMapping(), sameInstance( resolution.getLegacyResolvedBasicType() ) );
 		}
 

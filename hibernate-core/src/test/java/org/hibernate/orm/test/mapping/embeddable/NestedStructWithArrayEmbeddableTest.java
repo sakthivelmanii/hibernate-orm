@@ -23,6 +23,7 @@ import org.hibernate.annotations.Struct;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.type.SqlTypes;
 
 import org.hibernate.testing.jdbc.SharedDriverManagerTypeCacheClearingIntegrator;
@@ -68,6 +69,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 )
 @DomainModel(annotatedClasses = NestedStructWithArrayEmbeddableTest.StructHolder.class)
 @SessionFactory
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support custom TYPE")
 public class NestedStructWithArrayEmbeddableTest {
 
 	@BeforeEach

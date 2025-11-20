@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
 
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
@@ -28,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 		reason = "Skipped for Sybase to avoid problems with UUIDs potentially ending with a trailing 0 byte"
 )
 @Jpa(annotatedClasses = {UuidCustomGeneratedValueTest.Book.class})
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class UuidCustomGeneratedValueTest {
 
 	@Test
