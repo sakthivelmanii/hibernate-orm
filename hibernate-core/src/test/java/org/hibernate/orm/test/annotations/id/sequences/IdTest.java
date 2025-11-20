@@ -6,6 +6,7 @@ package org.hibernate.orm.test.annotations.id.sequences;
 
 import org.hibernate.mapping.Column;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -298,8 +299,8 @@ public class IdTest {
 				}
 		);
 
-		assertEquals( 1, entity1.getId().intValue() );
-		assertEquals( 1, entity2.getId().intValue() );
+		assertEquals( SequenceHelper.getId( scope, 1L ), entity1.getId().longValue() );
+		assertEquals( SequenceHelper.getId( scope, 1L ), entity2.getId().longValue() );
 
 		scope.inTransaction(
 				session -> {

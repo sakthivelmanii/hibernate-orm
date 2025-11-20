@@ -9,9 +9,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -66,6 +69,8 @@ public class IdClassAndAssociationsTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support modifying "
+																			+ "primary key with UPDATE")
 	public void testIt(EntityManagerFactoryScope scope) {
 		scope.inTransaction(
 				entityManager -> {
@@ -73,7 +78,7 @@ public class IdClassAndAssociationsTest {
 									"SELECT c FROM CourseEnrollment c WHERE c.courseId = ?1 AND c.trainee.firstName like (?2)",
 									CourseEnrollment.class
 							)
-							.setParameter( 1, 1L )
+							.setParameter( 1, SequenceHelper.getId( scope, 1L ) )
 							.setParameter( 2, "Roy" )
 							.getResultList();
 

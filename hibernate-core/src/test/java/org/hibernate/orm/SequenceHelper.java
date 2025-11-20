@@ -4,12 +4,25 @@
  */
 package org.hibernate.orm;
 
+import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 
 public class SequenceHelper {
-	public static Long getId(SessionFactoryScope scope, long n) {
-		return scope.getSessionFactory().getJdbcServices().getDialect() instanceof SpannerPostgreSQLDialect ?
-				(Long.reverse(1) >>> 1) - 50 + n : n;
+	public static long getId(SessionFactoryScope scope, long index) {
+		return getId( scope, 1L, index );
+	}
+
+	public static long getId(EntityManagerFactoryScope scope, long n) {
+		return getId( scope.getDialect(), 1L, n );
+	}
+
+	public static long getId(SessionFactoryScope scope, long startsWith, long index) {
+		return getId( scope.getSessionFactory().getJdbcServices().getDialect(), startsWith, index );
+	}
+
+	private static long getId(Dialect dialect, long startsWith, long index) {
+		return dialect instanceof SpannerPostgreSQLDialect ? (Long.reverse(startsWith) >>> 1) - 50L + index : index;
 	}
 }
