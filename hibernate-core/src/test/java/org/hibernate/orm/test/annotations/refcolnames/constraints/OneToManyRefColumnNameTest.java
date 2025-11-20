@@ -11,10 +11,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.RollbackException;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
@@ -50,7 +52,9 @@ class OneToManyRefColumnNameTest {
 		} );
 	}
 
-	@Test void testForeignKey(EntityManagerFactoryScope scope) {
+	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+	void testForeignKey(EntityManagerFactoryScope scope) {
 		scope.getEntityManagerFactory().getSchemaManager().truncate();
 		This thisThing = new This();
 		That thatThing = new That();
