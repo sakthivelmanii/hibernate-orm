@@ -6,9 +6,11 @@ package org.hibernate.orm.test.annotations.id.generators;
 
 import java.util.UUID;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import jakarta.persistence.Entity;
@@ -52,6 +54,7 @@ public class SimpleIdTests {
 	@Test
 	@DomainModel(annotatedClasses = Entity4.class)
 	@SessionFactory
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID yet")
 	void testSimpleUuidFallback(SessionFactoryScope sessions) {
 		sessions.inTransaction( (session) -> {
 			session.persist( new Entity4( "4" ) );

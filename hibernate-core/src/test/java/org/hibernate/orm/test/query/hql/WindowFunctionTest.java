@@ -7,6 +7,7 @@ package org.hibernate.orm.test.query.hql;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.internal.util.ExceptionHelper;
 import org.hibernate.query.SyntaxException;
 
@@ -19,6 +20,7 @@ import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @ServiceRegistry
 @DomainModel(standardModels = StandardDomainModel.GAMBIT)
 @SessionFactory
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class WindowFunctionTest {
 
 	@BeforeEach

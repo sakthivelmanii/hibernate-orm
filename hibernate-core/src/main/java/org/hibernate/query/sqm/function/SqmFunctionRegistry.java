@@ -163,6 +163,8 @@ public class SqmFunctionRegistry {
 	public void unregister(String registrationKey) {
 		functionMap.remove( registrationKey );
 		alternateKeyMap.remove(  registrationKey );
+
+		setReturningFunctionMap.remove( registrationKey );
 	}
 
 	/**
