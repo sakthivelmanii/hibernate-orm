@@ -4,11 +4,13 @@
  */
 package org.hibernate.orm.test.hql;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.domain.gambit.EntityOfBasics;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SessionFactory
 @Jira("https://hibernate.atlassian.net/browse/HHH-16861")
 @Jira("https://hibernate.atlassian.net/browse/HHH-18708")
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column yet")
 public class EnumTest {
 
 

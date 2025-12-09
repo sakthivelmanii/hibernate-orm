@@ -21,6 +21,7 @@ import org.hibernate.cache.spi.support.DomainDataRegionImpl;
 import org.hibernate.cache.spi.support.DomainDataStorageAccess;
 import org.hibernate.cache.spi.support.RegionFactoryTemplate;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 
 import org.hibernate.testing.cache.CachingRegionFactory;
@@ -32,6 +33,7 @@ import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.Setting;
 import org.hibernate.testing.orm.junit.SettingProvider;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,6 +94,7 @@ public class PendingBulkOperationCleanupActionTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Cannot modify a primary key column with UPDATE")
 	public void testUpdateCachedEntity(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session ->
@@ -107,6 +110,7 @@ public class PendingBulkOperationCleanupActionTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Cannot modify a primary key column with UPDATE")
 	public void testPendingBulkOperationActionsAreExecutedWhenSessionIsClosed(SessionFactoryScope scope) {
 		scope.inSession(
 				session ->
