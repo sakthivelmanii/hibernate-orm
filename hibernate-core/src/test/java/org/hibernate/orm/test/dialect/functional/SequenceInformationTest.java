@@ -15,6 +15,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryBasedFunctionalTest;
@@ -93,11 +94,13 @@ public class SequenceInformationTest extends
 	}
 
 	protected void assertProductSequence(SequenceInformation productSequenceInfo) {
-		assertEquals( Long.valueOf( 10 ), productSequenceInfo.getIncrementValue().longValue() );
+		assertEquals( SequenceHelper.getIncrementValue(entityManagerFactoryScope().getDialect(), Long.valueOf( 10 )) ,
+				productSequenceInfo.getIncrementValue().longValue() );
 	}
 
 	protected void assertVehicleSequenceInfo(SequenceInformation vehicleSequenceInfo) {
-		assertEquals( Long.valueOf( 1 ), vehicleSequenceInfo.getIncrementValue().longValue() );
+		assertEquals( SequenceHelper.getIncrementValue(entityManagerFactoryScope().getDialect(), Long.valueOf( 1 )),
+				vehicleSequenceInfo.getIncrementValue().longValue() );
 	}
 
 	private SequenceInformation sequenceInformation(String sequenceName) {

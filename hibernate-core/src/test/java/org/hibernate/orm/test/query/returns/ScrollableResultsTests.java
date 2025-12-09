@@ -12,6 +12,7 @@ import org.hibernate.ScrollMode;
 import org.hibernate.ScrollableResults;
 import org.hibernate.dialect.HANADialect;
 import org.hibernate.dialect.SpannerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.query.Query;
 
@@ -38,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @DomainModel( annotatedClasses = BasicEntity.class )
 @SessionFactory
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
 public class ScrollableResultsTests {
 
 	@BeforeEach

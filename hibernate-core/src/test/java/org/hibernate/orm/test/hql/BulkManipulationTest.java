@@ -11,6 +11,7 @@ import org.hibernate.dialect.AbstractTransactSQLDialect;
 import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.MySQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.generator.Generator;
 import org.hibernate.id.BulkInsertionCapableIdentifierGenerator;
@@ -391,6 +392,7 @@ public class BulkManipulationTest {
 			comment = "The use of the native generator leads to using identity which also needs to be supported on temporary tables")
 	@SkipForDialect( dialectClass = CockroachDialect.class,
 			reason = "See https://hibernate.atlassian.net/browse/HHH-19332")
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support WINDOW functions")
 	public void testInsertWithManyToOne(SessionFactoryScope factoryScope) {
 		// Make sure the env supports bulk inserts with generated ids...
 		Assumptions.assumeTrue( supportsBulkInsertIdGeneration( Animal.class, factoryScope ),
@@ -436,6 +438,7 @@ public class BulkManipulationTest {
 			reason = "T-SQL complains IDENTITY_INSERT is off when a value for an identity column is provided")
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsTemporaryTableIdentity.class,
 			comment = "The use of the native generator leads to using identity which also needs to be supported on temporary tables")
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support WINDOW functions")
 	public void testInsertIntoSuperclassPropertiesFails(SessionFactoryScope factoryScope) {
 		TestData data = new TestData();
 		data.prepare( factoryScope );
@@ -453,6 +456,7 @@ public class BulkManipulationTest {
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsTemporaryTableIdentity.class,
 			comment = "The use of the native generator leads to using identity which also needs to be supported on temporary tables")
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support WINDOW functions")
 	public void testInsertAcrossMappedJoin(SessionFactoryScope factoryScope) {
 		// Make sure the env supports bulk inserts with generated ids...
 		Assumptions.assumeTrue( supportsBulkInsertIdGeneration( Joiner.class, factoryScope ),
@@ -481,6 +485,7 @@ public class BulkManipulationTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support WINDOW functions")
 	public void testInsertWithGeneratedId(SessionFactoryScope factoryScope) {
 		// Make sure the env supports bulk inserts with generated ids...
 		Assumptions.assumeTrue( supportsBulkInsertIdGeneration( PettingZoo.class, factoryScope ),
@@ -506,6 +511,7 @@ public class BulkManipulationTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support WINDOW functions")
 	public void testInsertWithGeneratedVersionAndId(SessionFactoryScope factoryScope) {
 		// Make sure the env supports bulk inserts with generated ids...
 		Assumptions.assumeTrue( supportsBulkInsertIdGeneration( IntegerVersioned.class, factoryScope ),
@@ -537,6 +543,7 @@ public class BulkManipulationTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support WINDOW functions")
 	public void testInsertWithGeneratedTimestampVersion(SessionFactoryScope factoryScope) {
 		// Make sure the env supports bulk inserts with generated ids...
 		Assumptions.assumeTrue( supportsBulkInsertIdGeneration( TimestampVersioned.class, factoryScope ),
@@ -568,6 +575,7 @@ public class BulkManipulationTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Unable to resolve argument type")
 	public void testInsertWithAssignedCompositeId(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( (session) -> {
 			// this just checks that the query parser detects that we are explicitly inserting a composite id
@@ -583,6 +591,7 @@ public class BulkManipulationTest {
 			comment = "The use of the native generator leads to using identity which also needs to be supported on temporary tables")
 	@SkipForDialect(dialectClass = CockroachDialect.class,
 			reason = "See https://hibernate.atlassian.net/browse/HHH-19332")
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support WINDOW functions")
 	public void testInsertWithSelectListUsingJoins(SessionFactoryScope factoryScope) {
 		// Make sure the env supports bulk inserts with generated ids...
 		Assumptions.assumeTrue( supportsBulkInsertIdGeneration( Animal.class, factoryScope ),

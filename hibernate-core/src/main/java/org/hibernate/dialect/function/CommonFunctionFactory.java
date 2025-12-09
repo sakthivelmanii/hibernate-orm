@@ -1504,6 +1504,14 @@ public class CommonFunctionFactory {
 				.register();
 	}
 
+	public void localtimeLocaltimestamp_spanner() {
+		//these functions return times without timezones
+		functionRegistry.registerAlternateKey( "localtime", "current_timestamp" );
+		functionRegistry.registerAlternateKey( "localtimestamp", "current_timestamp" );
+		functionRegistry.registerAlternateKey( "local_time", "current_timestamp" );
+		functionRegistry.registerAlternateKey( "local_datetime", "current_timestamp" );
+	}
+
 	public void trigonometry() {
 		functionRegistry.namedDescriptorBuilder( "sin" )
 				.setInvariantType(doubleType)

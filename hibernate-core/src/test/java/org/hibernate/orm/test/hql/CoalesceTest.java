@@ -5,6 +5,7 @@
 package org.hibernate.orm.test.hql;
 
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.domain.gambit.EntityOfBasics;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -27,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SessionFactory
 @SkipForDialect(dialectClass = InformixDialect.class,
 		reason = "Informix does not allow JDBC parameters as arguments to the COALESCE function (not even with a cast)")
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column yet")
 public class CoalesceTest {
 	final String QRY_STR = "from EntityOfBasics e where e.theString = coalesce(:p , e.theString)";
 

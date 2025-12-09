@@ -25,4 +25,8 @@ public class SequenceHelper {
 	private static long getId(Dialect dialect, long startsWith, long index) {
 		return dialect instanceof SpannerPostgreSQLDialect ? (Long.reverse(startsWith) >>> 1) - 50L + index : index;
 	}
+
+	public static long getIncrementValue(Dialect dialect, long incrementValue) {
+		return dialect instanceof SpannerPostgreSQLDialect ? 0 : incrementValue;
+	}
 }
