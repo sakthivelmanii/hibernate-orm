@@ -15,6 +15,7 @@ import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.SQLServerDialect;
 import org.hibernate.community.dialect.TiDBDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.orm.SequenceHelper;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.TargetType;
@@ -44,6 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @RequiresDialect(DB2Dialect.class)
 @RequiresDialect(SQLServerDialect.class)
 @SkipForDialect(dialectClass = TiDBDialect.class, reason = "TiDB does not support triggers")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner does not support triggers")
 public class SelectGeneratorTest {
 
 	@Test

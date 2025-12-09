@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.hibernate.Hibernate;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -69,15 +70,15 @@ public class NestedOneToOneDiscriminatorTest {
 	@JiraKey("HHH-16037")
 	public void testUpdatePerson(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
-			final Person person = session.find( Person.class, 1L );
+			final Person person = session.find( Person.class, SequenceHelper.getId( scope, 1L ) );
 			assertEquals( "initialName", person.getName() );
-			assertEquals( 1L, person.getId() );
+			assertEquals( SequenceHelper.getId( scope, 1L ), person.getId() );
 			person.setName( "changedName" );
 		} );
 		scope.inTransaction( session -> {
-			final Person person = session.find( Person.class, 1L );
+			final Person person = session.find( Person.class, SequenceHelper.getId( scope, 1L ) );
 			assertEquals( "changedName", person.getName() );
-			assertEquals( 1L, person.getId() );
+			assertEquals( SequenceHelper.getId( scope, 1L ), person.getId() );
 		} );
 	}
 
@@ -91,9 +92,9 @@ public class NestedOneToOneDiscriminatorTest {
 					"left join fetch leg.nestedEntity " +
 					"where person.id = :id";
 			final Person person = session.createQuery( jpql, Person.class )
-					.setParameter( "id", 1L )
+					.setParameter( "id", SequenceHelper.getId( scope, 1L ) )
 					.getSingleResult();
-			assertEquals( 1L, person.getId() );
+			assertEquals( SequenceHelper.getId( scope, 1L ), person.getId() );
 			assertTrue( Hibernate.isInitialized( person.getLegs() ) );
 			final Leg leg = person.getLegs().iterator().next();
 			assertEquals( "left leg", leg.getName() );
