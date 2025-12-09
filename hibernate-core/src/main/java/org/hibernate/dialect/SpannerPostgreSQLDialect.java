@@ -38,6 +38,7 @@ import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.spi.SQLExceptionConversionDelegate;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Index;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Selectable;
 import org.hibernate.mapping.Table;
@@ -71,7 +72,9 @@ import org.hibernate.type.descriptor.sql.internal.DdlTypeImpl;
 import org.hibernate.type.descriptor.sql.spi.DdlTypeRegistry;
 
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static java.lang.String.join;
 import static org.hibernate.sql.ast.internal.NonLockingClauseStrategy.NON_CLAUSE_STRATEGY;
@@ -118,6 +121,18 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
 			return super.getSqlCreateStrings( table, metadata, context );
 		}
+
+		@Override
+		public String[] getSqlDropStrings(Table table, Metadata metadata, SqlStringGenerationContext context) {
+			// Spanner requires the index to be dropped before dropping the table
+			List<String> sqlDropIndexStrings = new ArrayList<>();
+			for ( Index index : table.getIndexes().values() ) {
+				sqlDropIndexStrings.add( "drop index " + index.getName() );
+			}
+			String[] sqlDropStrings = super.getSqlDropStrings( table, metadata, context );
+			return Stream.concat( sqlDropIndexStrings.stream(), Stream.of( sqlDropStrings ) )
+					.toArray(String[]::new);
+		}
 	};
 
 	public SpannerPostgreSQLDialect() {
@@ -151,6 +166,7 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		// Replace functions
 		commonFunctionFactory.jsonArrayAgg_postgresql( false );
 		commonFunctionFactory.jsonObjectAgg_postgresql( false );
+		commonFunctionFactory.localtimeLocaltimestamp_spanner();
 
 		// Remove unsupported PG functions
 		functionRegistry.unregister( "array_append" );

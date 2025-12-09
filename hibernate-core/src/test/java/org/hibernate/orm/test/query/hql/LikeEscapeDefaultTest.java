@@ -7,6 +7,7 @@ package org.hibernate.orm.test.query.hql;
 import java.util.List;
 
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.Query;
 
 import org.hibernate.testing.orm.domain.StandardDomainModel;
@@ -53,6 +54,7 @@ public class LikeEscapeDefaultTest {
 	@Test
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Informix does not support empty escape ''")
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support empty escape ''")
 	public void testDefaultEscapeBackslash(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			Query<BasicEntity> q = session.createQuery(
@@ -68,6 +70,7 @@ public class LikeEscapeDefaultTest {
 	@Test
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Informix does not support empty escape ''")
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support empty escape ''")
 	public void testDefaultEscapeBackslashLiteral(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			Query<BasicEntity> q = session.createQuery(
@@ -83,6 +86,7 @@ public class LikeEscapeDefaultTest {
 	@Test
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Informix does not support empty escape ''")
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support empty escape ''")
 	public void testDefaultEscapeNoResults(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			Query<BasicEntity> q = session.createQuery(
@@ -108,6 +112,7 @@ public class LikeEscapeDefaultTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Invalid escape character: '#'. Currently only backslash '\\' is supported.")
 	public void testExplicitEscapeLiteralOtherChar(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			Query<BasicEntity> q = session.createQuery(

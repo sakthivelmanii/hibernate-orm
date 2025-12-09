@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.hibernate.Hibernate;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -69,7 +70,7 @@ public class OneToManyEagerDiscriminatorTest {
 	@Test
 	public void test(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
-			final User user = session.find( User.class, 1L );
+			final User user = session.find( User.class, SequenceHelper.getId( scope, 1L ) );
 			assertNotNull( user );
 			assertTrue( Hibernate.isInitialized( user.getProperties() ) );
 			assertEquals( 1, user.getProperties().size() );
