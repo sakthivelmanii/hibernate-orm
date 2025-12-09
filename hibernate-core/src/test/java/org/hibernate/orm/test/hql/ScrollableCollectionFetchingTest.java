@@ -11,6 +11,7 @@ import org.hibernate.dialect.HANADialect;
 import org.hibernate.dialect.DB2Dialect;
 import org.hibernate.community.dialect.DerbyDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 import org.hibernate.query.SemanticException;
 import org.hibernate.query.sqm.UnknownPathException;
@@ -47,6 +48,7 @@ public class ScrollableCollectionFetchingTest {
 	@Test
 	@SkipForDialect(dialectClass = DB2Dialect.class, matchSubTypes = true)
 	@SkipForDialect(dialectClass = DerbyDialect.class)
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable resultsets")
 	public void testTupleReturnWithFetch(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -97,6 +99,7 @@ public class ScrollableCollectionFetchingTest {
 	@Test
 	@SkipForDialect(dialectClass = SybaseASEDialect.class, majorVersion = 15, versionMatchMode = VersionMatchMode.SAME_OR_OLDER, reason = "HHH-5229")
 	@SkipForDialect(dialectClass = HANADialect.class, reason = "HANA only supports forward-only cursors.")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable resultsets")
 	public void testScrollingJoinFetchesEmptyResultSet(SessionFactoryScope scope) {
 		scope.inTransaction(
 				s -> {

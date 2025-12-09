@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.orm.SpannerHelper;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.query.SelectionQuery;
@@ -81,7 +82,12 @@ public class SingleSelectionArrayResultTest {
 			if ( arg1 instanceof String ) {
 				query.setParameter( (String) arg1, arg2 );
 			}
-			assertThat( query.getSingleResult() ).isInstanceOf( Integer.class ).isEqualTo( 1 );
+			if (SpannerHelper.isSpannerDatabase(  scope ) ) {
+				assertThat( query.getSingleResult() ).isInstanceOf( Long.class).isEqualTo(1L);
+			} else {
+				assertThat( query.getSingleResult() ).isInstanceOf( Integer.class).isEqualTo(1);
+			}
+
 		} );
 	}
 
@@ -126,7 +132,11 @@ public class SingleSelectionArrayResultTest {
 			if ( arg1 instanceof String ) {
 				query.setParameter( (String) arg1, arg2 );
 			}
-			assertThat( query.getSingleResult() ).containsExactly( 1 );
+			if (SpannerHelper.isSpannerDatabase( scope )) {
+				assertThat( query.getSingleResult() ).containsExactly( 1L );
+			} else {
+				assertThat( query.getSingleResult() ).containsExactly( 1 );
+			}
 		} );
 	}
 

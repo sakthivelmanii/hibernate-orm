@@ -1154,6 +1154,7 @@ public class HQLTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable resultset")
 	public void test_hql_api_scroll_projection_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			QueryProducer session = entityManager.unwrap(Session.class);
@@ -1402,7 +1403,7 @@ public class HQLTest {
 			Integer years = entityManager.createQuery(
 				"select year(local date) - year(p.createdOn) " +
 				"from Person p " +
-				"where p.id = 1L",
+				"where p.id = " + SequenceHelper.getId( factoryScope, 1L ),
 				Integer.class)
 			.getSingleResult();
 			//end::hql-numeric-arithmetic-example[]
@@ -1434,7 +1435,7 @@ public class HQLTest {
 			String name = entityManager.createQuery(
 				"select 'Customer ' || p.name " +
 				"from Person p " +
-				"where p.id = 1",
+				"where p.id = " + SequenceHelper.getId( factoryScope, 1L ),
 				String.class)
 			.getSingleResult();
 			//end::hql-concatenation-example[]
@@ -1728,6 +1729,7 @@ public class HQLTest {
 	@Test
 	@SkipForDialect(dialectClass = SQLServerDialect.class)
 	@SkipForDialect(dialectClass = DerbyDialect.class, reason = "Comparisons between 'DATE' and 'TIMESTAMP' are not supported")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Comparisons between 'DATE' and 'TIMESTAMP' are not supported")
 	public void test_hql_current_date_function_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-current-date-function-example[]
@@ -1790,6 +1792,7 @@ public class HQLTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support var_samp or var_pop")
 	public void test_var_function_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-native-function-example[]
@@ -1900,7 +1903,7 @@ public class HQLTest {
 	@Test
 	public void test_hql_collection_expressions_example_1(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
-			Call call = entityManager.createQuery("select c from Call c", Call.class).getResultList().get(1);
+			Call call = entityManager.createQuery("select c from Call c order by c.id", Call.class).getResultList().get(1);
 			//tag::hql-collection-expressions-example[]
 			List<Phone> phones = entityManager.createQuery(
 				"select p " +
@@ -1917,7 +1920,7 @@ public class HQLTest {
 	@Test
 	public void test_hql_collection_expressions_example_2(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
-			Call call = entityManager.createQuery("select c from Call c", Call.class).getResultList().get(0);
+			Call call = entityManager.createQuery("select c from Call c order by c.id", Call.class).getResultList().get(0);
 			//tag::hql-collection-expressions-example[]
 
 			List<Phone> phones = entityManager.createQuery(
@@ -2005,6 +2008,7 @@ public class HQLTest {
 
 	@Test
 	@SkipForDialect(dialectClass = DerbyDialect.class, reason = "Comparisons between 'DATE' and 'TIMESTAMP' are not supported")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Comparisons between 'DATE' and 'TIMESTAMP' are not supported")
 	public void test_hql_collection_expressions_example_8(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-collection-expressions-all-example[]
@@ -2293,6 +2297,7 @@ public class HQLTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support integer sequences")
 	public void test_case_arithmetic_expressions_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-case-arithmetic-expressions-example[]
@@ -2445,6 +2450,7 @@ public class HQLTest {
 	@RequiresDialect(H2Dialect.class)
 	@RequiresDialect(PostgreSQLDialect.class)
 	@RequiresDialect(MySQLDialect.class)
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestamptz_gt_date function")
 	public void test_hql_relational_comparisons_example_3(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-relational-comparisons-example[]
@@ -2530,6 +2536,7 @@ public class HQLTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "ALL subqueries with operators other than <>/!= are not supported")
 	public void test_hql_all_subquery_comparison_qualifier_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-all-subquery-comparison-qualifier-example[]
@@ -2638,7 +2645,7 @@ public class HQLTest {
 				"select p " +
 				"from Person p " +
 				"join p.phones ph " +
-				"where p.id = 1L and index(ph) between 0 and 3",
+				"where p.id = "+ SequenceHelper.getId( factoryScope, 1L ) +" and index(ph) between 0 and 3",
 				Person.class)
 			.getResultList();
 			//end::hql-between-predicate-example[]
@@ -2650,6 +2657,7 @@ public class HQLTest {
 	@RequiresDialect(H2Dialect.class)
 	@RequiresDialect(PostgreSQLDialect.class)
 	@RequiresDialect(MySQLDialect.class)
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestampz comparision")
 	public void test_hql_between_predicate_example_2(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-between-predicate-example[]
@@ -2902,6 +2910,7 @@ public class HQLTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 	public void test_hql_group_by_example_3(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-group-by-example[]
@@ -2921,6 +2930,7 @@ public class HQLTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 	public void test_hql_group_by_example_4(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 

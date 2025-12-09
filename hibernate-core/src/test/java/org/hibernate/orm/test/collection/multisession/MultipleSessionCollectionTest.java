@@ -21,6 +21,7 @@ import org.hibernate.collection.spi.AbstractPersistentCollection;
 import org.hibernate.collection.spi.PersistentCollection;
 import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.dialect.HSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.spi.CollectionEntry;
 
 import org.hibernate.exception.LockTimeoutException;
@@ -97,6 +98,7 @@ public class MultipleSessionCollectionTest {
 	@JiraKey("HHH-9518")
 	@SkipForDialect(dialectClass = HSQLDialect.class, reason = "The select triggered by the merge just hang without any exception")
 	@SkipForDialect(dialectClass = CockroachDialect.class, reason = "The merge in the second session causes a deadlock")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner Emulator supports only one concurrent transaction")
 	public void testCopyPersistentCollectionReferenceAfterFlush(SessionFactoryScope scope) {
 		Parent p = new Parent();
 		Child c = new Child();
@@ -179,6 +181,7 @@ public class MultipleSessionCollectionTest {
 
 	@Test
 	@JiraKey(value = "HHH-9518")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner Emulator supports only one concurrent transaction")
 	public void testCopyInitializedCollectionReferenceAfterGet(SessionFactoryScope scope) {
 		Parent parent = new Parent();
 		Child c = new Child();
