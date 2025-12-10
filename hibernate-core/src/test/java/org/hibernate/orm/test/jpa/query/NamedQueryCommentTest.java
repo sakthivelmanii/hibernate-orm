@@ -20,6 +20,7 @@ import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.OracleDialect;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
@@ -122,7 +123,7 @@ public class NamedQueryCommentTest {
 
 					Query query = entityManager.createNamedQuery( "UpdateNamedNativeQuery" );
 					query.setParameter( "title", GAME_TITLES[0] );
-					query.setParameter( "id", 1L );
+					query.setParameter( "id", SequenceHelper.getId( scope, 1L ) );
 					int updateCount = query.executeUpdate();
 					assertEquals( 1, updateCount );
 
@@ -143,7 +144,7 @@ public class NamedQueryCommentTest {
 
 					Query query = entityManager.createNamedQuery( "UpdateNamedNativeQuery" );
 					query.setParameter( "title", GAME_TITLES[0] );
-					query.setParameter( "id", 1L );
+					query.setParameter( "id", SequenceHelper.getId( scope, 1L ) );
 					int updateCount = query.executeUpdate();
 					assertEquals( 1, updateCount );
 

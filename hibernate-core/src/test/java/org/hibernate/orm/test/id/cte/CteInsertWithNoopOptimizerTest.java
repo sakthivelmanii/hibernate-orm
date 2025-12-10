@@ -6,6 +6,7 @@ package org.hibernate.orm.test.id.cte;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.id.enhanced.NoopOptimizer;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -36,7 +37,7 @@ public class CteInsertWithNoopOptimizerTest {
 			for ( var id = 1; id <= 3; id++ ) {
 				Dummy d = new Dummy( "d" + id );
 				session.persist( d );
-				assertEquals( id, d.getId() );
+				assertEquals( SequenceHelper.getId( scope, id ), d.getId() );
 			}
 		} );
 

@@ -8,10 +8,12 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -35,6 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 		OneToManyIdClassFKTest.Location.class
 } )
 @Jira( "https://hibernate.atlassian.net/browse/HHH-16274" )
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support modifying primary key")
 public class OneToManyIdClassFKTest {
 	@BeforeAll
 	public void setUp(SessionFactoryScope scope) {

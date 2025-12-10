@@ -20,6 +20,7 @@ import org.hibernate.generator.values.GeneratedValuesMutationDelegate;
 import org.hibernate.id.insert.AbstractReturningDelegate;
 import org.hibernate.id.insert.AbstractSelectingDelegate;
 import org.hibernate.id.insert.UniqueKeySelectingDelegate;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.sql.model.MutationType;
 
@@ -190,7 +191,7 @@ public class MutationDelegateIdentityTest {
 		} );
 		scope.inSession( session -> assertThat( session.find(
 				IdentityAndValuesAndRowId.class,
-				1
+				SequenceHelper.getId( scope, 1L )
 		).getUpdateDate() ).isNotNull() );
 	}
 
