@@ -18,7 +18,7 @@ public class SpannerHelper {
 		return isSpannerDatabase( scope.getDomainModel().getDatabase().getDialect() );
 	}
 
-	private static boolean isSpannerDatabase(Dialect dialect) {
+	public static boolean isSpannerDatabase(Dialect dialect) {
 		return dialect instanceof SpannerPostgreSQLDialect;
 	}
 }

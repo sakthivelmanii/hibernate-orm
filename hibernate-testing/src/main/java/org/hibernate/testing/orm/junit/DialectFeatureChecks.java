@@ -63,6 +63,7 @@ import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.PostgreSQLDriverKind;
 import org.hibernate.dialect.SQLServerDialect;
 import org.hibernate.dialect.SpannerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.dialect.SybaseDriverKind;
@@ -482,7 +483,10 @@ abstract public class DialectFeatureChecks {
 
 	public static class SupportsCteInsertStrategy implements DialectFeatureCheck {
 		public boolean apply(Dialect dialect) {
-			return dialect instanceof PostgreSQLDialect
+			return (
+					dialect instanceof PostgreSQLDialect &&
+					!(dialect instanceof SpannerPostgreSQLDialect)
+				)
 				|| dialect instanceof DB2Dialect
 				|| dialect instanceof GaussDBDialect;
 		}

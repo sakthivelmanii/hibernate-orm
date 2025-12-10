@@ -4,10 +4,12 @@
  */
 package org.hibernate.orm.test.query;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -30,6 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 		EntityValuedPathsGroupByOrderByTest.EntityB.class
 } )
 @Jira( "https://hibernate.atlassian.net/browse/HHH-16409" )
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 public class EntityValuedPathsGroupByOrderByTest {
 	@BeforeAll
 	public void setUp(SessionFactoryScope scope) {
