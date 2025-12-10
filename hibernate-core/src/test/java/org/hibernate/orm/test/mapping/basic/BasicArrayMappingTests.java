@@ -53,7 +53,6 @@ public class BasicArrayMappingTests {
 			assertThat(jdbcMapping.getJavaTypeDescriptor().getJavaTypeClass(), equalTo(short[].class));
 		}
 
-
 		// and try to use the mapping
 		scope.inTransaction(
 				(session) -> session.persist(new EntityOfArrays( 1, new Short[]{ (short) 3 }, new short[]{ (short) 5 }))

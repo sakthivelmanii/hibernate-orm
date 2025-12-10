@@ -14,6 +14,7 @@ import jakarta.persistence.Tuple;
 
 import org.hibernate.ScrollMode;
 import org.hibernate.dialect.HANADialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.query.IllegalSelectQueryException;
 import org.hibernate.query.SelectionQuery;
@@ -39,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 )
 @SessionFactory
 @SkipForDialect( dialectClass = HANADialect.class, reason = "HANA does not support scrollable results")
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
 public class BasicSelectionQueryTests {
 	@Test
 	public void typedEntitySelectTest(SessionFactoryScope scope) {

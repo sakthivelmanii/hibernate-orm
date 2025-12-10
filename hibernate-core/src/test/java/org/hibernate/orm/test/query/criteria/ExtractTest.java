@@ -7,8 +7,10 @@ package org.hibernate.orm.test.query.criteria;
 import jakarta.persistence.criteria.LocalDateField;
 import jakarta.persistence.criteria.LocalDateTimeField;
 import jakarta.persistence.criteria.LocalTimeField;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -37,6 +39,7 @@ class ExtractTest {
 		} );
 	}
 
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support localtime")
 	@Test void testLocalTime(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( entityManager -> {
 			var builder = entityManager.getCriteriaBuilder();
@@ -54,6 +57,7 @@ class ExtractTest {
 		} );
 	}
 
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support localdatetime")
 	@Test void testLocalDateTime(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( entityManager -> {
 			var builder = entityManager.getCriteriaBuilder();

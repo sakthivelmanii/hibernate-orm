@@ -4,6 +4,7 @@
  */
 package org.hibernate.orm.test.query.hql;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.domain.StandardDomainModel;
 import org.hibernate.testing.orm.domain.contacts.Contact;
 import org.hibernate.testing.orm.domain.contacts.Contact.Name;
@@ -11,6 +12,7 @@ import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -97,6 +99,7 @@ public class InsertUpdateTests {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Unable to resolve argument type")
 	public void testInsertSelect(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -108,6 +111,7 @@ public class InsertUpdateTests {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Unable to resolve argument type")
 	public void testAliasedInsertSelect(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

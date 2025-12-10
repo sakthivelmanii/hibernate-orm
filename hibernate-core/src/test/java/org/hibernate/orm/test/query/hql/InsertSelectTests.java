@@ -6,6 +6,7 @@ package org.hibernate.orm.test.query.hql;
 
 import org.hibernate.community.dialect.DerbyDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -30,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 		InsertSelectTests.EntitySource.class
 })
 @SessionFactory(useCollectingStatementInspector = true)
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Unable to resolve argument type")
 public class InsertSelectTests {
 
 	@BeforeEach

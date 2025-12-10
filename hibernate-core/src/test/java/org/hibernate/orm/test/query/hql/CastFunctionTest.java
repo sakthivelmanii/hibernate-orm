@@ -7,9 +7,11 @@ package org.hibernate.orm.test.query.hql;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -65,6 +67,8 @@ public class CastFunctionTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't automatically converts"
+																			+ "float(24) to real or float4")
 	public void testFloatCasting(SessionFactoryScope scope) {
 		scope.inTransaction(
 				(session) -> {

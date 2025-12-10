@@ -4,6 +4,7 @@
  */
 package org.hibernate.orm.test.query.hql;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.Query;
 import org.hibernate.testing.orm.domain.StandardDomainModel;
 import org.hibernate.testing.orm.domain.animal.Classification;
@@ -95,6 +96,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testJdbcTimeLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -105,6 +107,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testJdbcDateLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -115,6 +118,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testJdbcTimestampLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -143,6 +147,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testDateTimeLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -158,6 +163,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void isolated(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -168,6 +174,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testTimestampLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -180,6 +187,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testTimestampLiteralWithOffset(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -204,6 +212,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testTimestampLiteralWithZoneRegionId(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -218,6 +227,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testDateLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -228,6 +238,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testTimeLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -274,6 +285,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testBooleanLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

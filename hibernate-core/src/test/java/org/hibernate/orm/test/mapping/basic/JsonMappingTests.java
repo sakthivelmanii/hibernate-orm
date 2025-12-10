@@ -18,6 +18,7 @@ import org.hibernate.community.dialect.DerbyDialect;
 import org.hibernate.community.dialect.InformixDialect;
 import org.hibernate.dialect.HANADialect;
 import org.hibernate.dialect.OracleDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.metamodel.mapping.internal.BasicAttributeMapping;
 import org.hibernate.metamodel.spi.MappingMetamodelImplementor;
@@ -204,6 +205,8 @@ public abstract class JsonMappingTests {
 			reason = "Altibase doesn't support comparing CLOBs with the = operator")
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Blobs are not allowed in this expression")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class,
+			reason = "Spanner doesn't support comparing two JSONBs")
 	public void verifyComparisonWorks(SessionFactoryScope scope) {
 		scope.inTransaction(
 				(session) -> {

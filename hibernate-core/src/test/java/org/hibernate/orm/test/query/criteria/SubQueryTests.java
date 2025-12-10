@@ -4,12 +4,14 @@
  */
 package org.hibernate.orm.test.query.criteria;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 
 import org.hibernate.testing.orm.domain.gambit.BasicEntity;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,6 +25,7 @@ import jakarta.persistence.criteria.Subquery;
  */
 @DomainModel( annotatedClasses = BasicEntity.class )
 @SessionFactory
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "ALL subqueries with operators other than <>/!= are not supported")
 public class SubQueryTests {
 
 	@Test
