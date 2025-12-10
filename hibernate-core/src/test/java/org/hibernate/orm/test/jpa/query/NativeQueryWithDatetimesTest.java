@@ -12,6 +12,7 @@ import org.hibernate.community.dialect.GaussDBDialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgresPlusDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
 import org.hibernate.testing.orm.junit.SkipForDialect;
@@ -28,6 +29,7 @@ public class NativeQueryWithDatetimesTest {
 	@SkipForDialect(dialectClass = PostgresPlusDialect.class)
 	@SkipForDialect(dialectClass = OracleDialect.class)
 	@SkipForDialect(dialectClass = GaussDBDialect.class, reason = "type:resolved.gauss will map localdate to timestamp")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class)
 	@Test void test(EntityManagerFactoryScope scope) {
 		scope.inTransaction(s -> s.persist(new Datetimes()));
 		Object[] result = scope.fromTransaction(s -> (Object[]) s.createNativeQuery("select ctime, cdate, cdatetime from tdatetimes", Object[].class).getSingleResult());

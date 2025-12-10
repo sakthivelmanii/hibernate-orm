@@ -12,10 +12,12 @@ import jakarta.persistence.Table;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.metamodel.mapping.JdbcMapping;
 import org.hibernate.metamodel.mapping.internal.BasicAttributeMapping;
 import org.hibernate.metamodel.spi.MappingMetamodelImplementor;
 import org.hibernate.persister.entity.EntityPersister;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.type.SqlTypes;
 import org.hibernate.type.descriptor.jdbc.AdjustableJdbcType;
 import org.hibernate.type.descriptor.jdbc.JdbcType;
@@ -44,6 +46,7 @@ import static org.hamcrest.Matchers.is;
  * 	2.2.21. Duration
  * 		By default, Hibernate maps Duration to the NUMERIC SQL type.
  */
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INTERVAL as colum type")
 @ServiceRegistry(settings = @Setting(name = AvailableSettings.PREFERRED_DURATION_JDBC_TYPE, value = "INTERVAL_SECOND"))
 public class DurationMappingTests {
 
