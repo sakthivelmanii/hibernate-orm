@@ -11,6 +11,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.orm.test.jpa.model.AbstractJPATest;
 import org.hibernate.orm.test.jpa.model.Item;
@@ -81,6 +82,7 @@ public class JPALockTest extends AbstractJPATest {
 	 */
 	@Test
 	@SkipForDialect(dialectClass = CockroachDialect.class, reason = "Cockroach uses SERIALIZABLE by default and fails to acquire a write lock after a TX in between committed changes to a row")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner Emulator doesn't support concurrent transactions")
 	public void testLockModeTypeRead() {
 		if ( !readCommittedIsolationMaintained( "ejb3 lock tests" ) ) {
 			return;

@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import org.hibernate.annotations.Parent;
 import org.hibernate.annotations.TargetEmbeddable;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ public class ParentTest {
 		//tag::mapping-Parent-fetching-example[]
 		scope.inTransaction( entityManager -> {
 
-			City cluj = entityManager.find(City.class, 1L);
+			City cluj = entityManager.find(City.class, SequenceHelper.getId( scope, 1L ) );
 
 			assertSame(cluj, cluj.getCoordinates().getCity());
 		});

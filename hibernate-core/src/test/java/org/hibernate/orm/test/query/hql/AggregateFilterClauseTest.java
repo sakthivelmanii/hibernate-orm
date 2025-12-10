@@ -6,6 +6,7 @@ package org.hibernate.orm.test.query.hql;
 
 import java.util.Date;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.Query;
 import org.hibernate.query.SyntaxException;
 
@@ -15,6 +16,7 @@ import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -30,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @ServiceRegistry
 @DomainModel(standardModels = StandardDomainModel.GAMBIT)
 @SessionFactory
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class AggregateFilterClauseTest {
 
 	@BeforeAll

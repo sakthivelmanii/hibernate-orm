@@ -10,6 +10,7 @@ import jakarta.persistence.criteria.Root;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.SpannerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.Query;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 
@@ -93,6 +94,7 @@ public class ILikeCriteriaTest {
 
 	@Test
 	@SkipForDialect(dialectClass = SpannerDialect.class, reason = "Spanner does not support escape character")
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner supports only backslash as an escape character")
 	public void testLikeEscape(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

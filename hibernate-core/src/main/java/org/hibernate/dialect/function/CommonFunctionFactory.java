@@ -3026,7 +3026,7 @@ public class CommonFunctionFactory {
 				)
 				.setArgumentListSignature( "(ARRAY array)" )
 				.register();
-		functionRegistry.register( "length", new DynamicDispatchFunction( functionRegistry, "character_length", "array_length" ) );
+		functionRegistry.register( "length", new DynamicDispatchFunction( functionRegistry,  "character_length", "array_length" ) );
 	}
 
 	/**

@@ -7,6 +7,7 @@ package org.hibernate.orm.test.mapping.basic;
 import java.net.InetAddress;
 
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 import org.hibernate.metamodel.mapping.JdbcMapping;
 import org.hibernate.metamodel.mapping.internal.BasicAttributeMapping;
@@ -40,6 +41,7 @@ import static org.hamcrest.Matchers.is;
 		reason = "Driver or DB omit trailing zero bytes of a varbinary, making this test fail intermittently")
 @SkipForDialect( dialectClass = InformixDialect.class,
 		reason = "Blobs are not allowed in this expression (with a column of type BYTE)")
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INET type")
 public class InetAddressMappingTests {
 
 	@Test

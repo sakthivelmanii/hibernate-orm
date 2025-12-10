@@ -67,7 +67,6 @@ import org.hibernate.type.MappingContext;
 import org.hibernate.type.Type;
 import org.hibernate.type.descriptor.jdbc.JdbcType;
 import org.hibernate.type.descriptor.jdbc.spi.JdbcTypeRegistry;
-import org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType;
 import org.hibernate.type.descriptor.sql.internal.DdlTypeImpl;
 import org.hibernate.type.descriptor.sql.spi.DdlTypeRegistry;
 
@@ -83,7 +82,6 @@ import static org.hibernate.type.SqlTypes.BLOB;
 import static org.hibernate.type.SqlTypes.CHAR;
 import static org.hibernate.type.SqlTypes.CLOB;
 import static org.hibernate.type.SqlTypes.DOUBLE;
-import static org.hibernate.type.SqlTypes.FLOAT;
 import static org.hibernate.type.SqlTypes.INTEGER;
 import static org.hibernate.type.SqlTypes.NCLOB;
 import static org.hibernate.type.SqlTypes.SMALLINT;
@@ -157,9 +155,8 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		functionRegistry.register(
 				"round", new PostgreSQLTruncRoundFunction( "round", false ));
 		// Register Spanner specific function
-
-		commonFunctionFactory.arrayLength_spanner();
 		commonFunctionFactory.length_characterLength_spanner("");
+		commonFunctionFactory.arrayLength_spanner();
 		commonFunctionFactory.position_spanner();
 		commonFunctionFactory.locate_Spanner();
 
@@ -231,10 +228,8 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		final DdlTypeRegistry ddlTypeRegistry =
 				typeContributions.getTypeConfiguration().getDdlTypeRegistry();
 
-		ddlTypeRegistry.addDescriptor(CapacityDependentDdlType.builder( FLOAT, columnType( FLOAT ), castType( FLOAT ), this )
-				.withTypeCapacity( 24, "float4" )
-				.build());
 		ddlTypeRegistry.addDescriptor( new DdlTypeImpl( Types.NUMERIC, "numeric", this ) );
+		ddlTypeRegistry.addDescriptor( new DdlTypeImpl( Types.DECIMAL, "decimal", this ) );
 		ddlTypeRegistry.addDescriptor( new DdlTypeImpl( Types.TINYINT, "bigint", this ) );
 	}
 
@@ -597,6 +592,11 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
 	@Override
 	public boolean supportsDistinctFromPredicate() {
+		return false;
+	}
+
+	@Override
+	public boolean supportsPartitionBy() {
 		return false;
 	}
 

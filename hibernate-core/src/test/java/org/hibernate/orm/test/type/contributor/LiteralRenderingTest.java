@@ -12,9 +12,11 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.OffsetTime;
 import java.time.Year;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -26,6 +28,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.orm.SpannerHelper;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 
@@ -37,6 +40,7 @@ import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.SkipForDialect;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -95,6 +99,27 @@ public class LiteralRenderingTest {
 	public void testIdVersionFunctions(Object literalValue, SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
+					if( SpannerHelper.isSpannerDatabase( scope ) ) {
+						Assumptions.assumeFalse(
+								literalValue instanceof Character ||
+								literalValue instanceof Character[] ||
+								literalValue instanceof char[] ||
+								literalValue instanceof String ||
+								literalValue instanceof Locale ||
+								literalValue instanceof Currency ||
+								literalValue instanceof InetAddress ||
+								literalValue instanceof ZoneId ||
+								literalValue instanceof TimeZone ||
+								literalValue instanceof URL ||
+								literalValue instanceof UUID ||
+								literalValue instanceof Class<?> ||
+								literalValue instanceof Instant ||
+								literalValue instanceof LocalTime ||
+								literalValue instanceof OffsetTime ||
+								literalValue instanceof LocalDateTime ||
+								literalValue instanceof java.util.Date);
+					}
+
 					HibernateCriteriaBuilder cb = session.getCriteriaBuilder();
 					JpaCriteriaQuery<Object> query = cb.createQuery();
 					query.from( BasicEntity.class );

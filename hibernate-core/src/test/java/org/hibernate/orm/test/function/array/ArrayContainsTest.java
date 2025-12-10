@@ -7,6 +7,7 @@ package org.hibernate.orm.test.function.array;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaRoot;
 import org.hibernate.query.sqm.NodeBuilder;
@@ -19,6 +20,7 @@ import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsArrayContains.class)
 // Clear the type cache, otherwise we might run into ORA-21700: object does not exist or is marked for delete
 @BootstrapServiceRegistry(integrators = SharedDriverManagerTypeCacheClearingIntegrator.class)
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support array_position")
 public class ArrayContainsTest {
 
 	@BeforeEach

@@ -4,6 +4,7 @@
  */
 package org.hibernate.orm.test.jpa.query;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.domain.StandardDomainModel;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -11,6 +12,7 @@ import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 @SessionFactory
@@ -18,6 +20,7 @@ import org.junit.jupiter.api.Test;
 @JiraKey("HHH-17522")
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsSubqueryInOnClause.class)
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsOrderByInCorrelatedSubquery.class)
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class CorrelationCteDerivedJoinTest {
 
 	@Test

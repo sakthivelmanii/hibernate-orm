@@ -35,6 +35,7 @@ import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.SQLServerDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryBasedFunctionalTest;
 import org.hibernate.testing.orm.junit.RequiresDialect;
@@ -90,6 +91,7 @@ public class LockTest extends EntityManagerFactoryBasedFunctionalTest {
 
 	@Test
 	@SkipForDialect( dialectClass = CockroachDialect.class )
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support no wait")
 	public void testFindWithTimeoutHint() {
 		final Lock lock = new Lock();
 		lock.setName( "name" );
