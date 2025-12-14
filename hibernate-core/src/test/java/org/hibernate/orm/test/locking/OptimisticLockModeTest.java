@@ -11,6 +11,7 @@ import org.hibernate.StaleObjectStateException;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.dialect.MySQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.testing.orm.junit.BaseSessionFactoryFunctionalTest;
@@ -34,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @JiraKey( value = "HHH-5275")
 //@SkipForDialect(dialectClass = SybaseASEDialect.class, majorVersion = 15,
 //		reason = "skip this test on Sybase ASE 15.5, but run it on 15.7, see HHH-6820")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner Emulator doesn't support concurrent requests")
 public class OptimisticLockModeTest extends BaseSessionFactoryFunctionalTest {
 
 	private Long id;

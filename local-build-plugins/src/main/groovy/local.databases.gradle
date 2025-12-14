@@ -389,7 +389,7 @@ ext {
                     'jdbc.driver': 'com.google.cloud.spanner.jdbc.JdbcDriver',
                     'jdbc.user'  : 'root',
                     'jdbc.pass'  : '',
-                    'jdbc.url'   : 'jdbc:cloudspanner://' + dbHost + ':9010/projects/proj/instances/inst/databases/data?lenient=true;autoconfigemulator=true;dialect=postgresql;defaultsequencekind=bit_reversed_positive;',
+                    'jdbc.url'   : 'jdbc:cloudspanner://' + dbHost + ':9010/projects/proj/instances/inst/databases/data_$worker?lenient=true;autoconfigemulator=true;dialect=postgresql;defaultsequencekind=bit_reversed_positive;',
                     'jdbc.datasource': 'com.google.cloud.spanner.jdbc.JdbcDriver',
                     'connection.init_sql' : '',
                     'sequence.mismatch_strategy': 'NONE'

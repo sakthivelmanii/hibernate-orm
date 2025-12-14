@@ -6,11 +6,13 @@ package org.hibernate.orm.test.mapping.mappedBy;
 
 import java.util.List;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -224,6 +226,7 @@ public class IsNullAndMappedByTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "VALUES lists in FROM clause are not supported")
 	public void testDelete(SessionFactoryScope scope) {
 		final SQLStatementInspector inspector = scope.getCollectingStatementInspector();
 		inspector.clear();
@@ -239,6 +242,7 @@ public class IsNullAndMappedByTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "UPDATE...FROM statements are not supported.")
 	public void testHqlUpdate(SessionFactoryScope scope) {
 		final SQLStatementInspector inspector = scope.getCollectingStatementInspector();
 		inspector.clear();

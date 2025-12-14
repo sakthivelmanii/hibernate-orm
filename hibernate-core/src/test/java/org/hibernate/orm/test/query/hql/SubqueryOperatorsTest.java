@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 
 import org.hibernate.testing.orm.domain.gambit.SimpleEntity;
@@ -30,6 +31,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class SubqueryOperatorsTest {
 
 	@Test
+	@SkipForDialect(dialectClass =  SpannerPostgreSQLDialect.class, reason = "ALL subqueries with operators other than <>/!= are not supported")
 	public void testEvery(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -42,6 +44,7 @@ public class SubqueryOperatorsTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "ANY/SOME subqueries with non-equality operators are not supported")
 	public void testAny(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -56,6 +59,7 @@ public class SubqueryOperatorsTest {
 	@Test @SuppressWarnings("deprecation")
 	@SkipForDialect(dialectClass = SybaseASEDialect.class, reason = "Sybase ASE does not allow a subquery in the order by clause, but we could move it to the select clause and refer to it by position")
 	@SkipForDialect(dialectClass = InformixDialect.class, reason = "A syntax error has occurred")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Queries containing an ORDER BY clause without a FROM clause are not supported")
 	public void testSubqueryInVariousClauses(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

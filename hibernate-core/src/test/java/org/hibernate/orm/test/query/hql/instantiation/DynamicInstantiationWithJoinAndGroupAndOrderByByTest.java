@@ -6,10 +6,12 @@ package org.hibernate.orm.test.query.hql.instantiation;
 
 import java.util.List;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -69,6 +71,7 @@ public class DynamicInstantiationWithJoinAndGroupAndOrderByByTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 	public void testInstantiationGroupByAndOrderBy(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			TypedQuery<Summary> query = session.createQuery(
