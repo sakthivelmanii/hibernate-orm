@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -65,7 +66,7 @@ public class InheritanceImplicitVersionUpdateTest {
 	@Test
 	public void testUpdateElementCollection(SessionFactoryScope scope) {
 		final Long version = scope.fromTransaction( session -> {
-			final CustomCompany company = session.find( CustomCompany.class, 1L );
+			final CustomCompany company = session.find( CustomCompany.class, SequenceHelper.getId(scope, 1L) );
 			company.getStandardFiles().put( "file_1", "First file" );
 			return company.getVersion();
 		} );
@@ -75,7 +76,7 @@ public class InheritanceImplicitVersionUpdateTest {
 	@Test
 	public void testUpdateAssociatedCollection(SessionFactoryScope scope) {
 		final Long version = scope.fromTransaction( session -> {
-			final CustomCompany company = session.find( CustomCompany.class, 1L );
+			final CustomCompany company = session.find( CustomCompany.class, SequenceHelper.getId(scope, 1L) );
 			company.getEmployees().clear();
 			return company.getVersion();
 		} );
@@ -85,7 +86,7 @@ public class InheritanceImplicitVersionUpdateTest {
 	@Test
 	public void testUpdateBasicProperty(SessionFactoryScope scope) {
 		final Long version = scope.fromTransaction( session -> {
-			final CustomCompany company = session.find( CustomCompany.class, 1L );
+			final CustomCompany company = session.find( CustomCompany.class, SequenceHelper.getId(scope, 1L) );
 			company.setCustomProperty( "Custom" );
 			return company.getVersion();
 		} );
@@ -95,7 +96,7 @@ public class InheritanceImplicitVersionUpdateTest {
 	@Test
 	public void testUpdateBasicSuperclassProperty(SessionFactoryScope scope) {
 		final Long version = scope.fromTransaction( session -> {
-			final CustomCompany company = session.find( CustomCompany.class, 1L );
+			final CustomCompany company = session.find( CustomCompany.class, SequenceHelper.getId(scope, 1L));
 			company.setName( "Updated Company" );
 			return company.getVersion();
 		} );
@@ -105,7 +106,7 @@ public class InheritanceImplicitVersionUpdateTest {
 	@Test
 	public void testUpdateVersionProperty(SessionFactoryScope scope) {
 		final Long version = scope.fromTransaction( session -> {
-			final CustomEmployee customEmployee = session.find( CustomEmployee.class, 1L );
+			final CustomEmployee customEmployee = session.find( CustomEmployee.class, SequenceHelper.getId(scope, 1L) );
 			final Long originalVersion = customEmployee.getVersion();
 			customEmployee.setVersion( 3L ); // this value is ignored and version is increased by 1
 			return originalVersion;

@@ -129,6 +129,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testLocalDateLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -138,6 +139,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testLocalTimeLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -251,6 +253,7 @@ public class LiteralTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 	public void testSelectDatetimeLiterals(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

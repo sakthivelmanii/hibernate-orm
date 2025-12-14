@@ -14,6 +14,7 @@ import java.util.List;
 import org.hibernate.boot.MetadataSources;
 
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.domain.contacts.Contact;
 import org.hibernate.testing.orm.domain.contacts.ContactsDomainModel;
 import org.hibernate.testing.orm.junit.BaseSessionFactoryFunctionalTest;
@@ -33,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author Andrea Boriero
  */
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support numeric as primary key")
 public class MultiValuedParameterTest extends BaseSessionFactoryFunctionalTest {
 
 	@Override
