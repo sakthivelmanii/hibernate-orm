@@ -15,6 +15,7 @@ import org.hibernate.community.dialect.AltibaseDialect;
 import org.hibernate.community.dialect.InformixDialect;
 import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
@@ -232,6 +233,7 @@ public class LockModeTest extends BaseSessionFactoryFunctionalTest {
 	@Test
 	@JiraKey(value = "HHH-12257")
 	@SkipForDialect( dialectClass = CockroachDialect.class )
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner does not support no wait.")
 	public void testRefreshWithExplicitHigherLevelLockMode1() {
 		doInHibernate( this::sessionFactory, session -> {
 						A a = session.find( A.class, id );

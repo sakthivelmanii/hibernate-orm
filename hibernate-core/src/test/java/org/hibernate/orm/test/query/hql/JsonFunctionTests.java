@@ -25,6 +25,7 @@ import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.PostgresPlusDialect;
 import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.VersionMatchMode;
 import org.hibernate.type.SqlTypes;
 
@@ -72,6 +73,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 })
 @ServiceRegistry(settings = @Setting(name = QuerySettings.JSON_FUNCTIONS_ENABLED, value = "true"))
 @SessionFactory
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 @Jira("https://hibernate.atlassian.net/browse/HHH-18496")
 public class JsonFunctionTests {
 

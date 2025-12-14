@@ -13,6 +13,7 @@ import java.util.EnumSet;
 import java.util.UUID;
 
 import org.hibernate.annotations.ValueGenerationType;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.generator.BeforeExecutionGenerator;
@@ -44,6 +45,7 @@ import static org.hibernate.generator.EventType.UPDATE;
 @DomainModel( annotatedClasses = GeneratedUuidTests.GeneratedUuidEntity.class )
 @SessionFactory
 @SkipForDialect(dialectClass = SybaseASEDialect.class, reason = "Driver or DB omit trailing zero bytes of a varbinary, making this test fail intermittently")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class GeneratedUuidTests {
 	@Test
 	public void test(SessionFactoryScope scope) {

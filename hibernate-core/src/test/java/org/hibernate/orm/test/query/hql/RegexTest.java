@@ -4,11 +4,13 @@
  */
 package org.hibernate.orm.test.query.hql;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,6 +41,8 @@ class RegexTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsRegexpLike.class)
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsCaseInsensitiveLike.class)
 	void testInSelectCaseInsensitive(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( em -> {
 			assertTrue( em.createQuery( "select regexp_like('ABCDEF', 'ab.*', 'i')", Boolean.class ).getSingleResult() );
@@ -59,6 +63,7 @@ class RegexTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Queries containing a WHERE clause without a FROM clause are not supported")
 	void testInWhere(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( em -> {
 			assertEquals( 1, em.createQuery( "select 1 where regexp_like('abcdef', 'ab.*')", Integer.class ).getSingleResult() );

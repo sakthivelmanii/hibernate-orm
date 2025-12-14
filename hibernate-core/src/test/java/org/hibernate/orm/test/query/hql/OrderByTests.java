@@ -143,7 +143,7 @@ public class OrderByTests {
 	}
 
 	@AfterEach
-	private void cleanupData(SessionFactoryScope scope) {
+	public void cleanupData(SessionFactoryScope scope) {
 		scope.getSessionFactory().getSchemaManager().truncateMappedObjects();
 	}
 
