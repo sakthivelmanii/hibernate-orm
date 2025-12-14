@@ -6,6 +6,7 @@ package org.hibernate.orm.test.query.hql;
 
 import java.time.LocalDate;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.common.JoinType;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaUpdate;
@@ -21,6 +22,7 @@ import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -54,6 +56,7 @@ public class UpdateJoinTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "UPDATE...FROM statements are not supported.")
 	public void testUpdateWithJoin(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -72,6 +75,7 @@ public class UpdateJoinTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "UPDATE...FROM statements are not supported.")
 	public void testUpdateWithJoinCriteria(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

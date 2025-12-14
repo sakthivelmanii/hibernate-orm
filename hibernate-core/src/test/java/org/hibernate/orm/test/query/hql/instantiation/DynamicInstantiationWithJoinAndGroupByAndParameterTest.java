@@ -5,9 +5,11 @@
 package org.hibernate.orm.test.query.hql.instantiation;
 
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -54,6 +56,7 @@ public class DynamicInstantiationWithJoinAndGroupByAndParameterTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 	public void testIt(EntityManagerFactoryScope scope) {
 		scope.inTransaction( entityManager -> {
 			TypedQuery<UserStatistic> query = entityManager.createQuery(

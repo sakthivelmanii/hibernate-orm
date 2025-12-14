@@ -25,6 +25,7 @@ import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.PostgresPlusDialect;
 import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.community.dialect.TiDBDialect;
@@ -88,7 +89,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 @DomainModel( standardModels = StandardDomainModel.GAMBIT )
 @SessionFactory
-//@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column yet")
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column yet")
 public class FunctionTests {
 
 	public static final double ERROR = 0.00001d;

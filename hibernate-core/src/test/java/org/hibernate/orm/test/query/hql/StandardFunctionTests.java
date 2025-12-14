@@ -17,6 +17,7 @@ import org.hibernate.community.dialect.InformixDialect;
 import org.hibernate.dialect.CockroachDialect;
 
 import org.hamcrest.number.IsCloseTo;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.domain.StandardDomainModel;
 import org.hibernate.testing.orm.domain.gambit.EntityOfBasics;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
@@ -45,6 +46,7 @@ import static org.hibernate.testing.orm.domain.gambit.EntityOfBasics.Gender.FEMA
 @ServiceRegistry
 @DomainModel( standardModels = StandardDomainModel.GAMBIT )
 @SessionFactory
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class StandardFunctionTests {
 
 	@BeforeAll

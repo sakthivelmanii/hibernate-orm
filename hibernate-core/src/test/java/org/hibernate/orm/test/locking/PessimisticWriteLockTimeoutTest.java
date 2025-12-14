@@ -9,12 +9,14 @@ import org.hibernate.Timeouts;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.Query;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.RequiresDialect;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SuppressWarnings("JUnitMalformedDeclaration")
 @DomainModel(annotatedClasses = A.class)
 @SessionFactory(useCollectingStatementInspector = true)
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner does not support skip locked.")
 public class PessimisticWriteLockTimeoutTest {
 	@BeforeEach
 	public void createTestData(SessionFactoryScope factoryScope) {

@@ -12,6 +12,8 @@ import javax.money.Monetary;
 
 import org.hibernate.SimpleNaturalIdLoadAccess;
 import org.hibernate.NaturalIdMultiLoadAccess;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.testing.util.uuid.SafeRandomUUIDGenerator;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -39,6 +41,7 @@ import static org.hamcrest.Matchers.notNullValue;
  */
 @DomainModel( standardModels = StandardDomainModel.RETAIL )
 @SessionFactory
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class SimpleNaturalIdTests {
 	private static final UUID uuid = SafeRandomUUIDGenerator.safeRandomUUID();
 
