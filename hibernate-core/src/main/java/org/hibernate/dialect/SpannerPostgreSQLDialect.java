@@ -31,6 +31,7 @@ import org.hibernate.dialect.sql.ast.SpannerPostgreSQLSqlAstTranslator;
 import org.hibernate.dialect.temptable.PersistentTemporaryTableStrategy;
 import org.hibernate.dialect.temptable.TemporaryTableStrategy;
 import org.hibernate.dialect.type.SpannerIntegerAsBigIntType;
+import org.hibernate.dialect.type.SpannerShortAsBigIntType;
 import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
 import org.hibernate.dialect.unique.UniqueDelegate;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
@@ -211,6 +212,7 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		super.contributeTypes( typeContributions, serviceRegistry );
 
 		typeContributions.getTypeConfiguration().getJdbcTypeRegistry().addDescriptor( SpannerIntegerAsBigIntType.INSTANCE );
+		typeContributions.getTypeConfiguration().getJdbcTypeRegistry().addDescriptor( SpannerShortAsBigIntType.INSTANCE );
 	}
 
 	@Override

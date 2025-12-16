@@ -196,7 +196,7 @@ public class EntityTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support unique constraint")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support unique constraint")
 	public void testUniqueConstraint(SessionFactoryScope scope) {
 		int id = 5;
 		Sky sky = new Sky();

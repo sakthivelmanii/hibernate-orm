@@ -55,7 +55,7 @@ public class LongKeyNamingStrategyTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class)
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class)
 	public void testWithCustomNamingStrategy() {
 		Metadata metadata = new MetadataSources( serviceRegistry )
 				.addAnnotatedClass( Address.class )

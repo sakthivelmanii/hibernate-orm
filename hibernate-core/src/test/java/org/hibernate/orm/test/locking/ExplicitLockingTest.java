@@ -50,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 		},
 		useCollectingStatementInspector = true
 )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner does not support lock timeout.")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner does not support lock timeout.")
 public class ExplicitLockingTest {
 
 	protected final Logger log = Logger.getLogger( getClass() );

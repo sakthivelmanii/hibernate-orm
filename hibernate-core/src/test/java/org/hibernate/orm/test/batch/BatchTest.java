@@ -32,7 +32,7 @@ import java.math.RoundingMode;
 })
 @DomainModel(xmlMappings = "org/hibernate/orm/test/batch/DataPoint.xml")
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 public class BatchTest {
 
 	@Test

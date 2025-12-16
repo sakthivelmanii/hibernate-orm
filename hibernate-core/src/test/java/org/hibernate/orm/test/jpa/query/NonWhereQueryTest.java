@@ -35,7 +35,7 @@ import org.junit.jupiter.api.BeforeAll;
 				NonWhereQueryTest.TestUser.class
 		}
 )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column yet")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column yet")
 public class NonWhereQueryTest {
 
 	@BeforeAll

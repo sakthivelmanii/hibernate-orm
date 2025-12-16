@@ -42,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SessionFactory
 @BytecodeEnhanced
 @JiraKey("HHH-16756")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support integer primary key")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support integer primary key")
 public class OrphanRemovalTest {
 
 	static int ENTITY_ID = 1;

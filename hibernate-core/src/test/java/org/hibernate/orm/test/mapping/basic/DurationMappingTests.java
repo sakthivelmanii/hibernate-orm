@@ -50,7 +50,7 @@ import static org.hamcrest.Matchers.is;
  */
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntervalSecondType.class)
 @ServiceRegistry(settings = @Setting(name = AvailableSettings.PREFERRED_DURATION_JDBC_TYPE, value = "INTERVAL_SECOND"))
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INTERVAL as column type")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INTERVAL as column type")
 public class DurationMappingTests {
 
 	@Test

@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DomainModel(standardModels = { StandardDomainModel.GAMBIT, StandardDomainModel.CONTACTS })
 @SessionFactory
 @JiraKey("HHH-17506")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support PRIMARY KEY as constraint")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support PRIMARY KEY as constraint")
 public class InsertConflictTests {
 
 	@BeforeEach

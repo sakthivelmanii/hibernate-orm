@@ -45,7 +45,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SessionFactory(
 		useCollectingStatementInspector = true
 )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
 public class QueryListParametersWithFetchSubSelectTest {
 
 	@BeforeAll

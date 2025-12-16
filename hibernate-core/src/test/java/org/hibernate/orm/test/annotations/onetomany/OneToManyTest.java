@@ -129,7 +129,7 @@ public class OneToManyTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "ID doesn't fit into Integer")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "ID doesn't fit into Integer")
 	public void testListWithBagSemanticAndOrderBy(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -177,7 +177,7 @@ public class OneToManyTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "ID doesn't fit into Integer")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "ID doesn't fit into Integer")
 	public void testUnidirectionalDefault(SessionFactoryScope scope) {
 		Trainer t = new Trainer();
 		t.setName( "First trainer" );

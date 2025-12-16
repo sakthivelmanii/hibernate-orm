@@ -36,7 +36,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 		}
 )
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support NUMERIC "
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support NUMERIC "
 																		+ "as primary key")
 public class OneToManyEmbeddableId {
 	private static final BigDecimal FIRST_CHILD_CODE = new BigDecimal( 2 );

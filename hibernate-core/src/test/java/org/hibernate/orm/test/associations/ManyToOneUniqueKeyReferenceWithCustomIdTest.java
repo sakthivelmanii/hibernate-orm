@@ -36,7 +36,7 @@ import java.sql.Types;
 @DomainModel(annotatedClasses =
 		{ManyToOneUniqueKeyReferenceWithCustomIdTest.Phone.class, ManyToOneUniqueKeyReferenceWithCustomIdTest.User.class})
 @JiraKey("HHH-18764")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't allow column/table names starting with `_`")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't allow column/table names starting with `_`")
 public class ManyToOneUniqueKeyReferenceWithCustomIdTest {
 
 	@Test

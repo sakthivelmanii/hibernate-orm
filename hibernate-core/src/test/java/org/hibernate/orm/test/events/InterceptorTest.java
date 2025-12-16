@@ -73,7 +73,7 @@ public class InterceptorTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner bit_reversed_positive doesn't have increment value")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner bit_reversed_positive doesn't have increment value")
 	public void testSessionFactoryInterceptor() {
 
 		Serializable customerId = 1L;

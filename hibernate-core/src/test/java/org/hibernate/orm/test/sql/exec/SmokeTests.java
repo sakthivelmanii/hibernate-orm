@@ -59,7 +59,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 		}
 )
 @SessionFactory(exportSchema = true)
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 public class SmokeTests {
 
 	@BeforeEach

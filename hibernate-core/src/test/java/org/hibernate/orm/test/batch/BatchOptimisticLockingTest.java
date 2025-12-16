@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 				@Setting(name = AvailableSettings.DIALECT_NATIVE_PARAM_MARKERS, value = "false")
 		}
 )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner Emulator doesn't support concurrent transactions")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner Emulator doesn't support concurrent transactions")
 public class BatchOptimisticLockingTest {
 
 	private final ExecutorService executorService = Executors.newSingleThreadExecutor();

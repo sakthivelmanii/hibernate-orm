@@ -40,7 +40,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 		}
 )
 @JiraKey("HHH-16885")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support PG.NUMERIC as primary key")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support PG.NUMERIC as primary key")
 public class EntityGraphAttributeNodesTest {
 
 	private final static Integer HUMAN_ID = 1;

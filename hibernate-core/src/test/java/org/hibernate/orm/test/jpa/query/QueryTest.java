@@ -798,7 +798,7 @@ public class QueryTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LIKE...ESCAPE clause")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LIKE...ESCAPE clause")
 	public void testEscapeCharacter(EntityManagerFactoryScope scope) {
 		final Item item = new Item( "Mouse", "Micro_oft mouse" );
 		final Item item2 = new Item( "Computer", "Dell computer" );
@@ -863,7 +863,7 @@ public class QueryTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing timestampz with date function timestamptz_eq_date")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing timestampz with date function timestamptz_eq_date")
 	public void testExplicitPositionalParameter(EntityManagerFactoryScope scope) {
 		scope.inTransaction( entityManager -> {
 			Wallet w = new Wallet();

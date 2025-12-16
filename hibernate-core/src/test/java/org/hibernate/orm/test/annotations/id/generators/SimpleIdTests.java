@@ -54,7 +54,7 @@ public class SimpleIdTests {
 	@Test
 	@DomainModel(annotatedClasses = Entity4.class)
 	@SessionFactory
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID yet")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID yet")
 	void testSimpleUuidFallback(SessionFactoryScope sessions) {
 		sessions.inTransaction( (session) -> {
 			session.persist( new Entity4( "4" ) );

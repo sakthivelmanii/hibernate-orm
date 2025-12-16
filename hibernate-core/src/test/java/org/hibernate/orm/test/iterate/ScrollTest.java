@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 				@Setting(name = Environment.USE_SECOND_LEVEL_CACHE, value = "true")
 		}
 )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
 public class ScrollTest {
 
 	@Test

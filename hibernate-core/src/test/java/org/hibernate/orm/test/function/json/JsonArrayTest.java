@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 @SessionFactory
 @ServiceRegistry(settings = @Setting(name = QuerySettings.JSON_FUNCTIONS_ENABLED, value = "true"))
 @RequiresDialectFeature( feature = DialectFeatureChecks.SupportsJsonArray.class)
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "VALUES lists in FROM clause are not supported")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "VALUES lists in FROM clause are not supported")
 public class JsonArrayTest {
 
 	@Test

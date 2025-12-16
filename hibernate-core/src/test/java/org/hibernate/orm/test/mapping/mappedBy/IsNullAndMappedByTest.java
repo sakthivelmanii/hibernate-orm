@@ -226,7 +226,7 @@ public class IsNullAndMappedByTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "VALUES lists in FROM clause are not supported")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "VALUES lists in FROM clause are not supported")
 	public void testDelete(SessionFactoryScope scope) {
 		final SQLStatementInspector inspector = scope.getCollectingStatementInspector();
 		inspector.clear();
@@ -242,7 +242,7 @@ public class IsNullAndMappedByTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "UPDATE...FROM statements are not supported.")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "UPDATE...FROM statements are not supported.")
 	public void testHqlUpdate(SessionFactoryScope scope) {
 		final SQLStatementInspector inspector = scope.getCollectingStatementInspector();
 		inspector.clear();

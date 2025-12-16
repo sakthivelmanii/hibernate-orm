@@ -48,7 +48,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 		CriteriaMultiselectGroupByAndOrderByTest.Secondary.class,
 } )
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support GROUP BY without aggregate function")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support GROUP BY without aggregate function")
 public class CriteriaMultiselectGroupByAndOrderByTest {
 	@BeforeEach
 	public void setUp(SessionFactoryScope scope) {

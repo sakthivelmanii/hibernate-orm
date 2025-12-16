@@ -179,7 +179,7 @@ public class OnDeleteCascadeToElementCollectionTest {
 
 	@Test
 	@ExpectedException(ConstraintViolationException.class)
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 	public void testNonCascading(SessionFactoryScope scope) {
 		var instance = new NonCascading();
 

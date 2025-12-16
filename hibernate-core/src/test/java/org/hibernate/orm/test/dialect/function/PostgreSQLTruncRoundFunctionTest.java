@@ -44,7 +44,7 @@ public class PostgreSQLTruncRoundFunctionTest {
 
 	@Test
 	@RequiresDialect(PostgreSQLDialect.class)
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class )
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class )
 	public void testRound(SessionFactoryScope scope) {
 		testFunction( scope, "round", "floor" );
 	}

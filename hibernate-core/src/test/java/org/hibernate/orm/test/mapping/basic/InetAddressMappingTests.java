@@ -41,7 +41,7 @@ import static org.hamcrest.Matchers.is;
 		reason = "Driver or DB omit trailing zero bytes of a varbinary, making this test fail intermittently")
 @SkipForDialect( dialectClass = InformixDialect.class,
 		reason = "Blobs are not allowed in this expression (with a column of type BYTE)")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INET type")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INET type")
 public class InetAddressMappingTests {
 
 	@Test
