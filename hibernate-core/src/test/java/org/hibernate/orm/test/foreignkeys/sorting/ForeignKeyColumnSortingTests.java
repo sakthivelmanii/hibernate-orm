@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @DomainModel(annotatedClasses = { A.class, B.class })
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support pg.numeric to be primary key")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support pg.numeric to be primary key")
 public class ForeignKeyColumnSortingTests {
 	@Test
 	@Jira( "https://hibernate.atlassian.net/browse/HHH-16514" )

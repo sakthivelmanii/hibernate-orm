@@ -81,7 +81,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 				G.class
 		}
 )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support char(36)")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support char(36)")
 public class MultiCircleJpaCascadeTest {
 	private B b;
 	private C c;

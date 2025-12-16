@@ -77,7 +77,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 				EntityG.class
 		})
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support char(36)")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support char(36)")
 public class MultiCircleJpaCascadeIdentityTest {
 	private EntityB b;
 	private EntityC c;

@@ -64,7 +64,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @RequiresDialect(SQLServerDialect.class)
 @RequiresDialect(SybaseASEDialect.class)
 @RequiresDialect(HANADialect.class)
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support creating functions")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support creating functions")
 public class CustomSetReturningFunctionTest implements AdditionalMappingContributor, FunctionContributor {
 
 	@Override

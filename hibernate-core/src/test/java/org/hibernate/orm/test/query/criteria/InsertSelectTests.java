@@ -28,7 +28,7 @@ import jakarta.persistence.Tuple;
  */
 @DomainModel(annotatedClasses = InsertSelectTests.AnEntity.class)
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Statements with WINDOW clauses are not supported")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Statements with WINDOW clauses are not supported")
 public class InsertSelectTests {
 	@Test
 	public void simpleTest(SessionFactoryScope scope) {

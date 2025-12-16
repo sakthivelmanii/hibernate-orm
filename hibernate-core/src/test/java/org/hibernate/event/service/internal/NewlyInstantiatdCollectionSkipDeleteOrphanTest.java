@@ -63,7 +63,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 		}
 )
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support integer identity columns")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support integer identity columns")
 public class NewlyInstantiatdCollectionSkipDeleteOrphanTest {
 
 	private UnversionedParent up;

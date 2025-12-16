@@ -39,7 +39,7 @@ class ExtractTest {
 		} );
 	}
 
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support localtime")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support localtime")
 	@Test void testLocalTime(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( entityManager -> {
 			var builder = entityManager.getCriteriaBuilder();
@@ -57,7 +57,7 @@ class ExtractTest {
 		} );
 	}
 
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support localdatetime")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support localdatetime")
 	@Test void testLocalDateTime(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( entityManager -> {
 			var builder = entityManager.getCriteriaBuilder();

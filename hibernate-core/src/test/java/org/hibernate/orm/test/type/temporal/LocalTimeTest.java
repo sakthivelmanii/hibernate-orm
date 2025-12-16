@@ -48,7 +48,7 @@ import java.util.List;
 @DomainModel(annotatedClasses = LocalTimeTest.EntityWithLocalTime.class)
 @SessionFactory
 @SkipForDialect(dialectClass = H2Dialect.class, reason = "H2 1.4.200 DST bug. See org.hibernate.dialect.H2Dialect.hasDstBug")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LocalTime")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LocalTime")
 public class LocalTimeTest extends AbstractJavaTimeTypeTests<LocalTime, LocalTimeTest.EntityWithLocalTime> {
 
 	protected static List<Parameter<LocalTime, LocalTimeData>> testData() {

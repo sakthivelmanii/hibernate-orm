@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @DomainModel( annotatedClasses = BasicEntity.class )
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
 public class ScrollableResultsTests {
 
 	@BeforeEach

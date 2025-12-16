@@ -34,7 +34,7 @@ import jakarta.persistence.Version;
 @SkipForDialect(dialectClass = MariaDBDialect.class, majorVersion = 11, minorVersion = 6, microVersion = 2,
 		versionMatchMode = VersionMatchMode.SAME_OR_NEWER,
 		reason = "MariaDB will throw an error DB_RECORD_CHANGED when acquiring a lock on a record that have changed")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner Emulator doesn't support concurrent transactions")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner Emulator doesn't support concurrent transactions")
 public class OptimisticAndPessimisticLockTest {
 
 	public Stream<LockMode> pessimisticLockModes() {

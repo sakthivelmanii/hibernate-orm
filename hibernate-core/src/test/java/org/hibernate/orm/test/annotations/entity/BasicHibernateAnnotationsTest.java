@@ -101,7 +101,7 @@ public class BasicHibernateAnnotationsTest {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsExpectedLobUsagePattern.class)
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 	public void testVersioning(SessionFactoryScope scope) {
 		Forest forest = new Forest();
 		forest.setName( "Fontainebleau" );
@@ -151,7 +151,7 @@ public class BasicHibernateAnnotationsTest {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsExpectedLobUsagePattern.class)
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "ORDERING issues")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "ORDERING issues")
 	public void testWhereClause(SessionFactoryScope scope) {
 		List<Doctor> doctors = new ArrayList<>();
 

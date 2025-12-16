@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DomainModel(annotatedClasses = EscapeConvertedCharArrayTest.Vehicle.class)
 @SessionFactory
 @Jira("https://hibernate.atlassian.net/browse/HHH-16211")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LIKE...ESCAPE function")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LIKE...ESCAPE function")
 public class EscapeConvertedCharArrayTest {
 	private static final String STRING_PROP = "TEST123456";
 

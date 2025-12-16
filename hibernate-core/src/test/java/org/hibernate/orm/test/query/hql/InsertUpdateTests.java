@@ -99,7 +99,7 @@ public class InsertUpdateTests {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Unable to resolve argument type")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Unable to resolve argument type")
 	public void testInsertSelect(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -111,7 +111,7 @@ public class InsertUpdateTests {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Unable to resolve argument type")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Unable to resolve argument type")
 	public void testAliasedInsertSelect(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

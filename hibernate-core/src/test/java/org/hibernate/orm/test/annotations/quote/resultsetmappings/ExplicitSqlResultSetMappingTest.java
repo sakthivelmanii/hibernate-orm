@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 @ServiceRegistry(
 		settings = @Setting(name = Environment.GLOBALLY_QUOTED_IDENTIFIERS, value = "true")
 )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support explicit quoting in nextval function")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support explicit quoting in nextval function")
 public class ExplicitSqlResultSetMappingTest {
 	private String queryString = null;
 

@@ -95,7 +95,7 @@ public class BatchUpdateAndVersionTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support concurrent modifications")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support concurrent modifications")
 	public void testFailedUpdate(SessionFactoryScope scope) {
 		scope.getSessionFactory().getSchemaManager().truncate();
 		scope.inTransaction(

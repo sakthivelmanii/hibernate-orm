@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 		"org/hibernate/orm/test/idgen/enhanced/sequence/Dedicated.hbm.xml"
 })
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support incrementing sequence. It only supports BIT_REVERSED_POSITIVE.")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support incrementing sequence. It only supports BIT_REVERSED_POSITIVE.")
 public class BasicSequenceTest {
 
 	@Test

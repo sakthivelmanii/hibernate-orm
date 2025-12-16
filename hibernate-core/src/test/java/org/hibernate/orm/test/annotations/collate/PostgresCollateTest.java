@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 @SessionFactory
 @DomainModel(annotatedClasses = PostgresCollateTest.Message.class)
 @RequiresDialect(PostgreSQLDialect.class)
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support COLLATE in column definition")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support COLLATE in column definition")
 public class PostgresCollateTest {
 
 	@Test void test(SessionFactoryScope scope) {

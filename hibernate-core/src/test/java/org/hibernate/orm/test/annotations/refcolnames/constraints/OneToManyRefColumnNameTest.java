@@ -53,7 +53,7 @@ class OneToManyRefColumnNameTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 	void testForeignKey(EntityManagerFactoryScope scope) {
 		scope.getEntityManagerFactory().getSchemaManager().truncate();
 		This thisThing = new This();

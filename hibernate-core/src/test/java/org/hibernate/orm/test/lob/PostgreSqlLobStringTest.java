@@ -99,7 +99,7 @@ public class PostgreSqlLobStringTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LOB functions")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LOB functions")
 	public void testBadClobDataSavedAsStringWorksAfterUpdate(SessionFactoryScope scope) {
 		scope.inTransaction(session -> session.doWork( connection -> {
 			try (Statement statement = connection.createStatement()) {

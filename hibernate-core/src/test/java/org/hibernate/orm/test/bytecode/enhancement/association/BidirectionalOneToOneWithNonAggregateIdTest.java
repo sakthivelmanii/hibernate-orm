@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SessionFactory
 @BytecodeEnhanced
 @JiraKey("HHH-17519")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support sequence")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support sequence")
 public class BidirectionalOneToOneWithNonAggregateIdTest  {
 
 	static final int ENTITY_ID = 1;

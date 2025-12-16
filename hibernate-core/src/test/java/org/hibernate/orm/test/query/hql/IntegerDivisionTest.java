@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 @ServiceRegistry(settings = @Setting(name = PORTABLE_INTEGER_DIVISION, value = "true"))
 public class IntegerDivisionTest {
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "WHERE clause without a FROM clause are not supported")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "WHERE clause without a FROM clause are not supported")
 	public void testIntegerDivision(SessionFactoryScope scope) {
 		scope.inTransaction(s -> {
 			assertFalse( s.createQuery("select 1 where 1/2 = 0 and 4/3 = 1", Integer.class)

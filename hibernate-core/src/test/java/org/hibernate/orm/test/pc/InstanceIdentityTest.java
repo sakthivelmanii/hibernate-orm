@@ -72,7 +72,7 @@ public class InstanceIdentityTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't have sequential ID columns."
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't have sequential ID columns."
 																			+ " The order of the results might differ.")
 	public void testPersistentCollections(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {

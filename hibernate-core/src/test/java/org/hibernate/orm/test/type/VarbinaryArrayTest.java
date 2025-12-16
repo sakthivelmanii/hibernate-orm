@@ -225,7 +225,7 @@ public class VarbinaryArrayTest {
 			reason = "For some reason, HANA can't intersect VARBINARY values, but funnily can do a union...")
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "The statement failed because binary large objects are not allowed in the Union, Intersect, or Minus queries")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support IS NOT DISTINCT FROM")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support IS NOT DISTINCT FROM")
 	<T> void queryByData(String propertyName, long id, T value, Function<EntityWithArrays, T> getter,
 			SessionFactoryScope scope) {
 		scope.inTransaction( session -> {

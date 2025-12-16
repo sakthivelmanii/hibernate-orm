@@ -57,7 +57,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 		properties = @Setting( name = AvailableSettings.QUERY_PASS_PROCEDURE_PARAMETER_NAMES, value = "true")
 )
 @RequiresDialect(value = PostgreSQLDialect.class)
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support callable functions")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support callable functions")
 public class PostgreSQLStoredProcedureTest {
 
 	private static final String CITY = "London";

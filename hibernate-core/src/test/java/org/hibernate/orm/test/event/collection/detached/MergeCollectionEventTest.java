@@ -54,7 +54,7 @@ import static org.junit.Assert.assertEquals;
 )
 @BootstrapServiceRegistry(integrators = MergeCollectionEventTest.ConfigurerIntegrator.class)
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 public class MergeCollectionEventTest {
 
 	private static AggregatedCollectionEventListener.IntegratorImpl collectionListenerIntegrator;

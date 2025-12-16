@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @DomainModel(standardModels = { StandardDomainModel.GAMBIT, StandardDomainModel.CONTACTS })
 @SessionFactory
 @JiraKey("HHH-16138")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "VALUES lists in FROM clause are not supported")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "VALUES lists in FROM clause are not supported")
 public class DeleteJoinTests {
 
 	@BeforeEach

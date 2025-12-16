@@ -67,7 +67,7 @@ public class CastFunctionTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't automatically converts"
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't automatically converts"
 																			+ "float(24) to real or float4")
 	public void testFloatCasting(SessionFactoryScope scope) {
 		scope.inTransaction(

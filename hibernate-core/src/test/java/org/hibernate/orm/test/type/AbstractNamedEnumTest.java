@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 		AbstractNamedEnumTest.Weather.class,
 		AbstractNamedEnumTest.Sky.class
 })
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support custom type")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support custom type")
 public abstract class AbstractNamedEnumTest {
 
 	@Test public void testNamedEnum(SessionFactoryScope scope) {

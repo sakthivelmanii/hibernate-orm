@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SuppressWarnings("JUnitMalformedDeclaration")
 @DomainModel(xmlMappings = "org/hibernate/orm/test/idgen/biginteger/increment/Mapping.hbm.xml")
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support PG.NUMERIC as primary key")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support PG.NUMERIC as primary key")
 public class BigIntegerIncrementGeneratorTest {
 	@Test
 	public void testBasics(SessionFactoryScope scope) {

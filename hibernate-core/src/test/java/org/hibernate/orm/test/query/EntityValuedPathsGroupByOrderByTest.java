@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 		EntityValuedPathsGroupByOrderByTest.EntityB.class
 } )
 @Jira( "https://hibernate.atlassian.net/browse/HHH-16409" )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 public class EntityValuedPathsGroupByOrderByTest {
 	@BeforeAll
 	public void setUp(SessionFactoryScope scope) {

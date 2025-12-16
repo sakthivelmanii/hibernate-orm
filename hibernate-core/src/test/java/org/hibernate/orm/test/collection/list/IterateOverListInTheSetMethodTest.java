@@ -80,7 +80,7 @@ public class IterateOverListInTheSetMethodTest {
 
 	@Test
 	@JiraKey(value = "HHH-16184")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
 	public void testScrollParentsWithoutChildren(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

@@ -69,7 +69,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 )
 @DomainModel(annotatedClasses = NestedStructWithArrayEmbeddableTest.StructHolder.class)
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support custom TYPE")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support custom TYPE")
 public class NestedStructWithArrayEmbeddableTest {
 
 	@BeforeEach

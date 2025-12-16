@@ -28,7 +28,7 @@ public class NaturalIdUniqueConstraintNameTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UNIQUE constraint"
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UNIQUE constraint"
 																			+ "at a column level")
 	public void testNaturalIdUsesUniqueConstraintName(ServiceRegistryScope registryScope) {
 		var metadata = new MetadataSources( registryScope.getRegistry() )
@@ -48,7 +48,7 @@ public class NaturalIdUniqueConstraintNameTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UNIQUE constraint"
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UNIQUE constraint"
 																			+ "at a column level")
 	public void testNaturalIdUsesExplicitColumns(ServiceRegistryScope registryScope) {
 		var metadata = new MetadataSources( registryScope.getRegistry() )

@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 		InsertSelectTests.EntitySource.class
 })
 @SessionFactory(useCollectingStatementInspector = true)
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Unable to resolve argument type")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Unable to resolve argument type")
 public class InsertSelectTests {
 
 	@BeforeEach

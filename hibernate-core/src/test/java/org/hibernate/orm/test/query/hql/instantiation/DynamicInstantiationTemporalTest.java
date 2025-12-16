@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DomainModel(standardModels = StandardDomainModel.GAMBIT)
 @SessionFactory
 @Jira("https://hibernate.atlassian.net/browse/HHH-4179")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class DynamicInstantiationTemporalTest {
 	@BeforeAll
 	public void prepareData(final SessionFactoryScope scope) {

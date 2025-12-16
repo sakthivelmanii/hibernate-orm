@@ -80,7 +80,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @RequiresDialect( PostgreSQLDialect.class )
 @RequiresDialect( OracleDialect.class )
 @RequiresDialect( DB2Dialect.class )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support custom TYPE")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support custom TYPE")
 public class NestedStructEmbeddableTest implements AdditionalMappingContributor {
 
 	@Override

@@ -25,7 +25,7 @@ import jakarta.persistence.criteria.Subquery;
  */
 @DomainModel( annotatedClasses = BasicEntity.class )
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "ALL subqueries with operators other than <>/!= are not supported")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "ALL subqueries with operators other than <>/!= are not supported")
 public class SubQueryTests {
 
 	@Test

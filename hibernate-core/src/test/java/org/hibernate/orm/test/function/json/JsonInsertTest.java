@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 @SessionFactory
 @ServiceRegistry(settings = @Setting(name = QuerySettings.JSON_FUNCTIONS_ENABLED, value = "true"))
 @RequiresDialectFeature( feature = DialectFeatureChecks.SupportsJsonInsert.class)
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support VALUES lists in FROM clause")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support VALUES lists in FROM clause")
 public class JsonInsertTest {
 
 	@Test

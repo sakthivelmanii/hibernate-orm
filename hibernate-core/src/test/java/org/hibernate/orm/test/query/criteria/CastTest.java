@@ -33,7 +33,7 @@ class CastTest {
 		} );
 	}
 
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner cast to float(24) is failing")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner cast to float(24) is failing")
 	@Test void testCastFromString(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( entityManager -> {
 			var builder = entityManager.getCriteriaBuilder();

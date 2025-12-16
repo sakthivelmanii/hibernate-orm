@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SessionFactory
 @Jira("https://hibernate.atlassian.net/browse/HHH-16861")
 @Jira("https://hibernate.atlassian.net/browse/HHH-18708")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column yet")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column yet")
 public class EnumTest {
 
 

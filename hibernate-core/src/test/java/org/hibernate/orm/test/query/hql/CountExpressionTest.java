@@ -96,7 +96,7 @@ public class CountExpressionTest {
 	@JiraKey(value = "HHH-11042")
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Informix allows only one column in count(distinct)")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class,
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class,
 			reason = "Spanner doesn't support record types")
 	public void testCountDistinctTuple(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
@@ -122,7 +122,7 @@ public class CountExpressionTest {
 	@JiraKey(value = "HHH-11042")
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Informix allows only one column in count(distinct)")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class,
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class,
 			reason = "Spanner doesn't support record types")
 	public void testCountDistinctTupleSanity(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {

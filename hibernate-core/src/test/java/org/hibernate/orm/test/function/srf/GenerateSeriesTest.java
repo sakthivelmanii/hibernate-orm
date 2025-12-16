@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DomainModel(standardModels = StandardDomainModel.LIBRARY)
 @SessionFactory
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsGenerateSeries.class)
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner supports generate_series but emulator"
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner supports generate_series but emulator"
 																		+ "currently doesn't support it")
 public class GenerateSeriesTest {
 

@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
 
 @SessionFactory
 @DomainModel(annotatedClasses = {FieldWithUnderscoreTest.A.class, FieldWithUnderscoreTest.B.class})
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't allow column/table names starting with `_`")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't allow column/table names starting with `_`")
 public class FieldWithUnderscoreTest {
 
 	@Test void test(SessionFactoryScope scope) {

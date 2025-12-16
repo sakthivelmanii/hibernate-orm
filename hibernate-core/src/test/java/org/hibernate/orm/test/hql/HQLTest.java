@@ -1154,7 +1154,7 @@ public class HQLTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable resultset")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable resultset")
 	public void test_hql_api_scroll_projection_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			QueryProducer session = entityManager.unwrap(Session.class);
@@ -1177,7 +1177,7 @@ public class HQLTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable resultsets")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable resultsets")
 	public void test_hql_api_scroll_open_example(SessionFactoryScope factoryScope) {
 		//noinspection resource
 		ScrollableResults<Person> scrollableResults = factoryScope.fromTransaction( entityManager -> {
@@ -1792,7 +1792,7 @@ public class HQLTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support var_samp or var_pop")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support var_samp or var_pop")
 	public void test_var_function_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-native-function-example[]
@@ -1812,7 +1812,7 @@ public class HQLTest {
 	@RequiresDialect(MySQLDialect.class)
 	@RequiresDialect(PostgreSQLDialect.class)
 	@RequiresDialect(OracleDialect.class)
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't supoprt bit_length")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't supoprt bit_length")
 	public void test_hql_bit_length_function_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-native-function-example[]
@@ -2297,7 +2297,7 @@ public class HQLTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support integer sequences")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support integer sequences")
 	public void test_case_arithmetic_expressions_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-case-arithmetic-expressions-example[]
@@ -2450,7 +2450,7 @@ public class HQLTest {
 	@RequiresDialect(H2Dialect.class)
 	@RequiresDialect(PostgreSQLDialect.class)
 	@RequiresDialect(MySQLDialect.class)
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestamptz_gt_date function")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestamptz_gt_date function")
 	public void test_hql_relational_comparisons_example_3(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-relational-comparisons-example[]
@@ -2536,7 +2536,7 @@ public class HQLTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "ALL subqueries with operators other than <>/!= are not supported")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "ALL subqueries with operators other than <>/!= are not supported")
 	public void test_hql_all_subquery_comparison_qualifier_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-all-subquery-comparison-qualifier-example[]
@@ -2621,7 +2621,7 @@ public class HQLTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner only supports default ESCAPE character '\'")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner only supports default ESCAPE character '\'")
 	public void test_hql_like_predicate_escape_example(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-like-predicate-escape-example[]
@@ -2657,7 +2657,7 @@ public class HQLTest {
 	@RequiresDialect(H2Dialect.class)
 	@RequiresDialect(PostgreSQLDialect.class)
 	@RequiresDialect(MySQLDialect.class)
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestampz comparision")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestampz comparision")
 	public void test_hql_between_predicate_example_2(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-between-predicate-example[]
@@ -2910,7 +2910,7 @@ public class HQLTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 	public void test_hql_group_by_example_3(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 			//tag::hql-group-by-example[]
@@ -2930,7 +2930,7 @@ public class HQLTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 	public void test_hql_group_by_example_4(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( entityManager -> {
 

@@ -101,7 +101,7 @@ public class AbstractManyToOneNoProxyTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class,
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class,
 			reason = "Spanner doesn't support sequence generators.")
 	public void testSelect(SessionFactoryScope scope) {
 		scope.inTransaction(

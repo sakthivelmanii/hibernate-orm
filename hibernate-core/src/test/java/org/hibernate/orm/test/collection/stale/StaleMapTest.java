@@ -26,7 +26,7 @@ import static org.hibernate.cfg.BatchSettings.STATEMENT_BATCH_SIZE;
 		properties = @Setting(name = STATEMENT_BATCH_SIZE, value = "5"))
 @SkipForDialect(dialectClass = MariaDBDialect.class)
 @SkipForDialect(dialectClass = CockroachDialect.class, reason = "CockroachDB uses SERIALIZABLE isolation, and does not support this")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support concurrent transactions")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support concurrent transactions")
 public class StaleMapTest {
 	@Test void test1(EntityManagerFactoryScope scope) {
 		var entity = new StaleMapTestEntity();

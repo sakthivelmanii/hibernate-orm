@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SuppressWarnings("JUnitMalformedDeclaration")
 @DomainModel( xmlMappings = "org/hibernate/orm/test/idgen/enhanced/sequence/HiLo.hbm.xml" )
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
 public class HiLoSequenceTest {
 
 	@Test

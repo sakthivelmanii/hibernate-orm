@@ -54,7 +54,7 @@ public class LikeEscapeDefaultTest {
 	@Test
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Informix does not support empty escape ''")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support empty escape ''")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support empty escape ''")
 	public void testDefaultEscapeBackslash(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			Query<BasicEntity> q = session.createQuery(
@@ -70,7 +70,7 @@ public class LikeEscapeDefaultTest {
 	@Test
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Informix does not support empty escape ''")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support empty escape ''")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support empty escape ''")
 	public void testDefaultEscapeBackslashLiteral(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			Query<BasicEntity> q = session.createQuery(
@@ -86,7 +86,7 @@ public class LikeEscapeDefaultTest {
 	@Test
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Informix does not support empty escape ''")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support empty escape ''")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support empty escape ''")
 	public void testDefaultEscapeNoResults(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			Query<BasicEntity> q = session.createQuery(
@@ -112,7 +112,7 @@ public class LikeEscapeDefaultTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Invalid escape character: '#'. Currently only backslash '\\' is supported.")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Invalid escape character: '#'. Currently only backslash '\\' is supported.")
 	public void testExplicitEscapeLiteralOtherChar(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			Query<BasicEntity> q = session.createQuery(

@@ -134,7 +134,7 @@ public class CteTests {
 	@Test
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Apparently nested CTEs are not supported")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Nested WITH expressions are not supported")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Nested WITH expressions are not supported")
 	public void testNested(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -197,7 +197,7 @@ public class CteTests {
 	@Test
 	@SkipForDialect(dialectClass = SybaseASEDialect.class, reason = "The emulation of CTEs in subqueries results in correlation in nesting level 2, which is not possible with Sybase ASE")
 	@SkipForDialect(dialectClass = TiDBDialect.class, reason = "The TiDB version on CI seems to be buggy")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "WITH expressions in subqueries are not supported")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "WITH expressions in subqueries are not supported")
 	public void testSubquery(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -245,7 +245,7 @@ public class CteTests {
 
 	@Test
 	@SkipForDialect(dialectClass = SybaseASEDialect.class, reason = "The emulation of CTEs in subqueries results in correlation in nesting level 2, which is not possible with Sybase ASE")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "WITH expressions in subqueries are not supported")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "WITH expressions in subqueries are not supported")
 	public void testInSubquery(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			final HibernateCriteriaBuilder cb = session.getCriteriaBuilder();

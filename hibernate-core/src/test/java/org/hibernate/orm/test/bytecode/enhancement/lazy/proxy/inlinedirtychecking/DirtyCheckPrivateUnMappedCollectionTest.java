@@ -54,7 +54,7 @@ import org.junit.jupiter.api.Test;
 @BytecodeEnhanced
 @CustomEnhancementContext({ DirtyCheckEnhancementContext.class })
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIdentityColumns.class)
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 public class DirtyCheckPrivateUnMappedCollectionTest {
 
 	@BeforeAll

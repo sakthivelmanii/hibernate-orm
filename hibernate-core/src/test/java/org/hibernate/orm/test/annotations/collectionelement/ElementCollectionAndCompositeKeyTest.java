@@ -44,7 +44,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @JiraKey("HHH-17964")
 @RequiresDialect( H2Dialect.class )
 @RequiresDialect( PostgreSQLDialect.class )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support tables without primary key")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support tables without primary key")
 public class ElementCollectionAndCompositeKeyTest {
 
 	@BeforeEach

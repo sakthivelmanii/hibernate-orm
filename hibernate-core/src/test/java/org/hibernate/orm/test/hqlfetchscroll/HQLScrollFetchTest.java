@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 		xmlMappings = "org/hibernate/orm/test/hqlfetchscroll/ParentChild.hbm.xml"
 )
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
 public class HQLScrollFetchTest {
 	private static final String QUERY = "select p from Parent p join fetch p.children c";
 

@@ -62,7 +62,7 @@ import static org.hibernate.orm.test.type.temporal.Timezones.ZONE_UTC_MINUS_8;
 @MethodSource("testData")
 @DomainModel(annotatedClasses = OffsetTimeTest.EntityWithOffsetTime.class)
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 public class OffsetTimeTest extends AbstractJavaTimeTypeTests<OffsetTime, OffsetTimeTest.EntityWithOffsetTime> {
 
 	public static List<Parameter<OffsetTime,DataImpl>> testData() {

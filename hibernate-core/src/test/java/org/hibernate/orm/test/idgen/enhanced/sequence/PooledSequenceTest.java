@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SuppressWarnings("JUnitMalformedDeclaration")
 @DomainModel( xmlMappings = "org/hibernate/orm/test/idgen/enhanced/sequence/Pooled.hbm.xml" )
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INTEGER sequences")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INTEGER sequences")
 public class PooledSequenceTest {
 	private static final long INITIAL_VALUE = 1;
 

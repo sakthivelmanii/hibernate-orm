@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 		}
 )
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support char(36)")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support char(36)")
 public class CascadeCircleIdentityIdTest {
 
 	@Test

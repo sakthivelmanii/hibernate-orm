@@ -322,7 +322,7 @@ public class QueryAndSQLTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestampz_ge_date function")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestampz_ge_date function")
 	public void testClassQueries(SessionFactoryScope scope) {
 		Night n = new Night();
 		Calendar c = new GregorianCalendar();

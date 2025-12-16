@@ -93,7 +93,7 @@ public class SharingReferenceTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support integer and sequential columns")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support integer and sequential columns")
 	public void testFind(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

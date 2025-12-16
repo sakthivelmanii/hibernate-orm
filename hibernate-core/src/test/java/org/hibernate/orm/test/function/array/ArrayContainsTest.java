@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsArrayContains.class)
 // Clear the type cache, otherwise we might run into ORA-21700: object does not exist or is marked for delete
 @BootstrapServiceRegistry(integrators = SharedDriverManagerTypeCacheClearingIntegrator.class)
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support array_position")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support array_position")
 public class ArrayContainsTest {
 
 	@BeforeEach

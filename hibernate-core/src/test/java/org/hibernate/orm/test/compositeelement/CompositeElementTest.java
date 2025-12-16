@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 		xmlMappings = "org/hibernate/orm/test/compositeelement/Parent.hbm.xml"
 )
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support ODBC functions")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support ODBC functions")
 public class CompositeElementTest {
 
 	@AfterEach

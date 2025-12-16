@@ -40,7 +40,7 @@ import static org.hamcrest.Matchers.containsString;
 
 @BaseUnitTest
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsSequences.class)
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support increment by in sequences")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support increment by in sequences")
 public class SequenceGeneratorIncrementTest {
 	private File output;
 	private ServiceRegistry ssr;

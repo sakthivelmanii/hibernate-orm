@@ -49,7 +49,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 		}
 )
 @JiraKey("HHH-16569")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
 public class BatchSubselectCollectionTest {
 
 	@BeforeAll

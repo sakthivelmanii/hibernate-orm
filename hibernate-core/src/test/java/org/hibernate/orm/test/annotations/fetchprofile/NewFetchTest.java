@@ -55,7 +55,7 @@ public class NewFetchTest {
 	static final String JOIN_PROFILE = "join-profile";
 	static final String OLD_SUBSELECT_PROFILE = "old-subselect-profile";
 
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support incremental sequence support")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support incremental sequence support")
 	@Test void test(SessionFactoryScope scope) {
 		scope.inTransaction( s-> {
 			G g = new G();
@@ -87,7 +87,7 @@ public class NewFetchTest {
 		assertTrue( isInitialized( ee.f ) );
 	}
 
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support incremental sequence support")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support incremental sequence support")
 	@Test void testById(SessionFactoryScope scope) {
 		scope.inTransaction( s-> {
 			G g = new G();
@@ -167,7 +167,7 @@ public class NewFetchTest {
 		assertTrue( isInitialized( ee.f ) );
 	}
 
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support incremental sequence support")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support incremental sequence support")
 	@Test void testQuery(SessionFactoryScope scope) {
 		scope.inTransaction( s-> {
 			G g = new G();

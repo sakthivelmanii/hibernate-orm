@@ -38,7 +38,7 @@ import static org.hibernate.Hibernate.getLobHelper;
 @DomainModel(annotatedClasses = LobStringFunctionsTest.TestEntity.class)
 @SessionFactory
 @SkipForDialect(dialectClass = InformixDialect.class, reason = "Informix does not allow these functions for LOBs")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LOB functions")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LOB functions")
 public class LobStringFunctionsTest {
 
 	private static final int LONG_STRING_SIZE = 3999;

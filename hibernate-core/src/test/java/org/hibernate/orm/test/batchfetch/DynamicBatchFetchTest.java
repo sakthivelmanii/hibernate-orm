@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ServiceRegistry(
 		settings = @Setting(name = AvailableSettings.USE_SECOND_LEVEL_CACHE, value = "false")
 )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 public class DynamicBatchFetchTest {
 	private static int currentId = 1;
 
