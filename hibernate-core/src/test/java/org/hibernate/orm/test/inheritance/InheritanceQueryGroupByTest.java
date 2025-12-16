@@ -77,7 +77,7 @@ public class InheritanceQueryGroupByTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 	public void testGroupBySingleTable(SessionFactoryScope scope) {
 		testGroupBy( scope, "singleTableParent", SingleTableParent.class, "single_table_child_one", 1 );
 	}
@@ -157,7 +157,7 @@ public class InheritanceQueryGroupByTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 	public void testGroupByAndOrderBySingleTable(SessionFactoryScope scope) {
 		testGroupByAndOrderBy( scope, "singleTableParent", SingleTableParent.class, "single_table_child_one", 1 );
 	}

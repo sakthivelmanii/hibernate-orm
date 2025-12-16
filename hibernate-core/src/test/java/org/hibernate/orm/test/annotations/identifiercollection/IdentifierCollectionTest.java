@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 		}
 )
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner Emulator doesn't support"
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner Emulator doesn't support"
 																		+ "concurrent transactions")
 public class IdentifierCollectionTest {
 

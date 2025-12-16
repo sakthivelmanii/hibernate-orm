@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  * @author Vlad Mihalcea
  */
 @RequiresDialect(PostgreSQLDialect.class)
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support callable functions")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support callable functions")
 public class PostgreSQLFunctionProcedureTest extends EntityManagerFactoryBasedFunctionalTest {
 
 	@Override

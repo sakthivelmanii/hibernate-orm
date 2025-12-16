@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 		OneToManyInEmbeddedTest.ChildEntity.class,
 		OneToManyInEmbeddedTest.ParentEntity.class
 } )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support @Generated Integer column")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support @Generated Integer column")
 public class OneToManyInEmbeddedTest {
 	@BeforeAll
 	public void setUp(EntityManagerFactoryScope scope) {

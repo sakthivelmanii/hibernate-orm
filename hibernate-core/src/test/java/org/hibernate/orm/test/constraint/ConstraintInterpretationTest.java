@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 @Jpa(annotatedClasses = {ConstraintInterpretationTest.Enttity1.class, ConstraintInterpretationTest.Entity2.class})
 public class ConstraintInterpretationTest {
 	@Test void testNotNullPrimaryKey(EntityManagerFactoryScope scope) {

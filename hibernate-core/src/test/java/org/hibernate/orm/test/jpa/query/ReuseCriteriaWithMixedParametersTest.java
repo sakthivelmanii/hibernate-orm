@@ -77,7 +77,7 @@ public class ReuseCriteriaWithMixedParametersTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner supports escape using backlash")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner supports escape using backlash")
 	public void likeCqReuse(EntityManagerFactoryScope scope) {
 		scope.inTransaction( entityManager -> {
 

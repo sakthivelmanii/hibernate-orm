@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Gail Badner
  */
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support negative identity sequences")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support negative identity sequences")
 public class NegativeValueSequenceTest {
 	@RegisterExtension
 	public LoggerInspectionExtension logInspection =

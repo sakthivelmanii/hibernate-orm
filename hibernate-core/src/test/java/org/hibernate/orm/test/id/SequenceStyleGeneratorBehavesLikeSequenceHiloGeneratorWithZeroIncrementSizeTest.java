@@ -48,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @RequiresDialectFeature(feature = SupportsSequences.class)
 @BaseUnitTest
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support increasing sequences")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support increasing sequences")
 public class SequenceStyleGeneratorBehavesLikeSequenceHiloGeneratorWithZeroIncrementSizeTest {
 	private static final String TEST_SEQUENCE = "test_sequence";
 

@@ -37,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 		OneToManyIdClassFKTest.Location.class
 } )
 @Jira( "https://hibernate.atlassian.net/browse/HHH-16274" )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support modifying primary key")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support modifying primary key")
 public class OneToManyIdClassFKTest {
 	@BeforeAll
 	public void setUp(SessionFactoryScope scope) {

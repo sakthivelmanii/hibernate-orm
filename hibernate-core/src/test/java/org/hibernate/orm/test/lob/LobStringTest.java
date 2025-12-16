@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @RequiresDialect(PostgreSQLDialect.class)
 @DomainModel(annotatedClasses = LobStringTest.TestEntity.class)
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LOB functions")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support LOB functions")
 public class LobStringTest {
 
 	private static final int LONG_STRING_SIZE = 3999;

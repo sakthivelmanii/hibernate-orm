@@ -41,7 +41,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @SessionFactory
 @RequiresDialect( PostgreSQLDialect.class )
 @RequiresDialect( OracleDialect.class )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support custom TYPE")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support custom TYPE")
 public class StructEmbeddableArrayEmptyTest {
 
 	@BeforeEach

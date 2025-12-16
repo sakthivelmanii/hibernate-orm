@@ -69,7 +69,7 @@ public class IdClassAndAssociationsTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support modifying "
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support modifying "
 																			+ "primary key with UPDATE")
 	public void testIt(EntityManagerFactoryScope scope) {
 		scope.inTransaction(

@@ -15,7 +15,7 @@ import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsSequences.class)
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support char(36)")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support char(36)")
 @DomainModel(
 		annotatedClasses = {
 				A.class,

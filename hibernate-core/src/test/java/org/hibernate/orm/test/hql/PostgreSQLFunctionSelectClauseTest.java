@@ -37,7 +37,7 @@ import java.sql.Statement;
 ) )
 @DomainModel(annotatedClasses = PostgreSQLFunctionSelectClauseTest.Book.class)
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support creating a FUNCTION")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support creating a FUNCTION")
 public class PostgreSQLFunctionSelectClauseTest {
 	@BeforeEach
 	void setUp(SessionFactoryScope factoryScope) {

@@ -189,7 +189,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
 	public void testCompositeFK(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction(  (session) -> {
 			var ppk = new ParentPk();
@@ -246,7 +246,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
 	public void testManyToOneNonPk(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( (session) -> {
 			var order = new Order();
@@ -268,7 +268,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
 	public void testManyToOneNonPkSecondaryTable(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( (session) -> {
 			var order = new Order();
@@ -290,7 +290,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
 	public void testTwoManyToOneNonPk(SessionFactoryScope factoryScope) {
 		//2 many-to-one non pk pointing to the same referencedColumnName should not fail
 		factoryScope.inTransaction( (session) -> {
@@ -314,7 +314,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
 	public void testFormulaOnOtherSide(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( (session) -> {
 			var frame = new Frame();

@@ -92,7 +92,7 @@ public class ILikeCriteriaTest {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner supports only backslash as an escape character")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner supports only backslash as an escape character")
 	public void testLikeEscape(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

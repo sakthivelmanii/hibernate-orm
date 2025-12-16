@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 		}
 )
 @SessionFactory
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
 public class ScrollableTest {
 
 	@BeforeEach

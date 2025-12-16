@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 )
 @SessionFactory
 @SkipForDialect( dialectClass = HANADialect.class, reason = "HANA does not support scrollable results")
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
 public class BasicSelectionQueryTests {
 	@Test
 	public void typedEntitySelectTest(SessionFactoryScope scope) {
