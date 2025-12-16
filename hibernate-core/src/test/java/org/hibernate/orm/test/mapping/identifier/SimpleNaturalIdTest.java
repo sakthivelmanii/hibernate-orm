@@ -13,8 +13,10 @@ import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.hibernate.annotations.NaturalId;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -63,6 +65,7 @@ public class SimpleNaturalIdTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner does not support lock timeout.")
 	void testLoading(EntityManagerFactoryScope scope) {
 		scope.inTransaction( (entityManager) -> {
 			//tag::naturalid-loading-example

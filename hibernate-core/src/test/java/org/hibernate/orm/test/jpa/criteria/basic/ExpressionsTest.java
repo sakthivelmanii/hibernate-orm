@@ -19,6 +19,7 @@ import org.hibernate.community.dialect.DerbyDialect;
 import org.hibernate.community.dialect.GaussDBDialect;
 import org.hibernate.dialect.DB2Dialect;
 import org.hibernate.dialect.PostgresPlusDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.orm.test.jpa.metamodel.Address;
 import org.hibernate.orm.test.jpa.metamodel.Phone;
@@ -279,6 +280,7 @@ public class ExpressionsTest {
 	@SkipForDialect(dialectClass = PostgresPlusDialect.class, reason = "does not support extract(epoch)")
 	@SkipForDialect(dialectClass = AltibaseDialect.class, reason = "datediff overflow limits")
 	@SkipForDialect(dialectClass = GaussDBDialect.class, reason = "type:resolved.date multi overflows")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support mul_d_interval")
 	public void testDateTimeOperations(EntityManagerFactoryScope scope) {
 		HibernateCriteriaBuilder builder = (HibernateCriteriaBuilder) this.builder;
 		scope.inTransaction( entityManager -> {
@@ -340,6 +342,7 @@ public class ExpressionsTest {
 	@Test
 	@SkipForDialect(dialectClass = SybaseDialect.class, matchSubTypes = true, reason = "numeric overflows")
 	@SkipForDialect(dialectClass = PostgresPlusDialect.class, reason = "does not support extract(epoch)")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support mul_d_interval")
 	void testDurationBetween(EntityManagerFactoryScope scope) {
 		HibernateCriteriaBuilder builder = (HibernateCriteriaBuilder) this.builder;
 		scope.inTransaction( entityManager -> {

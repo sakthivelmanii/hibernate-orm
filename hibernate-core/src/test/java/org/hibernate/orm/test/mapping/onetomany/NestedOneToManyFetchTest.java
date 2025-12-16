@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.hibernate.Hibernate;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
@@ -65,7 +66,7 @@ public class NestedOneToManyFetchTest {
 	public void testFind(SessionFactoryScope scope) {
 		final SQLStatementInspector statementInspector = scope.getCollectingStatementInspector();
 		scope.inTransaction( session -> {
-			final Role role = session.find( Role.class, 1L );
+			final Role role = session.find( Role.class, SequenceHelper.getId( scope, 1L) );
 			statementInspector.clear();
 			assertTestResults( role.getPermissions(), statementInspector, false );
 		} );

@@ -5,6 +5,7 @@
 package org.hibernate.orm.test.jpa.criteria.cte;
 
 import org.hibernate.Session;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaCteCriteria;
@@ -16,6 +17,7 @@ import org.hibernate.testing.orm.domain.gambit.BasicEntity;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -63,6 +65,7 @@ public class CriteriaCteCopyTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "WITH expressions in subqueries are not supported")
 	public void testValidSubQuery(EntityManagerFactoryScope scope) {
 		scope.inTransaction( entityManager -> {
 			final HibernateCriteriaBuilder cb = entityManager.unwrap( Session.class ).getCriteriaBuilder();
