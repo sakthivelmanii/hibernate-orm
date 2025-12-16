@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.jdbc.SharedDriverManagerTypeCacheClearingIntegrator;
 import org.hibernate.testing.orm.junit.BootstrapServiceRegistry;
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -44,6 +45,8 @@ public class ParameterTest {
 	@Test
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Blobs are not allowed in this expression")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class,
+			reason = "Spanner doesn't support comparing two arrays")
 	public void testPrimitiveArrayParameterBinding(SessionFactoryScope scope) {
 		scope.inTransaction( em -> {
 			CriteriaQuery<MultiTypedBasicAttributesEntity> criteria = em.getCriteriaBuilder()
@@ -62,6 +65,7 @@ public class ParameterTest {
 	@Test
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Blobs are not allowed in this expression")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing two arrays")
 	public void testNonPrimitiveArrayParameterBinding(SessionFactoryScope scope) {
 		scope.inTransaction( em -> {
 			CriteriaQuery<MultiTypedBasicAttributesEntity> criteria = em.getCriteriaBuilder()
@@ -144,6 +148,7 @@ public class ParameterTest {
 	@JiraKey("HHH-17912")
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Blobs are not allowed in this expression")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing two arrays")
 	public void testAttributeEqualListParameter(SessionFactoryScope scope) {
 		scope.inTransaction( em -> {
 			final CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();

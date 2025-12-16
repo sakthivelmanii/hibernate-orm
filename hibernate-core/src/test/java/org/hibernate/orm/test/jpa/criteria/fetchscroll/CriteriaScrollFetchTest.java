@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.ScrollableResults;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.orm.test.hqlfetchscroll.Child;
 import org.hibernate.orm.test.hqlfetchscroll.Parent;
 
@@ -15,6 +16,7 @@ import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,6 +67,7 @@ public class CriteriaScrollFetchTest {
 
 	@Test
 	@Jira("https://hibernate.atlassian.net/browse/HHH-17497")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Scrollable result sets are not enabled")
 	public final void testScrollWithFetch(SessionFactoryScope scope) {
 		scope.inSession(
 				s -> {
@@ -82,6 +85,7 @@ public class CriteriaScrollFetchTest {
 
 	@Test
 	@Jira("https://hibernate.atlassian.net/browse/HHH-17497")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Scrollable result sets are not enabled")
 	public final void testScrollWithoutFetch(SessionFactoryScope scope) {
 		scope.inSession(
 				s -> {
