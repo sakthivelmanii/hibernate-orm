@@ -9,8 +9,10 @@ import jakarta.persistence.RollbackException;
 import org.hibernate.TransientObjectException;
 import org.hibernate.TransientPropertyValueException;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -79,6 +81,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 				G.class
 		}
 )
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support char(36)")
 public class MultiCircleJpaCascadeTest {
 	private B b;
 	private C c;
