@@ -13,6 +13,7 @@ import org.hibernate.annotations.AnyDiscriminatorValue;
 import org.hibernate.annotations.AnyDiscriminatorValues;
 import org.hibernate.annotations.AnyKeyJavaClass;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.Jpa;
@@ -91,7 +92,7 @@ public class TreatPathTest {
 	@Test
 	public void testTreatEntityValue(EntityManagerFactoryScope scope) {
 		scope.inTransaction( entityManager -> {
-			Language language = entityManager.find( Language.class, 1L );
+			Language language = entityManager.find( Language.class, SequenceHelper.getId(scope, 1L));
 			testCriteriaTreat( entityManager, "language", language );
 		} );
 	}

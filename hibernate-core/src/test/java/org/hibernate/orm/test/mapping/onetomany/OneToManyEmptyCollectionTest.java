@@ -15,6 +15,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import org.hibernate.collection.spi.PersistentBag;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.ImplicitListAsBagProvider;
 import org.hibernate.stat.spi.StatisticsImplementor;
 
@@ -72,7 +73,7 @@ public class OneToManyEmptyCollectionTest {
 
 					PersistentBag bag = (PersistentBag) items;
 					assertThat( bag.getOwner(), sameInstance( order ) );
-					assertThat( bag.getKey(), is( 1L ) );
+					assertThat( bag.getKey(), is( SequenceHelper.getId( scope, 1L) ) );
 					assertThat(
 							bag.getRole(),
 							is( Order.class.getName() + ".eagerItems" )
@@ -87,7 +88,7 @@ public class OneToManyEmptyCollectionTest {
 
 					PersistentBag lazyBag = (PersistentBag) lazyItems;
 					assertThat( lazyBag.getOwner(), sameInstance( order ) );
-					assertThat( lazyBag.getKey(), is( 1L ) );
+					assertThat( lazyBag.getKey(), is( SequenceHelper.getId( scope, 1L) ) );
 					assertThat(
 							lazyBag.getRole(),
 							is( Order.class.getName() + ".lazyItems" )

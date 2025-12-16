@@ -6,8 +6,10 @@ package org.hibernate.orm.test.mapping.identifier;
 
 import org.hibernate.annotations.PartitionKey;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import jakarta.persistence.Entity;
@@ -19,6 +21,7 @@ import jakarta.persistence.Table;
  * @author Christian Beikov
  */
 @Jpa(annotatedClasses = {SimplePartitionKeyTest.User.class})
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support updating primary key")
 public class SimplePartitionKeyTest {
 
 	@Test

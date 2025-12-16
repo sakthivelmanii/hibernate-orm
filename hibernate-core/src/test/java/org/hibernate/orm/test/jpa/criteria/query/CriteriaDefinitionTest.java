@@ -9,9 +9,11 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Id;
 import org.hibernate.query.criteria.CriteriaDefinition;
 import org.hibernate.query.criteria.JpaRoot;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.Test;
@@ -24,7 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @Jpa(annotatedClasses = CriteriaDefinitionTest.Message.class)
 public class CriteriaDefinitionTest {
 
-	@Test void test(SessionFactoryScope scope) {
+	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsCaseInsensitiveLike.class)
+	void test(SessionFactoryScope scope) {
 		scope.inTransaction( s -> {
 			s.persist( new Message(1L, "hello") );
 			s.persist( new Message(2L, "bye") );
@@ -96,7 +100,9 @@ public class CriteriaDefinitionTest {
 		});
 	}
 
-	@Test void test(EntityManagerFactoryScope scope) {
+	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsCaseInsensitiveLike.class)
+	void test(EntityManagerFactoryScope scope) {
 		scope.inTransaction( s -> {
 			s.persist( new Message(1L, "hello") );
 			s.persist( new Message(2L, "bye") );
