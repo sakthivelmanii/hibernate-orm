@@ -13,6 +13,7 @@ import org.hibernate.dialect.MariaDBDialect;
 import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 
 import org.hibernate.testing.jdbc.SharedDriverManagerTypeCacheClearingIntegrator;
@@ -113,6 +114,7 @@ public class ShortArrayTest {
 			reason = "The statement failed because binary large objects are not allowed in the Union, Intersect, or Minus ")
 	@SkipForDialect(dialectClass = MariaDBDialect.class, majorVersion = 10, minorVersion = 6,
 			reason = "Bug in MariaDB https://jira.mariadb.org/browse/MDEV-21530")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing two arrays")
 	public void testQuery(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			TypedQuery<TableWithShortArrays> tq = em.createNamedQuery( "TableWithShortArrays.JPQL.getByData", TableWithShortArrays.class );
@@ -141,6 +143,7 @@ public class ShortArrayTest {
 	@SkipForDialect(dialectClass = HANADialect.class, reason = "HANA requires a special function to compare LOBs")
 	@SkipForDialect(dialectClass = MySQLDialect.class, matchSubTypes = true, reason = "MySQL supports distinct from through a special operator")
 	@SkipForDialect(dialectClass = InformixDialect.class, reason = "Informix can't compare LOBs")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing two arrays")
 	public void testNativeQuery(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			final Dialect dialect = em.getDialect();
@@ -158,6 +161,7 @@ public class ShortArrayTest {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsTypedArrays.class)
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support getting bytes for array type")
 	public void testNativeQueryUntyped(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			Query q = em.createNamedQuery( "TableWithShortArrays.Native.getByIdUntyped" );
