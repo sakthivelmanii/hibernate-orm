@@ -64,7 +64,8 @@ ext {
                     'jdbc.url'   : 'jdbc:postgresql://' + dbHost + '/hibernate_orm_test?preparedStatementCacheQueries=0&escapeSyntaxCallMode=callIfNoReturn',
                     'jdbc.datasource' : 'org.postgresql.Driver',
 //                        'jdbc.datasource' : 'org.postgresql.ds.PGSimpleDataSource',
-                    'connection.init_sql' : ''
+                    'connection.init_sql' : '',
+                    'sequence.mismatch_strategy': 'EXCEPTION'
             ],
             pgsql_ci : [
                     'db.dialect' : 'org.hibernate.dialect.PostgreSQLDialect',
