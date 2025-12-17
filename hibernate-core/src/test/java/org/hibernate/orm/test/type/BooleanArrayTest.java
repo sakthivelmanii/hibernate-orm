@@ -117,28 +117,28 @@ public class BooleanArrayTest {
 
 	@Test
 	@SkipForDialect( dialectClass = OracleDialect.class, reason = "External driver fix required")
-	@SkipForDialect(dialectClass = InformixDialect.class,
-			reason = "The statement failed because binary large objects are not allowed in the Union, Intersect, or Minus ")
-	@SkipForDialect(dialectClass = MariaDBDialect.class, majorVersion = 10, minorVersion = 6,
-			reason = "Bug in MariaDB https://jira.mariadb.org/browse/MDEV-21530")
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing two arrays")
-	public void testQuery(SessionFactoryScope scope) {
-	scope.inSession( em -> {
-			TypedQuery<TableWithBooleanArrays> tq = em.createNamedQuery( "TableWithBooleanArrays.JPQL.getByData", TableWithBooleanArrays.class );
-			tq.setParameter( "data", new Boolean[]{} );
-			TableWithBooleanArrays tableRecord = tq.getSingleResult();
-			assertThat( tableRecord.getId(), is( 1L ) );
-		} );
-	}
-
-	@Test
-	@SkipForDialect( dialectClass = OracleDialect.class, reason = "External driver fix required")
 	public void testNativeQueryById(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			TypedQuery<TableWithBooleanArrays> tq = em.createNamedQuery( "TableWithBooleanArrays.Native.getById", TableWithBooleanArrays.class );
 			tq.setParameter( "id", 2L );
 			TableWithBooleanArrays tableRecord = tq.getSingleResult();
 			assertThat( tableRecord.getTheArray(), is( new Boolean[]{ Boolean.FALSE, Boolean.FALSE, null, Boolean.TRUE } ) );
+		} );
+	}
+
+	@Test
+	@SkipForDialect( dialectClass = OracleDialect.class, reason = "External driver fix required")
+	@SkipForDialect(dialectClass = InformixDialect.class,
+			reason = "The statement failed because binary large objects are not allowed in the Union, Intersect, or Minus ")
+	@SkipForDialect(dialectClass = MariaDBDialect.class, majorVersion = 10, minorVersion = 6,
+			reason = "Bug in MariaDB https://jira.mariadb.org/browse/MDEV-21530")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing two arrays")
+	public void testQuery(SessionFactoryScope scope) {
+		scope.inSession( em -> {
+			TypedQuery<TableWithBooleanArrays> tq = em.createNamedQuery( "TableWithBooleanArrays.JPQL.getByData", TableWithBooleanArrays.class );
+			tq.setParameter( "data", new Boolean[]{} );
+			TableWithBooleanArrays tableRecord = tq.getSingleResult();
+			assertThat( tableRecord.getId(), is( 1L ) );
 		} );
 	}
 
@@ -170,6 +170,7 @@ public class BooleanArrayTest {
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsTypedArrays.class)
 	@SkipForDialect( dialectClass = OracleDialect.class, reason = "External driver fix required")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support getting bytes for array type")
 	public void testNativeQueryUntyped(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			Query q = em.createNamedQuery( "TableWithBooleanArrays.Native.getByIdUntyped" );

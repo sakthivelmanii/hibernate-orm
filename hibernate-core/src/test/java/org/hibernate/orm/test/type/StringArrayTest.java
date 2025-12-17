@@ -13,6 +13,7 @@ import org.hibernate.dialect.MariaDBDialect;
 import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 
 import org.hibernate.testing.jdbc.SharedDriverManagerTypeCacheClearingIntegrator;
@@ -139,6 +140,7 @@ public class StringArrayTest {
 	@SkipForDialect(dialectClass = HANADialect.class, reason = "HANA requires a special function to compare LOBs")
 	@SkipForDialect(dialectClass = MySQLDialect.class, matchSubTypes = true, reason = "MySQL supports distinct from through a special operator")
 	@SkipForDialect(dialectClass = InformixDialect.class, reason = "Informix can't compare LOBs")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing two arrays")
 	public void testNativeQuery(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			final Dialect dialect = em.getDialect();
@@ -156,6 +158,7 @@ public class StringArrayTest {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsTypedArrays.class)
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support getting bytes for array type")
 	public void testNativeQueryUntyped(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			Query q = em.createNamedQuery( "TableWithStringArrays.Native.getByIdUntyped" );

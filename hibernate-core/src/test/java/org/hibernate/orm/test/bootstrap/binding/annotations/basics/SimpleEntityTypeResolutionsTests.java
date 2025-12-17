@@ -11,7 +11,7 @@ import java.util.Iterator;
 import jakarta.persistence.TemporalType;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.dialect.type.SpannerIntegerAsBigIntType;
+import org.hibernate.dialect.type.SpannerIntegerAsBigIntJdbcType;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.PersistentClass;
 import org.hibernate.mapping.Property;
@@ -47,7 +47,7 @@ public class SimpleEntityTypeResolutionsTests {
 
 			if( SpannerHelper.isSpannerDatabase( scope ) ) {
 				assertSame( IntegerJavaType.INSTANCE, resolution.getDomainJavaType() );
-				assertSame( SpannerIntegerAsBigIntType.INSTANCE, resolution.getJdbcType() );
+				assertSame( SpannerIntegerAsBigIntJdbcType.INSTANCE, resolution.getJdbcType() );
 			} else {
 				assertSame( IntegerJavaType.INSTANCE, resolution.getDomainJavaType() );
 				assertSame( IntegerJdbcType.INSTANCE, resolution.getJdbcType() );

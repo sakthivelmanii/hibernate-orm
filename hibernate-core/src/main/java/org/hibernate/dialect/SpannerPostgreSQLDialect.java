@@ -30,8 +30,9 @@ import org.hibernate.dialect.sequence.SpannerPostgreSQLSequenceSupport;
 import org.hibernate.dialect.sql.ast.SpannerPostgreSQLSqlAstTranslator;
 import org.hibernate.dialect.temptable.PersistentTemporaryTableStrategy;
 import org.hibernate.dialect.temptable.TemporaryTableStrategy;
-import org.hibernate.dialect.type.SpannerIntegerAsBigIntType;
-import org.hibernate.dialect.type.SpannerShortAsBigIntType;
+import org.hibernate.dialect.type.SpannerIntegerAsBigIntJdbcType;
+import org.hibernate.dialect.type.SpannerSmallIntAsBigIntJdbcType;
+import org.hibernate.dialect.type.SpannerTinyIntAsBigIntJdbcType;
 import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
 import org.hibernate.dialect.unique.UniqueDelegate;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
@@ -68,6 +69,7 @@ import org.hibernate.type.MappingContext;
 import org.hibernate.type.Type;
 import org.hibernate.type.descriptor.jdbc.JdbcType;
 import org.hibernate.type.descriptor.jdbc.spi.JdbcTypeRegistry;
+import org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType;
 import org.hibernate.type.descriptor.sql.internal.DdlTypeImpl;
 import org.hibernate.type.descriptor.sql.spi.DdlTypeRegistry;
 
@@ -83,6 +85,7 @@ import static org.hibernate.type.SqlTypes.BLOB;
 import static org.hibernate.type.SqlTypes.CHAR;
 import static org.hibernate.type.SqlTypes.CLOB;
 import static org.hibernate.type.SqlTypes.DOUBLE;
+import static org.hibernate.type.SqlTypes.FLOAT;
 import static org.hibernate.type.SqlTypes.INTEGER;
 import static org.hibernate.type.SqlTypes.NCLOB;
 import static org.hibernate.type.SqlTypes.SMALLINT;
@@ -211,8 +214,9 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	public void contributeTypes(TypeContributions typeContributions, ServiceRegistry serviceRegistry) {
 		super.contributeTypes( typeContributions, serviceRegistry );
 
-		typeContributions.getTypeConfiguration().getJdbcTypeRegistry().addDescriptor( SpannerIntegerAsBigIntType.INSTANCE );
-		typeContributions.getTypeConfiguration().getJdbcTypeRegistry().addDescriptor( SpannerShortAsBigIntType.INSTANCE );
+		typeContributions.getTypeConfiguration().getJdbcTypeRegistry().addDescriptor( SpannerIntegerAsBigIntJdbcType.INSTANCE );
+		typeContributions.getTypeConfiguration().getJdbcTypeRegistry().addDescriptor( SpannerSmallIntAsBigIntJdbcType.INSTANCE );
+		typeContributions.getTypeConfiguration().getJdbcTypeRegistry().addDescriptor( SpannerTinyIntAsBigIntJdbcType.INSTANCE );
 	}
 
 	@Override
@@ -233,6 +237,13 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		ddlTypeRegistry.addDescriptor( new DdlTypeImpl( Types.NUMERIC, "numeric", this ) );
 		ddlTypeRegistry.addDescriptor( new DdlTypeImpl( Types.DECIMAL, "decimal", this ) );
 		ddlTypeRegistry.addDescriptor( new DdlTypeImpl( Types.TINYINT, "bigint", this ) );
+
+		ddlTypeRegistry.addDescriptor(
+				CapacityDependentDdlType.builder( FLOAT, columnType( FLOAT ), castType( FLOAT ), this )
+						.withTypeCapacity( 24, "real" )
+						.withTypeCapacity( 53, "double precision" )
+						.build()
+		);
 	}
 
 	@Override

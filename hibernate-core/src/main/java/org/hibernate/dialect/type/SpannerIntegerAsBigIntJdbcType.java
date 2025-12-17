@@ -8,12 +8,12 @@ import org.hibernate.type.descriptor.jdbc.BigIntJdbcType;
 
 import java.sql.Types;
 
-public class SpannerShortAsBigIntType extends BigIntJdbcType {
+public class SpannerIntegerAsBigIntJdbcType extends BigIntJdbcType {
 
-	public static final SpannerShortAsBigIntType INSTANCE = new SpannerShortAsBigIntType();
+	public static final SpannerIntegerAsBigIntJdbcType INSTANCE = new SpannerIntegerAsBigIntJdbcType();
 
 	@Override
 	public int getJdbcTypeCode() {
-		return Types.SMALLINT;
+		return Types.INTEGER;
 	}
 }
