@@ -7,6 +7,7 @@ package org.hibernate.orm.test.function.array;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaRoot;
 import org.hibernate.query.sqm.NodeBuilder;
@@ -18,6 +19,7 @@ import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,6 +54,7 @@ public class ArrayConstructorTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing two arrays")
 	public void testEmpty(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			List<EntityWithArrays> results = em.createQuery( "from EntityWithArrays e where e.theArray = array()", EntityWithArrays.class )
@@ -62,6 +65,7 @@ public class ArrayConstructorTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing two arrays")
 	public void testNonExisting(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			//tag::hql-array-example[]
@@ -107,6 +111,7 @@ public class ArrayConstructorTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing two arrays")
 	public void testArrayConstructorSyntaxEmpty(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			List<EntityWithArrays> results = em.createQuery( "from EntityWithArrays e where e.theArray = []", EntityWithArrays.class )
@@ -117,6 +122,7 @@ public class ArrayConstructorTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing two arrays")
 	public void testArrayConstructorSyntaxNonEmpty(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			//tag::hql-array-hql-example[]

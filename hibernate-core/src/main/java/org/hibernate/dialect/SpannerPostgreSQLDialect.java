@@ -687,6 +687,11 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 			}
 
 			@Override
+			public boolean hasColumns() {
+				return true;
+			}
+
+			@Override
 			public Type getType() throws MappingException {
 				return metadata.getDatabase().getTypeConfiguration().getBasicTypeForJavaType( Long.class );
 			}

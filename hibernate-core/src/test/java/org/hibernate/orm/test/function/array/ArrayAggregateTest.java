@@ -13,6 +13,7 @@ import org.hibernate.boot.spi.AdditionalMappingContributor;
 import org.hibernate.boot.spi.InFlightMetadataCollector;
 import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.type.OracleArrayJdbcType;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.SpannerDialect;
@@ -142,6 +143,8 @@ public class ArrayAggregateTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class,
+			reason = "Queries containing a WHERE clause without a FROM clause are not supported")
 	public void testCompareAgainstArray(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			List<Integer> results = em.createQuery( "select 1 where array('abc','def',null) is not distinct from (select array_agg(e.theString) within group (order by e.theString asc nulls last) from EntityOfBasics e)", Integer.class )
@@ -177,6 +180,7 @@ public class ArrayAggregateTest {
 	@Test
 	@Jira("https://hibernate.atlassian.net/browse/HHH-19681")
 	@RequiresDialect(PostgreSQLDialect.class)
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "VALUES lists in FROM clause are not supported")
 	public void testJsonBJdbcArray(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			String sql = "select groupId, array_agg(json_values) " +

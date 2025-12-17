@@ -13,6 +13,7 @@ import jakarta.persistence.Table;
 
 import org.hibernate.dialect.OracleDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks.SupportsIdentityColumns;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
@@ -38,6 +39,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class QuotedIdentifierTest {
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class,
+			reason = "Spanner doesn't support integer sequences")
 	public void testDirectIdPropertyAccess(SessionFactoryScope scope) {
 		QuotedIdentifier quotedIdentifier = new QuotedIdentifier();
 		scope.inTransaction( session -> {
