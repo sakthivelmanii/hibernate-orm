@@ -21,6 +21,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.community.dialect.AltibaseDialect;
 import org.hibernate.dialect.H2Dialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
@@ -48,6 +49,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @DomainModel(annotatedClasses = TimeZoneStorageMappingTests.TimeZoneStorageEntity.class)
 @SessionFactory
 @ServiceRegistry(settings = @Setting( name = AvailableSettings.TIMEZONE_DEFAULT_STORAGE, value = "AUTO"))
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support time column")
 public class TimeZoneStorageMappingTests {
 
 	private static final ZoneOffset JVM_TIMEZONE_OFFSET = OffsetDateTime.now().getOffset();
