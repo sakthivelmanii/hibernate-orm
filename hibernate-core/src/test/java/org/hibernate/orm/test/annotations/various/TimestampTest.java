@@ -4,9 +4,11 @@
  */
 package org.hibernate.orm.test.annotations.various;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Timestamp;
@@ -22,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 @SessionFactory
 @DomainModel(annotatedClasses = {VMTimestamped.class, DBTimestamped.class})
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support integer sequences")
 public class TimestampTest {
 	@Test void test(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {

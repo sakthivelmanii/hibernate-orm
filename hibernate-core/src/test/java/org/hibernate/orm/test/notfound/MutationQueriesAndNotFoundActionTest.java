@@ -7,11 +7,13 @@ package org.hibernate.orm.test.notfound;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,6 +57,7 @@ public class MutationQueriesAndNotFoundActionTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "UPDATE...FROM statements are not supported.")
 	public void testUpdate(SessionFactoryScope scope) {
 		final SQLStatementInspector statementInspector = scope.getCollectingStatementInspector();
 
@@ -78,6 +81,7 @@ public class MutationQueriesAndNotFoundActionTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "UPDATE...FROM statements are not supported.")
 	public void testUpdateWithImplicitJoin(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -106,6 +110,7 @@ public class MutationQueriesAndNotFoundActionTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "VALUES lists in FROM clause are not supported")
 	public void testDelete(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -119,6 +124,7 @@ public class MutationQueriesAndNotFoundActionTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "VALUES lists in FROM clause are not supported")
 	public void testDeleteWithImplicitJoin(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

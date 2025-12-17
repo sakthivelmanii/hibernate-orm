@@ -12,6 +12,7 @@ import jakarta.persistence.Table;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.community.dialect.AltibaseDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
@@ -237,6 +238,7 @@ public class IsNullAndNotFoundTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "VALUES lists in FROM clause are not supported")
 	public void testDelete(SessionFactoryScope scope) {
 		SQLStatementInspector inspector = scope.getStatementInspector( SQLStatementInspector.class );
 		inspector.clear();
@@ -254,6 +256,7 @@ public class IsNullAndNotFoundTest {
 	@Test
 	@Jira("https://hibernate.atlassian.net/browse/HHH-17384")
 	@SkipForDialect(dialectClass = AltibaseDialect.class, reason = "left join cannot be used inside exists clause")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "VALUES lists in FROM clause are not supported")
 	public void testDeleteAdditionalPredicate(SessionFactoryScope scope) {
 		SQLStatementInspector inspector = scope.getStatementInspector( SQLStatementInspector.class );
 		inspector.clear();
@@ -271,6 +274,7 @@ public class IsNullAndNotFoundTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "UPDATE...FROM statements are not supported.")
 	public void testHqlUpdate(SessionFactoryScope scope) {
 		SQLStatementInspector inspector = scope.getStatementInspector( SQLStatementInspector.class );
 		inspector.clear();

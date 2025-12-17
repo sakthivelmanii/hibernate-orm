@@ -6,6 +6,8 @@ package org.hibernate.orm.test.function.array;
 
 import java.util.List;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.orm.SpannerHelper;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaRoot;
 import org.hibernate.query.sqm.NodeBuilder;
@@ -17,6 +19,7 @@ import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,6 +54,7 @@ public class ArrayLengthTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't return 0 if array is empty ")
 	public void testLengthZero(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			//tag::hql-array-length-example[]
@@ -77,7 +81,8 @@ public class ArrayLengthTest {
 		scope.inSession( em -> {
 			List<EntityWithArrays> results = em.createQuery( "from EntityWithArrays e where array_length(e.theArray) is null", EntityWithArrays.class )
 					.getResultList();
-			assertEquals( 1, results.size() );
+			// Spanner returns NULL for both empty and NULL array
+			assertEquals( SpannerHelper.isSpannerDatabase(scope) ? 2 : 1, results.size() );
 			assertEquals( 3L, results.get( 0 ).getId() );
 		} );
 	}

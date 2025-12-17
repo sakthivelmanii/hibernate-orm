@@ -109,6 +109,7 @@ public class ArrayConcatTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsArrayAppend.class)
 	public void testConcatPipeAppendLiteral(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			//tag::hql-array-concat-pipe-element-example[]
@@ -118,6 +119,7 @@ public class ArrayConcatTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsArrayAppend.class)
 	public void testConcatPipePrependLiteral(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			em.createQuery( "select e.id, 'first' || e.theArray from EntityWithArrays e order by e.id" ).getResultList();
@@ -125,6 +127,7 @@ public class ArrayConcatTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsArrayAppend.class)
 	public void testConcatPipeAppendNull(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			em.createQuery( "select e.id, e.theArray || null from EntityWithArrays e order by e.id" ).getResultList();
@@ -132,6 +135,7 @@ public class ArrayConcatTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsArrayAppend.class)
 	public void testConcatPipePrependNull(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			em.createQuery( "select e.id, null || e.theArray from EntityWithArrays e order by e.id" ).getResultList();

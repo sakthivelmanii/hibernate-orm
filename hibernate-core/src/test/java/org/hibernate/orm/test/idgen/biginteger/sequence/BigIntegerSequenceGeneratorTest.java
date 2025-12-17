@@ -5,11 +5,13 @@
 package org.hibernate.orm.test.idgen.biginteger.sequence;
 
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.Test;
 @DomainModel(xmlMappings = "org/hibernate/orm/test/idgen/biginteger/sequence/Mapping.hbm.xml")
 @SessionFactory
 @RequiresDialectFeature( feature = DialectFeatureChecks.SupportsSequences.class )
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support PG.NUMERIC as primary key")
 public class BigIntegerSequenceGeneratorTest {
 
 	@Test
