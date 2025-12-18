@@ -8,10 +8,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import jakarta.persistence.Entity;
@@ -23,6 +25,7 @@ import jakarta.persistence.Id;
 public class TemporalParameterPlusDurationTest {
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestamp without time zone column")
 	void timestampVsTimestampParameterPlusDuration(SessionFactoryScope scope) {
 		scope.inSession( session -> {
 			session.createQuery( "from SimpleEntity where inst > :i + 1 second + 2 second", SimpleEntity.class )
@@ -32,6 +35,7 @@ public class TemporalParameterPlusDurationTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestamp without time zone column")
 	void timestampParameterPlusDurationVsTimestamp(SessionFactoryScope scope) {
 		scope.inSession( session -> {
 			session.createQuery( "from SimpleEntity where :i + 1 second + 2 second > inst", SimpleEntity.class )
@@ -41,6 +45,7 @@ public class TemporalParameterPlusDurationTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support mul_d_interval")
 	void dateVsDateParameterPlusDuration(SessionFactoryScope scope) {
 		scope.inSession( session -> {
 			session.createQuery( "from SimpleEntity where ldate > :i + 3 day + 2 day", SimpleEntity.class )
@@ -50,6 +55,7 @@ public class TemporalParameterPlusDurationTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support mul_d_interval")
 	void dateParameterPlusDurationVsDate(SessionFactoryScope scope) {
 		scope.inSession( session -> {
 			session.createQuery( "from SimpleEntity where :i + 3 day + 2 day > ldate", SimpleEntity.class )

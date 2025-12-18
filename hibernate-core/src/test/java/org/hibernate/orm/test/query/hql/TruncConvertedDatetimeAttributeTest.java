@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import org.hibernate.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.orm.DateTimeHelper;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
@@ -64,7 +65,7 @@ public class TruncConvertedDatetimeAttributeTest {
 			assertThat( session.createQuery(
 					"select trunc(dateCol, month) from TestEntity",
 					Long.class
-			).getSingleResult() ).isEqualTo( new GregorianCalendar( 2017, Calendar.JANUARY, 1 ).getTime().getTime() );
+			).getSingleResult() ).isEqualTo( DateTimeHelper.get(scope, new GregorianCalendar( 2017, Calendar.JANUARY, 1 )).getTime().getTime());
 		} );
 	}
 

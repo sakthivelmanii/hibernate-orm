@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.Query;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
@@ -60,11 +61,13 @@ public class CriteriaCteOffsetFetchTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Queries containing parameters in the OFFSET clause must contain a LIMIT clause")
 	public void testMainQueryOffset(SessionFactoryScope scope) {
 		executeQuery( scope, 1, null, false );
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Queries containing parameters in the OFFSET clause must contain a LIMIT clause")
 	public void testSetFirstResult(SessionFactoryScope scope) {
 		executeQuery( scope, 1, null, true );
 	}

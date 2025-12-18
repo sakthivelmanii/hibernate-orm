@@ -7,10 +7,12 @@ package org.hibernate.orm.test.query;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -35,7 +37,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Jira( "https://hibernate.atlassian.net/browse/HHH-17837" )
 @Jira( "https://hibernate.atlassian.net/browse/HHH-18202" )
 public class ManyToManyGroupByOrderByTest {
+
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 	public void testSelectEntity(SessionFactoryScope scope) {
 		// explicit join group by
 		scope.inTransaction( session -> {
@@ -72,6 +76,7 @@ public class ManyToManyGroupByOrderByTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 	public void testSelectAssociationId(SessionFactoryScope scope) {
 		// explicit join group by
 		scope.inTransaction( session -> {

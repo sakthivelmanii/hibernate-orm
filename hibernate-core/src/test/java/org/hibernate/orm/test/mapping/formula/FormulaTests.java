@@ -21,10 +21,12 @@ import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,6 +57,7 @@ public class FormulaTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support anytextcat function")
 	void testLoader(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			Account account = session.find( Account.class, 1L );
@@ -63,6 +66,7 @@ public class FormulaTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support anytextcat function")
 	void testHQL(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			Account account = session.createQuery( "select a from Account a where a.id = :id", Account.class )
@@ -72,6 +76,7 @@ public class FormulaTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support anytextcat function")
 	void testCriteria(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			final CriteriaBuilder criteriaBuilder = scope.getSessionFactory().getCriteriaBuilder();

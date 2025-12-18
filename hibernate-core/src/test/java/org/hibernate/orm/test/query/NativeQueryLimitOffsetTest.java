@@ -9,12 +9,14 @@ import java.util.List;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -66,6 +68,7 @@ public class NativeQueryLimitOffsetTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "queries containing parameters in the OFFSET clause must contain a LIMIT")
 	public void testPartialLimitOffsetOnNativeQuery(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

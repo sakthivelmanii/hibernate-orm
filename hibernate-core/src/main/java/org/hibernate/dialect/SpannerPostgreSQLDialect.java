@@ -33,7 +33,7 @@ import org.hibernate.dialect.temptable.TemporaryTableStrategy;
 import org.hibernate.dialect.type.SpannerIntegerAsBigIntJdbcType;
 import org.hibernate.dialect.type.SpannerSmallIntAsBigIntJdbcType;
 import org.hibernate.dialect.type.SpannerTinyIntAsBigIntJdbcType;
-import org.hibernate.dialect.unique.CreateTableUniqueDelegate;
+import org.hibernate.dialect.unique.AlterTableUniqueIndexDelegate;
 import org.hibernate.dialect.unique.UniqueDelegate;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
@@ -44,6 +44,7 @@ import org.hibernate.mapping.Index;
 import org.hibernate.mapping.PrimaryKey;
 import org.hibernate.mapping.Selectable;
 import org.hibernate.mapping.Table;
+import org.hibernate.mapping.UniqueKey;
 import org.hibernate.mapping.Value;
 import org.hibernate.mapping.ValueVisitor;
 import org.hibernate.metamodel.mapping.EntityMappingType;
@@ -105,7 +106,7 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 					LockTimeoutType.NONE,
 					OuterJoinLockingType.FULL,
 					ConnectionLockTimeoutStrategy.NONE );
-	private final UniqueDelegate SPANNER_UNIQUE_DELEGATE = new SpannerUniqueDelegate( this );
+	private final UniqueDelegate SPANNER_UNIQUE_DELEGATE = new AlterTableUniqueIndexDelegate( this );
 	private final StandardTableExporter spannerTableExporter = new StandardTableExporter( this ) {
 		@Override
 		public String[] getSqlCreateStrings(Table table, Metadata metadata, SqlStringGenerationContext context) {
@@ -129,11 +130,23 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 			// Spanner requires the index to be dropped before dropping the table
 			List<String> sqlDropIndexStrings = new ArrayList<>();
 			for ( Index index : table.getIndexes().values() ) {
-				sqlDropIndexStrings.add( "drop index " + index.getName() );
+				sqlDropIndexStrings.add(sqlDropIndexString(index.getName()));
+			}
+			for ( UniqueKey uniqueKey : table.getUniqueKeys().values() ) {
+				sqlDropIndexStrings.add(sqlDropIndexString(uniqueKey.getName()));
+			}
+			for ( Column column : table.getColumns() ) {
+				if ( column.isUnique() ) {
+					sqlDropIndexStrings.add(sqlDropIndexString(column.getUniqueKeyName()));
+				}
 			}
 			String[] sqlDropStrings = super.getSqlDropStrings( table, metadata, context );
 			return Stream.concat( sqlDropIndexStrings.stream(), Stream.of( sqlDropStrings ) )
 					.toArray(String[]::new);
+		}
+
+		private String sqlDropIndexString(String indexName) {
+			return "drop index if exists " + indexName;
 		}
 	};
 
@@ -632,23 +645,6 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	@Override
 	public UniqueDelegate getUniqueDelegate() {
 		return SPANNER_UNIQUE_DELEGATE;
-	}
-
-	static class SpannerUniqueDelegate extends CreateTableUniqueDelegate {
-
-		public SpannerUniqueDelegate(Dialect dialect) {
-			super( dialect );
-		}
-
-		@Override
-		public String getColumnDefinitionUniquenessFragment(Column column, SqlStringGenerationContext context) {
-			return "";
-		}
-
-		@Override
-		public String getTableCreationUniqueConstraintsFragment(Table table, SqlStringGenerationContext context) {
-			return "";
-		}
 	}
 
 	@Override

@@ -612,7 +612,7 @@ abstract public class DialectFeatureChecks {
 	public static class SupportsInverseDistributionFunctions implements DialectFeatureCheck {
 		public boolean apply(Dialect dialect) {
 			return dialect instanceof H2Dialect
-				|| dialect instanceof PostgreSQLDialect
+				|| dialect instanceof PostgreSQLDialect && !(dialect instanceof SpannerPostgreSQLDialect)
 				|| dialect instanceof HANADialect
 				|| dialect instanceof CockroachDialect
 				|| dialect instanceof DB2Dialect db2 && db2.getDB2Version().isSameOrAfter( 11 )
@@ -625,7 +625,7 @@ abstract public class DialectFeatureChecks {
 	public static class SupportsHypotheticalSetFunctions implements DialectFeatureCheck {
 		public boolean apply(Dialect dialect) {
 			return dialect instanceof H2Dialect
-				|| dialect instanceof PostgreSQLDialect
+				|| dialect instanceof PostgreSQLDialect && !(dialect instanceof SpannerPostgreSQLDialect)
 				|| dialect instanceof HANADialect
 				|| dialect instanceof CockroachDialect
 				|| dialect instanceof DB2Dialect db2 && db2.getDB2Version().isSameOrAfter( 11 )

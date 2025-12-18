@@ -16,11 +16,13 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.MariaDBDialect;
 import org.hibernate.dialect.SQLServerDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @DomainModel(
 		xmlMappings = "org/hibernate/orm/test/optlock/Document.hbm.xml"
 )
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner emulator doesn't support concurrent requests")
 @SessionFactory
 public class OptimisticLockTest {
 
