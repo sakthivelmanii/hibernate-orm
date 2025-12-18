@@ -6,6 +6,7 @@ package org.hibernate.orm.test.locking.options;
 
 import jakarta.persistence.LockModeType;
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -27,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SuppressWarnings("JUnitMalformedDeclaration")
 @DomainModel(annotatedClasses = Detail.class)
 @SessionFactory(useCollectingStatementInspector = true)
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "update doesn't block")
 public class ScopeAndSecondaryTableTests {
 	@BeforeEach
 	void createTestData(SessionFactoryScope factoryScope) {

@@ -9,9 +9,11 @@ import jakarta.persistence.Id;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.Immutable;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SuppressWarnings("JUnitMalformedDeclaration")
 @DomainModel(annotatedClasses = ImmutableDefaultTest.OrderLine.class)
 @SessionFactory
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support PG.NUMERIC as primary key")
 public class ImmutableDefaultTest {
 
 	@Test

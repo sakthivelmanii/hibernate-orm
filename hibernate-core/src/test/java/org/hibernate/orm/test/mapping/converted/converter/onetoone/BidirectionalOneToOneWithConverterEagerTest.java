@@ -6,6 +6,7 @@ package org.hibernate.orm.test.mapping.converted.converter.onetoone;
 
 import java.io.Serializable;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.util.uuid.SafeRandomUUIDGenerator;
 
 import org.hibernate.testing.jdbc.SQLStatementInspector;
@@ -72,7 +73,7 @@ public class BidirectionalOneToOneWithConverterEagerTest {
 		final SQLStatementInspector statementInspector = scope.getCollectingStatementInspector();
 		statementInspector.clear();
 		scope.inTransaction( session -> {
-			FooEntity foo = session.find( FooEntity.class, 1L );
+			FooEntity foo = session.find( FooEntity.class, SequenceHelper.getId( scope, 1L ));
 			statementInspector.assertExecutedCount( 1 );
 
 			BarEntity bar = foo.getBar();
@@ -93,7 +94,7 @@ public class BidirectionalOneToOneWithConverterEagerTest {
 		final SQLStatementInspector statementInspector = scope.getCollectingStatementInspector();
 		statementInspector.clear();
 		scope.inTransaction( session -> {
-			BarEntity bar = session.find( BarEntity.class, 1L );
+			BarEntity bar = session.find( BarEntity.class, SequenceHelper.getId( scope, 1L ));
 			statementInspector.assertExecutedCount( 1 );
 
 			FooEntity foo = bar.getFoo();
