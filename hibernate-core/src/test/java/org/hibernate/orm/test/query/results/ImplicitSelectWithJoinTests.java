@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.ScrollableResults;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.SelectionQuery;
 
 import org.hibernate.testing.orm.domain.StandardDomainModel;
@@ -18,6 +19,7 @@ import org.hibernate.testing.orm.junit.FailureExpected;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,6 +40,7 @@ public class ImplicitSelectWithJoinTests {
 	private static final String HQL3 = "from Product q join q.vendor w, Product p join p.vendor v where v.name like '%Steve%' and w.name like '%Gavin%'";
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Scrollable result sets are not enabled")
 	public void testNoExpectedTypeWithThis(SessionFactoryScope scope) {
 		scope.inTransaction( (session) -> {
 			final SelectionQuery<?> query = session.createSelectionQuery( HQL0 );
@@ -80,6 +83,7 @@ public class ImplicitSelectWithJoinTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Scrollable result sets are not enabled")
 	public void testProductResult(SessionFactoryScope scope) {
 		scope.inTransaction( (session) -> {
 			final SelectionQuery<Product> query = session.createSelectionQuery( HQL, Product.class );
@@ -154,6 +158,7 @@ public class ImplicitSelectWithJoinTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Scrollable result sets are not enabled")
 	public void testArrayResult(SessionFactoryScope scope) {
 		scope.inTransaction( (session) -> {
 			final SelectionQuery<Object[]> query = session.createSelectionQuery( HQL3, Object[].class );
@@ -213,6 +218,7 @@ public class ImplicitSelectWithJoinTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Scrollable result sets are not enabled")
 	public void testExplicitSingleSelectionArrayResult(SessionFactoryScope scope) {
 		scope.inTransaction( (session) -> {
 			final SelectionQuery<Object[]> query = session.createSelectionQuery( HQL2, Object[].class );
@@ -241,6 +247,7 @@ public class ImplicitSelectWithJoinTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Scrollable result sets are not enabled")
 	public void testExplicitSingleSelectionProductResult(SessionFactoryScope scope) {
 		scope.inTransaction( (session) -> {
 			final SelectionQuery<Product> query = session.createSelectionQuery( HQL2, Product.class );

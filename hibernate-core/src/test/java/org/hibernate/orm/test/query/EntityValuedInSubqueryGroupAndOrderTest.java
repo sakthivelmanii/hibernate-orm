@@ -6,6 +6,7 @@ package org.hibernate.orm.test.query;
 
 import org.hibernate.dialect.OracleDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -69,6 +70,7 @@ public class EntityValuedInSubqueryGroupAndOrderTest {
 
 	@Test
 	@Jira( "https://hibernate.atlassian.net/browse/HHH-17231" )
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 	public void testInSubqueryGroupByProp(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			final EntityB result = session.createQuery(
@@ -84,6 +86,7 @@ public class EntityValuedInSubqueryGroupAndOrderTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 	public void testTopLevelSelect(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			// Here, the selection is top level so the entity valued path will be expanded

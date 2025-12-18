@@ -145,6 +145,7 @@ public class ILikeCriteriaTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner support only backslash as escape")
 	public void testNotLikeEscape(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

@@ -10,6 +10,7 @@ import org.hibernate.community.dialect.InformixDialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.HSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.lock.spi.OuterJoinLockingType;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -44,6 +45,7 @@ import static org.hibernate.orm.test.locking.options.Helper.Table.REPORT_LABELS;
 @Jira( "https://hibernate.atlassian.net/browse/HHH-19459" )
 @RequiresDialectFeature( feature = DialectFeatureChecks.SupportsSelectLocking.class )
 @Tag("db-locking")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "update doesn't block")
 public class ScopeTests {
 	@BeforeEach
 	void createTestData(SessionFactoryScope factoryScope) {

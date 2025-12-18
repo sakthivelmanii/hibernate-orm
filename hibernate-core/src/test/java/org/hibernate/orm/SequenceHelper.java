@@ -29,4 +29,8 @@ public class SequenceHelper {
 	public static long getIncrementValue(Dialect dialect, long incrementValue) {
 		return dialect instanceof SpannerPostgreSQLDialect ? 0 : incrementValue;
 	}
+
+	public static Object getValue(SessionFactoryScope scope, int val) {
+		return SpannerHelper.isSpannerDatabase(scope) ? (long) val : val;
+	}
 }

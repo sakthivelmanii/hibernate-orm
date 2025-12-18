@@ -37,8 +37,8 @@ public class AlterTableUniqueIndexDelegate extends AlterTableUniqueDelegate {
 	@Override
 	public String getAlterTableToAddUniqueKeyCommand(UniqueKey uniqueKey, Metadata metadata,
 			SqlStringGenerationContext context) {
-		if ( uniqueKey.hasNullableColumn() ) {
-			final Dialect dialect = context.getDialect();
+		final Dialect dialect = context.getDialect();
+		if ( uniqueKey.hasNullableColumn() || !dialect.supportsUniqueConstraintInColumnDefinition()) {
 			final String name = uniqueKey.getName();
 			final String tableName = context.format( uniqueKey.getTable().getQualifiedTableName() );
 			final List<Column> columns = uniqueKey.getColumns();
@@ -75,7 +75,7 @@ public class AlterTableUniqueIndexDelegate extends AlterTableUniqueDelegate {
 	@Override
 	public String getAlterTableToDropUniqueKeyCommand(UniqueKey uniqueKey, Metadata metadata,
 			SqlStringGenerationContext context) {
-		if ( uniqueKey.hasNullableColumn() ) {
+		if ( uniqueKey.hasNullableColumn()  || !dialect.supportsUniqueConstraintInColumnDefinition()) {
 			final String tableName = context.format( uniqueKey.getTable().getQualifiedTableName() );
 			return "drop index " + qualify( tableName, uniqueKey.getName() );
 		}
