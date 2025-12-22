@@ -10,9 +10,11 @@ import java.util.Set;
 
 import org.hibernate.Session;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -73,6 +75,7 @@ public class SequenceGeneratorAndAutoFlushTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable resultset")
 	public void testScrollAutoFlush(EntityManagerFactoryScope scope) {
 		scope.inTransaction(
 				entityManager -> {

@@ -88,7 +88,8 @@ public class UniqueConstraintGenerationTest {
 			regex = dialect.getCreateTableString() + " " + tableName + " .* " + columnName + " .+ unique.*\\)"
 					+ dialect.getTableTypeString().toLowerCase() + ";";
 		}
-		else if ( dialect.getUniqueDelegate() instanceof AlterTableUniqueDelegate) {
+		else if ( dialect.getUniqueDelegate() instanceof AlterTableUniqueDelegate &&
+				dialect.supportsUniqueConstraintInColumnDefinition()) {
 			regex = dialect.getAlterTableString( tableName ) + " add constraint uk.* unique \\(" + columnName + "\\);";
 		}
 		else {

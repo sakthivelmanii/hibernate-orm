@@ -6,10 +6,12 @@ package org.hibernate.orm.test.sql.partition;
 
 import org.hibernate.annotations.PartitionKey;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -53,6 +55,7 @@ public class PartitionKeyAndAssociationTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Cannot modify a primary key column with UPDATE")
 	public void testUpdate(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			final SalesContact contact = session.find( SalesContact.class, 1L );
