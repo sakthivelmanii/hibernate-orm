@@ -95,10 +95,12 @@ public class UniqueConstraintDropTest {
 			}
 		}
 
-		MatcherAssert.assertThat(
-				checkDropConstraint( "test_entity_children", dialect, scriptFile ),
-				is( true )
-		);
+		if (dialect.supportsUniqueConstraintInColumnDefinition()) {
+			MatcherAssert.assertThat(
+					checkDropConstraint( "test_entity_children", dialect, scriptFile ),
+					is( true )
+			);
+		}
 	}
 
 	private ExecutionOptions executionOptions(StandardServiceRegistry registry) {

@@ -9,11 +9,13 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.cache.spi.CacheImplementor;
 import org.hibernate.cfg.AvailableSettings;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.Setting;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -115,6 +117,7 @@ public class NativeQuerySyncSpaceCachingTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Cannot modify a primary key column with UPDATE")
 	public void testUpdateCachedEntityWithNoSyncSpaces(SessionFactoryScope scope) {
 		final CacheImplementor cache = scope.getSessionFactory().getCache();
 		assertThat( cache.containsEntity( Customer.class, 1 ) ).isTrue();
@@ -130,6 +133,7 @@ public class NativeQuerySyncSpaceCachingTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Cannot modify a primary key column with UPDATE")
 	public void testUpdateCachedEntityWithSyncSpaces(SessionFactoryScope scope) {
 		final CacheImplementor cache = scope.getSessionFactory().getCache();
 		assertThat( cache.containsEntity( Customer.class, 1 ) ).isTrue();

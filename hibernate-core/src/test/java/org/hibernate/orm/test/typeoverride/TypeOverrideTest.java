@@ -12,7 +12,9 @@ import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.HANADialect;
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
+import org.hibernate.dialect.type.SpannerIntegerAsBigIntJdbcType;
 import org.hibernate.type.descriptor.jdbc.BlobJdbcType;
 import org.hibernate.type.descriptor.jdbc.IntegerJdbcType;
 import org.hibernate.type.descriptor.jdbc.spi.JdbcTypeRegistry;
@@ -48,7 +50,12 @@ public class TypeOverrideTest extends BaseSessionFactoryFunctionalTest {
 		final JdbcTypeRegistry jdbcTypeRegistry = getMetadata().getTypeConfiguration()
 				.getJdbcTypeRegistry();
 		// no override
-		assertSame( IntegerJdbcType.INSTANCE, jdbcTypeRegistry.getDescriptor( Types.INTEGER ) );
+		if ( SpannerPostgreSQLDialect.class.isInstance( dialect ) ) {
+			assertSame( SpannerIntegerAsBigIntJdbcType.INSTANCE, jdbcTypeRegistry.getDescriptor( Types.INTEGER ) );
+		} else {
+			assertSame( IntegerJdbcType.INSTANCE, jdbcTypeRegistry.getDescriptor( Types.INTEGER ) );
+		}
+
 
 		// A few dialects explicitly override BlobTypeDescriptor.DEFAULT
 		if ( CockroachDialect.class.isInstance( dialect ) ) {
