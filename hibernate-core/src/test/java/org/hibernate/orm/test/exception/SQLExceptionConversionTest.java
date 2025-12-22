@@ -10,6 +10,7 @@ import java.sql.Types;
 import org.hibernate.Session;
 import org.hibernate.dialect.HANADialect;
 import org.hibernate.community.dialect.TiDBDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.jdbc.spi.JdbcCoordinator;
 import org.hibernate.engine.jdbc.spi.ResultSetReturn;
 import org.hibernate.engine.jdbc.spi.StatementPreparer;
@@ -37,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 		"org/hibernate/orm/test/exception/Group.hbm.xml"
 })
 @SessionFactory
+@org.hibernate.testing.orm.junit.SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support correct error propagation in emulator yet")
 public class SQLExceptionConversionTest {
 
 	@Test

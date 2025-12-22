@@ -14,7 +14,9 @@ import java.time.temporal.ChronoUnit;
 
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.type.descriptor.DateTimeUtils;
 
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -35,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ServiceRegistry(settings = @Setting(name = AvailableSettings.TIMEZONE_DEFAULT_STORAGE, value = "COLUMN"))
 public class ColumnZonedTest {
 
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestampz column with precision")
 	@Test void test(SessionFactoryScope scope) {
 		final ZonedDateTime nowZoned;
 		final OffsetDateTime nowOffset;

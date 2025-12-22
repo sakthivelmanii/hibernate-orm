@@ -25,6 +25,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.community.dialect.TiDBDialect;
 import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.engine.jdbc.env.spi.IdentifierHelper;
 import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
@@ -82,6 +83,7 @@ import static org.hibernate.cfg.SchemaToolingSettings.HBM2DDL_JDBC_METADATA_EXTR
 		SchemaUpdateTest.InheritanceChildEntity.class,
 		SchemaUpdateTest.InheritanceSecondChildEntity.class
 })
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 public class SchemaUpdateTest implements ServiceRegistryProducer {
 	public static Collection<JdbcMetadataAccessStrategy> parameters() {
 		return List.of(

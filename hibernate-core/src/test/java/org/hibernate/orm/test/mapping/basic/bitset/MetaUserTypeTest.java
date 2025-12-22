@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
 import org.hibernate.type.descriptor.WrapperOptions;
@@ -49,7 +50,7 @@ public class MetaUserTypeTest {
 			em.persist( thing );
 		} );
 		scope.inTransaction( em -> {
-			Thing thing = em.find( Thing.class, 1 );
+			Thing thing = em.find( Thing.class, SequenceHelper.getId( scope, 1L ) );
 			assertEquals( Period.of( 1, 2, 3 ), thing.period );
 			assertEquals( Period.ofDays( 42 ), thing.days );
 		} );
@@ -99,7 +100,7 @@ public class MetaUserTypeTest {
 			em.persist( things );
 		} );
 		scope.inTransaction( em -> {
-			Things things = em.find( Things.class, 1 );
+			Things things = em.find( Things.class, SequenceHelper.getId( scope, 1L ) );
 			assertEquals( Period.of( 1, 2, 3 ), things.periods.get( 0 ) );
 			assertEquals( Period.ofDays( 42 ), things.days.get( 0 ) );
 		} );

@@ -14,6 +14,7 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.community.dialect.InformixDialect;
 import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.dialect.SQLServerDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.engine.transaction.internal.jta.JtaStatusHelper;
 import org.hibernate.resource.jdbc.spi.PhysicalConnectionHandlingMode;
@@ -480,6 +481,7 @@ public class CMTTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable resultset")
 	public void testCurrentSessionWithScroll(SessionFactoryScope scope) throws Exception {
 		final SessionFactoryImplementor sessionFactory = scope.getSessionFactory();
 

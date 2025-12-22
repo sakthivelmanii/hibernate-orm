@@ -33,6 +33,7 @@ import org.hibernate.dialect.temptable.TemporaryTableStrategy;
 import org.hibernate.dialect.type.SpannerIntegerAsBigIntJdbcType;
 import org.hibernate.dialect.type.SpannerSmallIntAsBigIntJdbcType;
 import org.hibernate.dialect.type.SpannerTinyIntAsBigIntJdbcType;
+import org.hibernate.dialect.type.SpannerZonedOffsetJavaType;
 import org.hibernate.dialect.unique.AlterTableUniqueIndexDelegate;
 import org.hibernate.dialect.unique.UniqueDelegate;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
@@ -226,6 +227,8 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	@Override
 	public void contributeTypes(TypeContributions typeContributions, ServiceRegistry serviceRegistry) {
 		super.contributeTypes( typeContributions, serviceRegistry );
+
+		typeContributions.getTypeConfiguration().getJavaTypeRegistry().addDescriptor( SpannerZonedOffsetJavaType.INSTANCE );
 
 		typeContributions.getTypeConfiguration().getJdbcTypeRegistry().addDescriptor( SpannerIntegerAsBigIntJdbcType.INSTANCE );
 		typeContributions.getTypeConfiguration().getJdbcTypeRegistry().addDescriptor( SpannerSmallIntAsBigIntJdbcType.INSTANCE );

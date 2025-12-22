@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @JiraKey( "HHH-11033" )
 @DomainModel( annotatedClasses = NativeQueryScrollableResultsTests.MyEntity.class )
 @SessionFactory
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable result set")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable resultset")
 public class NativeQueryScrollableResultsTests {
 
 	@Test
