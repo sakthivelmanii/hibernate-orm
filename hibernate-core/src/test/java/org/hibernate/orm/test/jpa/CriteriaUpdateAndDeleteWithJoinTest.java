@@ -17,9 +17,11 @@ import jakarta.persistence.criteria.CriteriaUpdate;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,6 +55,7 @@ public class CriteriaUpdateAndDeleteWithJoinTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "UPDATE...FROM statements are not supported")
 	public void testUpdate(EntityManagerFactoryScope scope) {
 		scope.inTransaction(
 				entityManager -> {
@@ -72,6 +75,7 @@ public class CriteriaUpdateAndDeleteWithJoinTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass =  SpannerPostgreSQLDialect.class, reason = "VALUES lists in FROM clause are not supported")
 	public void testDelete(EntityManagerFactoryScope scope) {
 		scope.inTransaction(
 				entityManager -> {

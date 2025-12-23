@@ -62,7 +62,7 @@ public class MetaUserTypeTest {
 			em.persist( thing );
 		} );
 		scope.inTransaction( em -> {
-			SecondThing thing = em.find( SecondThing.class, 1 );
+			SecondThing thing = em.find( SecondThing.class, SequenceHelper.getId( scope, 1L ) );
 			assertEquals( Period.of( 1, 2, 3 ), thing.period );
 			assertEquals( Period.ofDays( 42 ), thing.days );
 		} );
@@ -74,7 +74,7 @@ public class MetaUserTypeTest {
 			em.persist( thing );
 		} );
 		scope.inTransaction( em -> {
-			ThirdThing thing = em.find( ThirdThing.class, 1 );
+			ThirdThing thing = em.find( ThirdThing.class, SequenceHelper.getId( scope, 1L ) );
 			assertEquals( Period.of( 1, 2, 3 ), thing.period );
 			assertEquals( Period.ofDays( 42 ), thing.days );
 		} );
@@ -86,7 +86,7 @@ public class MetaUserTypeTest {
 			em.persist( thing );
 		} );
 		scope.inTransaction( em -> {
-			FourthThing thing = em.find( FourthThing.class, 1 );
+			FourthThing thing = em.find( FourthThing.class, SequenceHelper.getId( scope, 1L ) );
 			assertEquals( Period.of( 1, 2, 3 ), thing.period );
 			assertEquals( Period.ofDays( 42 ), thing.days );
 		} );

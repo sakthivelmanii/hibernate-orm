@@ -191,7 +191,7 @@ public class MutationDelegateIdentityTest {
 		} );
 		scope.inSession( session -> assertThat( session.find(
 				IdentityAndValuesAndRowId.class,
-				SequenceHelper.getId( scope, 1L )
+				SequenceHelper.getId( scope.getSessionFactory().getJdbcServices().getDialect(), 1L, 1L, false)
 		).getUpdateDate() ).isNotNull() );
 	}
 

@@ -13,6 +13,7 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.MappedSuperclass;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -81,7 +82,7 @@ public class IdPropertyInSubclassIdInMappedSuperclassTest {
 			assertEquals(
 					1,
 					session.createQuery( "from Human h where h.id = :id", Human.class )
-							.setParameter( "id", 1L )
+							.setParameter( "id", SequenceHelper.getId( scope, 1L ) )
 							.list()
 							.size()
 			);

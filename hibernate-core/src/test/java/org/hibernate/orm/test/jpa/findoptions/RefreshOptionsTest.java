@@ -16,8 +16,10 @@ import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
 import org.hibernate.annotations.FetchProfile;
 import org.hibernate.annotations.FetchProfileOverride;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -30,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @Jpa(annotatedClasses = RefreshOptionsTest.MyEntity.class)
 public class RefreshOptionsTest {
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner does not support lock timeout.")
 	void test(EntityManagerFactoryScope scope) {
 		MyEntity hello = new MyEntity("Hello");
 		scope.getEntityManagerFactory()

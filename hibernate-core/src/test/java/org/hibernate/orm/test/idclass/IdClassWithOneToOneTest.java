@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -49,7 +50,7 @@ public class IdClassWithOneToOneTest {
 	public void testCreate(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
-					Task task = session.get(Task.class, 1L);
+					Task task = session.get(Task.class, SequenceHelper.getId( scope, 1L ) );
 					assertThat( task.text.content, is( "Localized in en" ) );
 					assertThat( task.text.locale, is( "en" ) );
 				}

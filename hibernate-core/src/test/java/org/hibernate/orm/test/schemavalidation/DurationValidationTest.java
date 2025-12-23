@@ -17,7 +17,9 @@ import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.config.spi.ConfigurationService;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.tool.hbm2ddl.SchemaExport;
 import org.hibernate.tool.schema.JdbcMetadataAccessStrategy;
 import org.hibernate.tool.schema.SourceType;
@@ -52,6 +54,7 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 @BaseUnitTest
 @RequiresDialect(PostgreSQLDialect.class)
 @RequiresDialect(H2Dialect.class)
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INTERVAL as column type")
 public class DurationValidationTest implements ExecutionOptions {
 	private StandardServiceRegistry ssr;
 	private MetadataImplementor metadata;

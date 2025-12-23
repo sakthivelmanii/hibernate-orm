@@ -21,6 +21,7 @@ import org.hibernate.Session;
 import org.hibernate.annotations.FetchProfile;
 import org.hibernate.annotations.FetchProfileOverride;
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
 import org.hibernate.testing.orm.junit.SkipForDialect;
@@ -39,6 +40,7 @@ public class FindOptionsTest {
 	@Test
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Informix disallows FOR UPDATE with multi-table queries")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner does not support lock timeout.")
 	void test(EntityManagerFactoryScope scope) {
 		MyEntity hello = new MyEntity("Hello");
 		scope.getEntityManagerFactory()

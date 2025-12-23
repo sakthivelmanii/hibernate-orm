@@ -6,6 +6,7 @@ package org.hibernate.orm.test.mapping.embeddable;
 
 import org.hibernate.annotations.Parent;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.stat.spi.StatisticsImplementor;
 
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -54,7 +55,7 @@ public class ParentCacheTest {
 		statistics.clear();
 
 		scope.inTransaction( session -> {
-			final ParentEntity parent = session.find( ParentEntity.class, 1L );
+			final ParentEntity parent = session.find( ParentEntity.class, SequenceHelper.getId( scope, 1L ) );
 			final ChildEmbeddable embeddable = parent.getChild();
 			assertThat( embeddable.getParent() ).isNotNull();
 		} );
@@ -64,7 +65,7 @@ public class ParentCacheTest {
 		assertThat( statistics.getSecondLevelCachePutCount() ).isEqualTo( 1L );
 
 		scope.inTransaction( session -> {
-			final ParentEntity parent = session.find( ParentEntity.class, 1L );
+			final ParentEntity parent = session.find( ParentEntity.class, SequenceHelper.getId( scope, 1L ) );
 			final ChildEmbeddable embeddable = parent.getChild();
 			assertThat( embeddable.getParent() ).isNotNull();
 		} );

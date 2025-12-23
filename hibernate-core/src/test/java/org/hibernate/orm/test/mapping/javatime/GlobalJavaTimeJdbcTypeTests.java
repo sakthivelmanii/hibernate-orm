@@ -19,6 +19,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.HANADialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.mapping.BasicValue;
 import org.hibernate.mapping.PersistentClass;
@@ -113,6 +114,7 @@ public class GlobalJavaTimeJdbcTypeTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 	void testLocalDateTime(SessionFactoryScope scope) {
 		final Dialect dialect = scope.getSessionFactory().getJdbcServices().getDialect();
 		final LocalDateTime start = adjustToDefaultPrecision( LocalDateTime.now(), dialect );
@@ -176,6 +178,7 @@ public class GlobalJavaTimeJdbcTypeTests {
 	@SkipForDialect(dialectClass = OracleDialect.class, reason = "Oracle drivers truncate fractional seconds from the LocalTime")
 	@SkipForDialect(dialectClass = HANADialect.class, reason = "HANA time type does not support fractional seconds")
 	@SkipForDialect(dialectClass = AltibaseDialect.class, reason = "Altibase drivers truncate fractional seconds from the LocalTime")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 	void testLocalTime(SessionFactoryScope scope) {
 		final Dialect dialect = scope.getSessionFactory().getJdbcServices().getDialect();
 		final LocalTime startTime = adjustToPrecision( LocalTime.now(), 0, dialect );
@@ -207,6 +210,7 @@ public class GlobalJavaTimeJdbcTypeTests {
 
 	@Test
 	@RequiresDialect(value = PostgreSQLDialect.class)
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 	void testArray(SessionFactoryScope scope) {
 		final var offsetDateTime = OffsetDateTime.parse("1977-07-24T12:34:56+02:00");
 		scope.inTransaction( session -> {

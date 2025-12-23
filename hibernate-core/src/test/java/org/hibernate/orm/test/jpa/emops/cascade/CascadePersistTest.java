@@ -5,11 +5,13 @@
 package org.hibernate.orm.test.jpa.emops.cascade;
 
 import org.hibernate.Session;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.stat.Statistics;
 
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
 
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 		C1.class,
 		C2.class
 })
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INTEGER sequences")
 public class CascadePersistTest {
 
 	@AfterEach

@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.hibernate.annotations.SQLSelect;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -72,7 +73,7 @@ public class ResultMappingAssociationIdClassTest {
 	@Test
 	public void testResultSetMapping(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
-			final AccountEntity account = session.getReference( AccountEntity.class, 1L );
+			final AccountEntity account = session.getReference( AccountEntity.class, SequenceHelper.getId( scope, 1L ) );
 			assertThat( account.getInventories() ).hasSize( 1 );
 			for ( ItemInventory inventory : account.getInventories() ) {
 				assertThat( inventory.getAccount() ).isEqualTo( account );
@@ -83,7 +84,7 @@ public class ResultMappingAssociationIdClassTest {
 	@Test
 	public void testResultSetMappingIdClass(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
-			final AccountEntity account = session.getReference( AccountEntity.class, 1L );
+			final AccountEntity account = session.getReference( AccountEntity.class, SequenceHelper.getId( scope, 1L ) );
 			assertThat( account.getIdClassInventories() ).hasSize( 1 );
 			for ( ItemInventoryIdClass inventory : account.getIdClassInventories() ) {
 				assertThat( inventory.getAccount() ).isEqualTo( account );

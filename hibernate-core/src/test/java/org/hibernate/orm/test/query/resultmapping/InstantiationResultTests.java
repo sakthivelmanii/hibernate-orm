@@ -6,9 +6,11 @@ package org.hibernate.orm.test.query.resultmapping;
 
 import java.util.List;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.named.NamedResultSetMappingMemento;
 
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -21,6 +23,7 @@ import static org.hamcrest.Matchers.notNullValue;
 public class InstantiationResultTests extends AbstractUsageTest {
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INTEGER type")
 	public void testSimpleInstantiationOfScalars(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

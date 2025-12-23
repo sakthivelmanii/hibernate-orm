@@ -23,8 +23,13 @@ public class SequenceHelper {
 	}
 
 	private static long getId(Dialect dialect, long startsWith, long index) {
-		return dialect instanceof SpannerPostgreSQLDialect ? (Long.reverse(startsWith) >>> 1) - 50L + index : index;
+		return getId(dialect, startsWith, index, true );
 	}
+
+	public static long getId(Dialect dialect, long startsWith, long index, boolean shouldSubtract) {
+		return dialect instanceof SpannerPostgreSQLDialect ? (Long.reverse(startsWith) >>> 1) + (shouldSubtract ? index - 50: 0) : index;
+	}
+
 
 	public static long getIncrementValue(Dialect dialect, long incrementValue) {
 		return dialect instanceof SpannerPostgreSQLDialect ? 0 : incrementValue;
@@ -32,5 +37,9 @@ public class SequenceHelper {
 
 	public static Object getValue(SessionFactoryScope scope, int val) {
 		return SpannerHelper.isSpannerDatabase(scope) ? (long) val : val;
+	}
+
+	public static Object getValue(SessionFactoryScope scope, char val) {
+		return SpannerHelper.isSpannerDatabase(scope) ? String.valueOf(val) : val;
 	}
 }

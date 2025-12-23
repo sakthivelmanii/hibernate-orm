@@ -7,6 +7,7 @@ package org.hibernate.orm.test.onetomany;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -64,7 +65,8 @@ public class OneToManyDuplicatesTest {
 		} );
 
 		scope.inTransaction( session -> {
-			UserContact userContact = session.find( UserContact.class, 1L );
+			UserContact userContact = session.find( UserContact.class,
+					SequenceHelper.getId( scope.getSessionFactory().getJdbcServices().getDialect(), 1L, 1L, false ) );
 			assertEquals( 1, userContact.getContactInfos().size() );
 		});
 	}

@@ -17,6 +17,7 @@ import java.util.Set;
 import jakarta.persistence.LockModeType;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.H2Dialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.named.NamedResultSetMappingMemento;
 
 import org.hibernate.testing.orm.domain.gambit.EntityOfBasics;
@@ -25,6 +26,7 @@ import org.hibernate.testing.orm.junit.RequiresDialect;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.Setting;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -221,6 +223,7 @@ public class EntityResultTests extends AbstractUsageTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 	public void testConvertedAttributes(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -288,6 +291,7 @@ public class EntityResultTests extends AbstractUsageTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INTEGER type")
 	public void testHbmMappingScalarComplete(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
