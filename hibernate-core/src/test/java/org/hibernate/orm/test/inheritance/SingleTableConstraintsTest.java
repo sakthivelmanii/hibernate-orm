@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
@@ -47,6 +48,7 @@ class SingleTableConstraintsTest {
 			monograph.pages = 10;
 			monograph.edition = 1;
 			Publisher publisher = new Publisher();
+//			publisher.id = 1L;
 			publisher.name = "publisher";
 			monograph.publisher = publisher;
 			em.persist( publisher );
@@ -83,8 +85,8 @@ class SingleTableConstraintsTest {
 				em.createNativeQuery(
 							"""
 							insert into Publication (text, title, edition,\spublisher_id, type, id)
-							values ('Lorem ipsum', 'Lorem Ipsum', 1, 1, 'Monograph', 5)
-							""" )
+							values ('Lorem ipsum', 'Lorem Ipsum', %s, 1, 'Monograph', 5)
+							""".formatted(SequenceHelper.getId( scope, 1L )) )
 						.executeUpdate();
 				fail();
 			}
@@ -97,8 +99,8 @@ class SingleTableConstraintsTest {
 				em.createNativeQuery(
 							"""
 							insert into Publication (pages, text, edition, publisher_id, type, id)
-							values (20, 'Lorem ipsum', 1, 1, 'Monograph', 5)
-							""" )
+							values (20, 'Lorem ipsum', 1, %s, 'Monograph', 5)
+							""".formatted( SequenceHelper.getId( scope, 1L )))
 						.executeUpdate();
 				fail();
 			}
@@ -111,8 +113,8 @@ class SingleTableConstraintsTest {
 				em.createNativeQuery(
 							"""
 							insert into Publication (pages, text, title, publisher_id, type, id)
-							values (100, 'Lorem ipsum', 'Lorem Ipsum', 1, 'Monograph', 5)
-							""" )
+							values (100, 'Lorem ipsum', 'Lorem Ipsum', %s, 'Monograph', 5)
+							""".formatted( SequenceHelper.getId( scope, 1L ) ) )
 					.executeUpdate();
 				fail();
 			}
@@ -139,8 +141,8 @@ class SingleTableConstraintsTest {
 				em.createNativeQuery(
 							"""
 							insert into Publication (pages, text, title, edition, publisher_id, type, id)
-							values (100, 'Lorem ipsum', 'Lorem Ipsum', 1, 1, 'Shrubbery', 5)
-							""" )
+							values (100, 'Lorem ipsum', 'Lorem Ipsum', 1, %s, 'Shrubbery', 5)
+							""".formatted( SequenceHelper.getId( scope, 1L ) ) )
 						.executeUpdate();
 				fail();
 			}
@@ -152,8 +154,8 @@ class SingleTableConstraintsTest {
 			em.createNativeQuery(
 							"""
 							insert into Publication (pages, text, title, edition, publisher_id, type, id)
-							values (100, 'Lorem ipsum', 'Lorem Ipsum', 1, 1, 'Monograph', 5)
-							""" )
+							values (100, 'Lorem ipsum', 'Lorem Ipsum', 1, %s, 'Monograph', 5)
+							""".formatted(  SequenceHelper.getId( scope, 1L ) ) )
 					.executeUpdate();
 		} );
 	}

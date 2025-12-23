@@ -11,9 +11,11 @@ import org.hibernate.annotations.DialectOverride;
 import org.hibernate.annotations.Generated;
 import org.hibernate.dialect.H2Dialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OverriddenDefaultTest {
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support PG.NUMERIC as primary key")
 	public void test(SessionFactoryScope scope) {
 		BigDecimal unitPrice = new BigDecimal("12.99");
 		scope.inTransaction( session -> {

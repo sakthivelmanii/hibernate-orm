@@ -7,7 +7,9 @@ package org.hibernate.orm.test.resulttransformer;
 
 import org.hibernate.ScrollableResults;
 import org.hibernate.dialect.HANADialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.Query;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.transform.ResultTransformer;
 
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -30,6 +32,7 @@ public class ResultTransformerTest {
 
 	@Test
 	@JiraKey( "HHH-3694" )
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support scrollable resultsets")
 	public void testResultTransformerIsAppliedToScrollableResults(SessionFactoryScope scope) {
 		scope.inTransaction( (session) -> {
 			final PartnerA a = new PartnerA();

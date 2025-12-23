@@ -11,6 +11,7 @@ import jakarta.persistence.Id;
 
 import org.hibernate.dialect.HANADialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -42,6 +43,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 		reason="SAP HANA requires at least value in insert value-list clause.")
 @DomainModel(annotatedClasses = IdentityInsertSoleColumnTest.Animal.class)
 @SessionFactory
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INTEGER sequences")
 public class IdentityInsertSoleColumnTest {
 	@AfterEach
 	void dropTestData(SessionFactoryScope factoryScope) {

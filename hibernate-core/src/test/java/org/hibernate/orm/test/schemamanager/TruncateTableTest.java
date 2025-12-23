@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -27,7 +28,7 @@ class TruncateTableTest {
 			session.persist( trunk );
 			session.persist( new Trunk(trunk) );
 			session.persist( new Trunk(trunk) );
-			assertEquals( 1, trunk.id );
+			assertEquals( SequenceHelper.getId( scope, 1 ), trunk.id );
 		} );
 		scope.getSessionFactory().getSchemaManager()
 				.truncateTable("trunk");
@@ -39,7 +40,7 @@ class TruncateTableTest {
 		scope.inTransaction( session -> {
 			Trunk trunk = new Trunk();
 			session.persist( trunk );
-			assertEquals( 1, trunk.id );
+			assertEquals( SequenceHelper.getId( scope, 1 ), trunk.id );
 		} );
 	}
 	@Entity(name = "Trunk")

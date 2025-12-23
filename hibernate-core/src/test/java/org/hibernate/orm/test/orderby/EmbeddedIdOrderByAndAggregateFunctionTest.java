@@ -7,11 +7,13 @@ package org.hibernate.orm.test.orderby;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.RequiresDialect;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import jakarta.persistence.Column;
@@ -34,6 +36,7 @@ public class EmbeddedIdOrderByAndAggregateFunctionTest {
 	@Test
 	@RequiresDialect(PostgreSQLDialect.class)
 	@RequiresDialect(H2Dialect.class)
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "column must appear in the GROUP BY clause or be used in an aggregate function")
 	public void testSelectWithOrderAndGroupBy(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

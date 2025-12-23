@@ -12,9 +12,11 @@ import org.hibernate.LockMode;
 import org.hibernate.ScrollMode;
 import org.hibernate.Transaction;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -131,6 +133,7 @@ public class StatelessSessionTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Cannot modify a primary key column with UPDATE")
 	public void testHqlBulk(SessionFactoryScope scope) {
 		scope.inStatelessSession(
 				statelessSession -> {

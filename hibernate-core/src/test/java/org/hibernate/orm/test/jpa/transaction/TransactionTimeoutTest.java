@@ -17,6 +17,7 @@ import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.jta.TestingJtaPlatformImpl;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -24,6 +25,7 @@ import org.hibernate.testing.orm.junit.Jpa;
 import org.hibernate.testing.orm.junit.RequiresDialect;
 import org.hibernate.testing.orm.junit.Setting;
 import org.hibernate.testing.orm.junit.SettingProvider;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.ThrowingConsumer;
 
@@ -74,6 +76,7 @@ public class TransactionTimeoutTest {
 	@Test
 	@RequiresDialect(PostgreSQLDialect.class)
 	@RequiresDialect(CockroachDialect.class)
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support pg_sleep function")
 	public void testPostgreSQL(EntityManagerFactoryScope scope) throws Throwable {
 		test( scope, entityManager -> {
 			entityManager.createNativeQuery( "select pg_sleep(10)" ).getResultList();

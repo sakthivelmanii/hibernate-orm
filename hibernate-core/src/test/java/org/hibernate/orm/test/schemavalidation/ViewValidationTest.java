@@ -12,6 +12,7 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.orm.SpannerHelper;
 import org.hibernate.testing.jdbc.JdbcUtils;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.DomainModelScope;
@@ -82,7 +83,8 @@ public class ViewValidationTest implements ServiceRegistryProducer {
 	void tearDown(ServiceRegistryScope registryScope, DomainModelScope modelScope) {
 		JdbcUtils.withConnection( registryScope.getRegistry(), connection -> {
 			try (var statement = connection.createStatement()) {
-				statement.execute( "DROP VIEW test_synonym CASCADE" );
+				statement.execute( "DROP VIEW test_synonym" +
+								(SpannerHelper.isSpannerDatabase(  modelScope ) ? "": " CASCADE") );
 			}
 		} );
 		new SchemaExport().drop( EnumSet.of( TargetType.DATABASE ), modelScope.getDomainModel() );

@@ -10,6 +10,7 @@ import java.util.List;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
@@ -83,7 +84,7 @@ public class SubselectOneToManyTest {
 			final Root<Parent> root = query.from( Parent.class );
 			query.select( root ).where( cb.isNull( root.get( "grandParent" ) ) );
 			final Parent parent = session.createQuery( query ).getSingleResult();
-			assertThat( parent.getId() ).isEqualTo( 1L );
+			assertThat( parent.getId() ).isEqualTo( SequenceHelper.getId( scope, 1L ) );
 			assertThat( parent.getGrandParent() ).isNull();
 			assertThat( parent.getChildren() ).hasSize( 3 );
 			statementInspector.assertExecutedCount( 2 ); // 1 query for parent, 1 for children
@@ -102,7 +103,7 @@ public class SubselectOneToManyTest {
 			final Root<Parent> root = query.from( Parent.class );
 			query.select( root ).where( cb.equal( root.get( "grandParent" ).get( "name" ), "Luigi" ) );
 			final Parent parent = session.createQuery( query ).getSingleResult();
-			assertThat( parent.getId() ).isEqualTo( 2L );
+			assertThat( parent.getId() ).isEqualTo( SequenceHelper.getId( scope, 2L ) );
 			assertThat( parent.getGrandParent().getName() ).isEqualTo( "Luigi" );
 			assertThat( parent.getChildren() ).hasSize( 2 );
 			statementInspector.assertExecutedCount( 3 ); // 1 query for parent, 1 for grandparent, 1 for children

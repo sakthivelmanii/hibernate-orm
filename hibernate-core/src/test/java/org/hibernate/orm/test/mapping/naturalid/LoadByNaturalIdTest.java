@@ -17,6 +17,7 @@ import org.hibernate.RemovalsMode;
 import org.hibernate.SessionCheckMode;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.loader.ast.spi.NaturalIdLoader;
 
@@ -115,6 +116,7 @@ public class LoadByNaturalIdTest {
 	@Test
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Cursor must be on simple SELECT for FOR UPDATE")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner does not support lock timeout.")
 	void testFindOptions(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( (session) -> {
 			session.find( Parent.class, "Luigi",

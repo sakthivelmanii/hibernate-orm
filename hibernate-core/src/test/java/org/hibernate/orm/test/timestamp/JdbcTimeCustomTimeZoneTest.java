@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 
 import org.hibernate.testing.orm.jdbc.PreparedStatementSpyConnectionProvider;
@@ -36,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @SkipForDialect(dialectClass = InformixDialect.class,
 	reason = "Informix JDBC driver seems to misinterpret the JDBC time zone")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support TIME column")
 public class JdbcTimeCustomTimeZoneTest
 		extends BaseSessionFactoryFunctionalTest {
 

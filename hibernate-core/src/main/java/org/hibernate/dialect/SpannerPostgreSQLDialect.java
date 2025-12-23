@@ -7,6 +7,7 @@ package org.hibernate.dialect;
 import jakarta.persistence.Timeout;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.hibernate.FetchMode;
+import org.hibernate.JDBCException;
 import org.hibernate.LockOptions;
 import org.hibernate.MappingException;
 import org.hibernate.Timeouts;
@@ -36,6 +37,8 @@ import org.hibernate.dialect.type.SpannerTinyIntAsBigIntJdbcType;
 import org.hibernate.dialect.type.SpannerZonedOffsetJavaType;
 import org.hibernate.dialect.unique.AlterTableUniqueIndexDelegate;
 import org.hibernate.dialect.unique.UniqueDelegate;
+import org.hibernate.engine.config.spi.ConfigurationService;
+import org.hibernate.engine.config.spi.StandardConverters;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.exception.ConstraintViolationException;
@@ -75,6 +78,7 @@ import org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType;
 import org.hibernate.type.descriptor.sql.internal.DdlTypeImpl;
 import org.hibernate.type.descriptor.sql.spi.DdlTypeRegistry;
 
+import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +95,6 @@ import static org.hibernate.type.SqlTypes.FLOAT;
 import static org.hibernate.type.SqlTypes.INTEGER;
 import static org.hibernate.type.SqlTypes.NCLOB;
 import static org.hibernate.type.SqlTypes.SMALLINT;
-import static org.hibernate.type.SqlTypes.TIME;
 import static org.hibernate.type.SqlTypes.TIMESTAMP;
 import static org.hibernate.type.SqlTypes.TIMESTAMP_UTC;
 import static org.hibernate.type.SqlTypes.TIMESTAMP_WITH_TIMEZONE;
@@ -107,6 +110,11 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 					LockTimeoutType.NONE,
 					OuterJoinLockingType.FULL,
 					ConnectionLockTimeoutStrategy.NONE );
+
+	private static final String USE_TIMESTAMPZ_TYPE_FOR_TIME_TYPE = "hibernate.dialect.spannerpg.use_timestampz_type_for_time_type";
+
+	private boolean useTimestampzForTimeType;
+
 	private final UniqueDelegate SPANNER_UNIQUE_DELEGATE = new AlterTableUniqueIndexDelegate( this );
 	private final StandardTableExporter spannerTableExporter = new StandardTableExporter( this ) {
 		@Override
@@ -235,16 +243,18 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		typeContributions.getTypeConfiguration().getJdbcTypeRegistry().addDescriptor( SpannerTinyIntAsBigIntJdbcType.INSTANCE );
 	}
 
-	@Override
-	protected String castType(int sqlTypeCode) {
-		//			case FLOAT -> "float4";
-		//			case DOUBLE -> "double precision";
-		return super.castType( sqlTypeCode );
-	}
 
 	@Override
 	protected void registerColumnTypes(
 			TypeContributions typeContributions, ServiceRegistry serviceRegistry) {
+
+		final ConfigurationService configurationService = serviceRegistry.getService( ConfigurationService.class );
+		if (configurationService != null) {
+			this.useTimestampzForTimeType = configurationService.getSetting( USE_TIMESTAMPZ_TYPE_FOR_TIME_TYPE,
+					StandardConverters.BOOLEAN,
+					this.useTimestampzForTimeType );
+		}
+
 		super.registerColumnTypes( typeContributions, serviceRegistry );
 
 		final DdlTypeRegistry ddlTypeRegistry =
@@ -422,8 +432,12 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
 	@Override
 	protected String columnType(int sqlTypeCode) {
+		if (useTimestampzForTimeType && (sqlTypeCode == Types.TIME || sqlTypeCode == Types.TIMESTAMP)) {
+			return columnType( TIMESTAMP_WITH_TIMEZONE );
+		}
+
 		return switch (sqlTypeCode) {
-			case TIME, TIMESTAMP, TIMESTAMP_UTC, TIMESTAMP_WITH_TIMEZONE -> "timestamp with time zone";
+			case TIMESTAMP_UTC, TIMESTAMP_WITH_TIMEZONE -> "timestamp with time zone";
 			case BLOB -> "bytea";
 			case DOUBLE -> "double precision";
 			case CLOB, NCLOB -> "character varying";
@@ -650,16 +664,26 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		return SPANNER_UNIQUE_DELEGATE;
 	}
 
+	// TODO(sakthivelmani): Handle the error message through REGEX
 	@Override
 	public SQLExceptionConversionDelegate buildSQLExceptionConversionDelegate() {
-		return (sqlException, message, sql) -> {
-			return switch ( sqlException.getErrorCode() ) {
-				case 6 ->
-						// ALREADY EXISTS
-						new ConstraintViolationException( message, sqlException, sql );
-				default -> null;
-			};
-		};
+		return this::handleConstraintViolatedException;
+	}
+
+	private @Nullable JDBCException handleConstraintViolatedException(SQLException sqlException, String message, String sql) {
+		if (sqlException.getErrorCode() == 6 || (message != null && message.contains("Cannot specify a null value for column"))) {
+			return new ConstraintViolationException(message, sqlException, sql);
+		} else if (message != null && message.contains( "does not specify a non-null value for NOT NULL column" )) {
+			return new ConstraintViolationException(message, sqlException, ConstraintViolationException.ConstraintKind.NOT_NULL, null);
+		} else if (sqlException.getErrorCode() == 11 || (message != null && message.contains("Check constraint"))) {
+			return new ConstraintViolationException(message, sqlException, ConstraintViolationException.ConstraintKind.CHECK, null);
+		} else if(message != null && message.contains( "Foreign key" ) &&
+				(message.contains( " constraint violation on table" ) ||
+				message.contains( "constraint violation when deleting or updating referenced key"))) {
+			return new ConstraintViolationException( message, sqlException, ConstraintViolationException.ConstraintKind.FOREIGN_KEY, null );
+		} else {
+			return null;
+		}
 	}
 
 	private Column getAutoGeneratedPrimaryKeyColumn(Table table, Metadata metadata) {
