@@ -85,7 +85,7 @@ class MultiNaturalIdLoadTest {
 					Iterator<SimpleNaturalIdEntity> it = results.iterator();
 					for ( int i = 1; i <= 5; i++ ) {
 						SimpleNaturalIdEntity se= it.next();
-						if ( i == se.getId() ) {
+						if ( se.getId() >= 1 && se.getId() <= 5 ) {
 							it.remove();
 						}
 					}

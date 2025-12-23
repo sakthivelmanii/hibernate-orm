@@ -5,6 +5,7 @@
 package org.hibernate.orm.test.softdelete;
 
 import org.hibernate.annotations.SoftDelete;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.query.Query;
 
 import org.hibernate.testing.jdbc.SQLStatementInspector;
@@ -99,11 +100,11 @@ public class HqlJoinSoftDeletedEntityTests {
 			Query<OrganizationMember> query = session.createQuery( qry, OrganizationMember.class);
 			query.setTupleTransformer( (tuple, aliases) -> (OrganizationMember) tuple[0] );
 
-			query.setParameter("userId", 1L);
+			query.setParameter("userId", SequenceHelper.getId( scope, 1L ) );
 			Assertions.assertEquals(1, query.getResultList().size() );
 
 			// Organization 2 has been soft-deleted so this should not give any results
-			query.setParameter("userId", 2L);
+			query.setParameter("userId", SequenceHelper.getId( scope, 2L ) );
 			Assertions.assertEquals(0, query.getResultList().size() );
 		} );
 	}

@@ -11,6 +11,7 @@ import org.hibernate.Interceptor;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.TransactionException;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.resource.jdbc.internal.EmptyStatementInspector;
 import org.hibernate.resource.jdbc.spi.StatementInspector;
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -166,7 +167,7 @@ public class InterceptorTest {
 		);
 
 		factoryScope.inTransaction( (s) -> {
-			var i = s.find( Image.class, 1L );
+			var i = s.find( Image.class, SequenceHelper.getId( factoryScope, 1L ) );
 			assertNotNull( i.getDetails() );
 			Assertions.assertEquals( checkPerm, i.getDetails().getPerm1() );
 			Assertions.assertEquals( checkComment, i.getDetails().getComment() );

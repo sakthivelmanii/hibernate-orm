@@ -19,6 +19,8 @@ import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.metamodel.mapping.EntityMappingType;
 import org.hibernate.metamodel.mapping.ModelPart;
 import org.hibernate.metamodel.mapping.internal.BasicAttributeMapping;
+import org.hibernate.orm.SequenceHelper;
+import org.hibernate.orm.SpannerHelper;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.testing.orm.domain.gambit.BasicEntity;
 import org.hibernate.testing.orm.junit.SkipForDialect;
@@ -73,8 +75,8 @@ public class NativeQueryResultBuilderTests {
 					assertThat( values.length, is(3 ) );
 
 					assertThat( values[ 0 ], is( STRING_VALUE ) );
-					assertThat( values[ 1 ], is( 2 ) );
-					assertThat( values[ 2 ], is( 1 ) );
+					assertThat( values[ 1 ], is( SequenceHelper.getValue( scope, 2 ) ) );
+					assertThat( values[ 2 ], is( SequenceHelper.getValue( scope, 1 ) ) );
 				}
 		);
 	}
@@ -125,8 +127,8 @@ public class NativeQueryResultBuilderTests {
 					final Object[] values = (Object[]) result;
 					assertThat( values.length, is(3 ) );
 
-					assertThat( values[ 0 ], is( 1 ) );
-					assertThat( values[ 1 ], is( 2 ) );
+					assertThat( values[ 0 ], is( SequenceHelper.getValue( scope, 1 ) ) );
+					assertThat( values[ 1 ], is( SequenceHelper.getValue( scope, 2 ) ) );
 					assertThat( values[ 2 ], is( STRING_VALUE ) );
 				}
 		);
@@ -153,7 +155,7 @@ public class NativeQueryResultBuilderTests {
 					final Object[] values = (Object[]) result;
 					assertThat( values.length, is(3 ) );
 
-					assertThat( values[ 0 ], is( 1 ) );
+					assertThat( values[ 0 ], is( SequenceHelper.getValue( scope, 1 ) ) );
 					assertThat( values[ 1 ], is( "MALE" ) );
 					assertThat( values[ 2 ], matchesOrdinal( EntityOfBasics.Gender.FEMALE ) );
 				}
@@ -176,7 +178,7 @@ public class NativeQueryResultBuilderTests {
 					final Object[] values = (Object[]) result;
 					assertThat( values.length, is(3 ) );
 
-					assertThat( values[ 0 ], is( 1 ) );
+					assertThat( values[ 0 ], is( SequenceHelper.getValue( scope, 1 ) ) );
 					assertThat( values[ 1 ], is( EntityOfBasics.Gender.MALE ) );
 					assertThat( values[ 2 ], is( EntityOfBasics.Gender.FEMALE ) );
 				}
@@ -195,9 +197,9 @@ public class NativeQueryResultBuilderTests {
 					assertThat( results.size(), is( 1 ) );
 
 					final Object result = results.get( 0 );
-					assertThat( result, instanceOf( Character.class ) );
+					assertThat( result, instanceOf( SpannerHelper.isSpannerDatabase( scope ) ? String.class : Character.class ) );
 
-					assertThat( result, is( 'O' ) );
+					assertThat( result, is( SequenceHelper.getValue(  scope, 'O') ) );
 				}
 		);
 
