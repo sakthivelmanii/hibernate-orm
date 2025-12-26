@@ -10,8 +10,10 @@ import jakarta.persistence.Id;
 import org.hibernate.annotations.TimeZoneColumn;
 import org.hibernate.annotations.TimeZoneStorage;
 import org.hibernate.annotations.TimeZoneStorageType;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -22,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Jpa(annotatedClasses = TimeZoneColumnDurationTest.EntityWithDateTimes.class)
 class TimeZoneColumnDurationTest {
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support mul_d_interval")
 	@Test void test(EntityManagerFactoryScope scope) {
 		scope.inTransaction( session -> {
 			EntityWithDateTimes entityWithDateTimes = new EntityWithDateTimes();

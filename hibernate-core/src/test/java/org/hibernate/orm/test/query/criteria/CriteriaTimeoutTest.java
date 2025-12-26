@@ -128,6 +128,7 @@ public class CriteriaTimeoutTest {
 
 	@Test
 	@SkipForDialect( dialectClass = SpannerDialect.class, reason = "Statements with WINDOW clauses are not supported")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsWindowFunctions.class )
 	public void testCreateMutationQueryCriteriaInsertSelect(EntityManagerFactoryScope scope) {
 		scope.inTransaction( entityManager -> {
 			final Session session = entityManager.unwrap( Session.class );

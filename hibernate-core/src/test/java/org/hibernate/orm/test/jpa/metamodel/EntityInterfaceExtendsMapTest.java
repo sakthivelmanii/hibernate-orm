@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -43,7 +44,7 @@ public class EntityInterfaceExtendsMapTest {
 	@Test
 	public void testMappingWorks(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
-			final LibraryEntity library = session.find( LibraryEntity.class, 1L );
+			final LibraryEntity library = session.find( LibraryEntity.class, SequenceHelper.getId( scope, 1L ));
 			assertThat( library.containsKey( "Dune Messiah" ) ).isTrue();
 			assertThat( library.keySet() ).containsExactlyInAnyOrder( "Dune Messiah", "Clean Code" );
 			assertThat( library.values() ).containsAll( library.books );

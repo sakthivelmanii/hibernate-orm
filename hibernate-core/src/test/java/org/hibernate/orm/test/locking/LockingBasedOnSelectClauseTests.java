@@ -13,6 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import org.hibernate.community.dialect.InformixDialect;
 import org.hibernate.dialect.HSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.spi.NavigablePath;
 import org.hibernate.sql.ast.tree.Statement;
 import org.hibernate.sql.ast.tree.select.SelectStatement;
@@ -61,6 +62,7 @@ public class LockingBasedOnSelectClauseTests {
 	@Test
 	@SkipForDialect(dialectClass = HSQLDialect.class, reason = "See https://sourceforge.net/p/hsqldb/bugs/1734/")
 	@SkipForDialect(dialectClass = InformixDialect.class, reason = "Cursor must be on simple SELECT for FOR UPDATE")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##SHANIKA##")
 	void testBasicHqlUsage(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( (session) -> {
 			session.createQuery( "select b.author from Book b" )

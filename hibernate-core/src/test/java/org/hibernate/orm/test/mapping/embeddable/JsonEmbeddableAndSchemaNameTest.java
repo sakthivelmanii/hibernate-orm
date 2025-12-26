@@ -9,6 +9,8 @@ import java.util.List;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.type.SqlTypes;
 
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -41,6 +43,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 } )
 @ServiceRegistry( settings = @Setting( name = AvailableSettings.JAKARTA_HBM2DDL_CREATE_SCHEMAS, value = "true" ) )
 @RequiresDialect( PostgreSQLDialect.class )
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support JSON aggregation")
 @Jira( "https://hibernate.atlassian.net/browse/HHH-16612" )
 public class JsonEmbeddableAndSchemaNameTest {
 	@BeforeAll

@@ -34,6 +34,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.PostgresPlusDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.procedure.ProcedureCall;
 import org.hibernate.procedure.ProcedureParameter;
 
@@ -78,6 +79,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @RequiresDialect( OracleDialect.class )
 @SkipForDialect(dialectClass = OracleDialect.class, reason = "Waiting for the fix of a bug that prevent creation of INTERVALDS from Duration")
 @RequiresDialect( DB2Dialect.class )
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support user defined types")
 public class StructEmbeddableTest implements AdditionalMappingContributor {
 
 	@Override

@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import org.hibernate.annotations.TargetEmbeddable;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -37,7 +38,7 @@ public class TargetEmbeddableOnEmbeddedTest {
 
 		factoryScope.inTransaction( (session) -> {
 //tag::embeddable-Target-fetching-example[]
-			City city = session.find(City.class, 1L);
+			City city = session.find(City.class, SequenceHelper.getId( factoryScope, 1L ) );
 			assert city.getCoordinates() instanceof GPS;
 //end::embeddable-Target-fetching-example[]
 			assertThat( city.getCoordinates().x() ).isCloseTo( 46.77120, offset( 0.00001 ) );

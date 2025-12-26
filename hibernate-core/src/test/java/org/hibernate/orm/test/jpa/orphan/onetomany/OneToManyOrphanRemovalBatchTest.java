@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.hibernate.cfg.AvailableSettings;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
@@ -60,11 +61,11 @@ public class OneToManyOrphanRemovalBatchTest {
 	@Test
 	public void testClearChildren(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
-			EntityA entityA = session.find( EntityA.class, 1L );
+			EntityA entityA = session.find( EntityA.class, SequenceHelper.getId( scope, 1L ) );
 			entityA.getChildren().clear();
 		} );
 		scope.inTransaction( session -> {
-			EntityA entityA = session.find( EntityA.class, 1L );
+			EntityA entityA = session.find( EntityA.class, SequenceHelper.getId( scope, 1L ) );
 			assertEquals( 0, entityA.getChildren().size() );
 			assertEquals( 0, session.createQuery( "from EntityB", EntityB.class ).getResultList().size() );
 		} );
