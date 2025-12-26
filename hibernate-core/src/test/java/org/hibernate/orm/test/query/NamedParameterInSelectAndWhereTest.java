@@ -67,7 +67,7 @@ public class NamedParameterInSelectAndWhereTest {
 
 	@Test
 	@Jira( "https://hibernate.atlassian.net/browse/HHH-16305" )
-	@SkipForDialect( dialectClass = PostgreSQLDialect.class, reason = "PostgreSQL doesn't support parameters as arguments for timestampdiff" )
+	@SkipForDialect( dialectClass = PostgreSQLDialect.class, reason = "PostgreSQL doesn't support parameters as arguments for timestampdiff", matchSubTypes = true )
 	@SkipForDialect( dialectClass = CockroachDialect.class, reason = "CockroachDB doesn't support parameters as arguments for timestampdiff" )
 	public void testSelectFunctionAndWhere(SessionFactoryScope scope) {
 		scope.inTransaction( session -> assertEquals( 0, session.createQuery(

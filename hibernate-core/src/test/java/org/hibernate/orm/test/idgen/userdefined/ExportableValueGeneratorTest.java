@@ -15,6 +15,7 @@ import org.hibernate.boot.model.relational.ExportableProducer;
 import org.hibernate.boot.model.relational.Sequence;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.MySQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseASEDialect;
 import org.hibernate.generator.EventType;
 import org.hibernate.generator.EventTypeSets;
@@ -36,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Jpa(annotatedClasses = ExportableValueGeneratorTest.WithExportableGenerator.class)
 @SkipForDialect( dialectClass = SybaseASEDialect.class )
 @SkipForDialect( dialectClass = MySQLDialect.class)
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INTEGER sequences")
 public class ExportableValueGeneratorTest {
 	@AfterEach
 	void dropTestData(EntityManagerFactoryScope factoryScope) {

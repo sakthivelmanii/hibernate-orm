@@ -14,6 +14,7 @@ import org.hibernate.cache.spi.CacheImplementor;
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.hibernate.cache.spi.support.DomainDataRegionTemplate;
 import org.hibernate.cfg.CacheSettings;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.internal.NaturalIdResolutionsImpl;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
@@ -22,6 +23,7 @@ import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.Setting;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -123,6 +125,7 @@ public class XRefTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support concurrent modifications")
 	void testCrossRefManagementWithMutation(SessionFactoryScope factoryScope) {
 		final SQLStatementInspector sqlCollector = factoryScope.getCollectingStatementInspector();
 		sqlCollector.clear();

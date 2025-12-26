@@ -11,6 +11,7 @@ import java.sql.Statement;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.type.SqlTypes;
 
@@ -87,6 +88,7 @@ public class CharEnumerateValueTests {
 	@DomainModel(annotatedClasses = Person.class)
 	@SessionFactory
 	@RequiresDialectFeature( feature = DialectFeatureChecks.SupportsColumnCheck.class )
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't do empty commits if exception occur")
 	@Test
 	void verifyCheckConstraints(SessionFactoryScope scope) {
 		scope.inTransaction( (session) -> session.doWork( (connection) -> {
@@ -108,6 +110,7 @@ public class CharEnumerateValueTests {
 	@SkipForDialect( dialectClass = InformixDialect.class,
 			reason = "Informix truncates the value so the constraint is not violated" )
 	@RequiresDialectFeature( feature = DialectFeatureChecks.SupportsColumnCheck.class )
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't do empty commits if exception occur")
 	@Test
 	void verifyCheckConstraints2(SessionFactoryScope scope) {
 		scope.inTransaction( (session) -> session.doWork( (connection) -> {

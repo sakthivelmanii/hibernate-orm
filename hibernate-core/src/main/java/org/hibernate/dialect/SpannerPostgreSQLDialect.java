@@ -4,6 +4,7 @@
  */
 package org.hibernate.dialect;
 
+import jakarta.persistence.TemporalType;
 import jakarta.persistence.Timeout;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.hibernate.FetchMode;
@@ -55,6 +56,8 @@ import org.hibernate.metamodel.mapping.EntityMappingType;
 import org.hibernate.metamodel.spi.RuntimeModelCreationContext;
 import org.hibernate.procedure.internal.StandardCallableStatementSupport;
 import org.hibernate.procedure.spi.CallableStatementSupport;
+import org.hibernate.query.common.TemporalUnit;
+import org.hibernate.query.sqm.IntervalType;
 import org.hibernate.query.sqm.function.SqmFunctionRegistry;
 import org.hibernate.query.sqm.mutation.internal.temptable.PersistentTableInsertStrategy;
 import org.hibernate.query.sqm.mutation.internal.temptable.PersistentTableMutationStrategy;
@@ -68,6 +71,9 @@ import org.hibernate.sql.ast.spi.StandardSqlAstTranslatorFactory;
 import org.hibernate.sql.ast.tree.Statement;
 import org.hibernate.sql.ast.tree.select.QuerySpec;
 import org.hibernate.sql.exec.spi.JdbcOperation;
+import org.hibernate.tool.schema.extract.internal.InformationExtractorJdbcDatabaseMetaDataImpl;
+import org.hibernate.tool.schema.extract.spi.ExtractionContext;
+import org.hibernate.tool.schema.extract.spi.InformationExtractor;
 import org.hibernate.tool.schema.internal.StandardTableExporter;
 import org.hibernate.tool.schema.spi.Exporter;
 import org.hibernate.type.MappingContext;
@@ -402,6 +408,16 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	}
 
 	@Override
+	public boolean supportsCommentOn() {
+		return false;
+	}
+
+	@Override
+	public boolean supportsWindowFunctions() {
+		return false;
+	}
+
+	@Override
 	public SqmMultiTableMutationStrategy getFallbackSqmMutationStrategy(
 			EntityMappingType rootEntityDescriptor,
 			RuntimeModelCreationContext runtimeModelCreationContext) {
@@ -649,6 +665,21 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	}
 
 	@Override
+	public String timestampaddPattern(TemporalUnit unit, TemporalType temporalType, IntervalType intervalType) {
+		return intervalType != null
+				? "(?2+?3)"
+				: "cast(?3+" + intervalPattern( unit ) + " as " + temporalType(temporalType) + ")";
+	}
+
+	private String temporalType(TemporalType temporalType) {
+		if (useTimestampzForTimeType && (temporalType == TemporalType.TIMESTAMP || temporalType == TemporalType.TIME)) {
+			return columnType( TIMESTAMP_WITH_TIMEZONE );
+		} else {
+			return temporalType.name().toLowerCase();
+		}
+	}
+
+	@Override
 	public boolean supportsRecursiveCTE() {
 		return false;
 	}
@@ -825,5 +856,10 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 			}
 		} );
 		return column;
+	}
+
+	@Override
+	public InformationExtractor getInformationExtractor(ExtractionContext extractionContext) {
+		return new InformationExtractorJdbcDatabaseMetaDataImpl( extractionContext );
 	}
 }

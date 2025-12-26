@@ -24,6 +24,7 @@ import org.hibernate.generator.EventTypeSets;
 import org.hibernate.generator.OnExecutionGenerator;
 import org.hibernate.id.IdentifierGenerator;
 import org.hibernate.id.IdentityGenerator;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.persister.entity.EntityPersister;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.type.Type;
@@ -114,7 +115,7 @@ public class MixedTimingGeneratorsTest {
 		scope.inSession( session -> assertThat( session.createQuery(
 				"from RandomEntity where name = :name",
 				RandomEntity.class
-		).setParameter( "name", "identity" ).getSingleResult().getId() ).isLessThan( 100L ) );
+		).setParameter( "name", "identity" ).getSingleResult().getId() ).isLessThan( SequenceHelper.getId( scope, 100L ) ) );
 		// before execution generation
 		scope.inTransaction( session -> session.persist( new RandomEntity( "random" ) ) );
 		scope.inSession( session -> assertThat( session.createQuery(

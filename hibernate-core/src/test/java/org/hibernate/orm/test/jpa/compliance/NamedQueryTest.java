@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.hibernate.cfg.AvailableSettings;
 
+import org.hibernate.orm.SpannerHelper;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
 import org.hibernate.testing.orm.junit.Setting;
@@ -91,9 +92,15 @@ public class NamedQueryTest {
 					namedQuery.setMaxResults( 2 );
 					assertEquals( 2, namedQuery.getMaxResults() );
 
-					final List<Integer> ids = namedQuery.getResultList();
-					assertEquals( 2, ids.size() );
-					assertThat( ids, hasItems( 1, 2 ) );
+					if ( SpannerHelper.isSpannerDatabase( scope.getDialect() ) ) {
+						final List<Long> ids = namedQuery.getResultList();
+						assertEquals( 2, ids.size() );
+						assertThat( ids, hasItems( 1L, 2L ) );
+					} else {
+						final List<Integer> ids = namedQuery.getResultList();
+						assertEquals( 2, ids.size() );
+						assertThat( ids, hasItems( 1, 2 ) );
+					}
 				} );
 	}
 

@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ public class UpdateTimestampTest {
 
 		scope.inTransaction( entityManager -> {
 			//tag::mapping-generated-UpdateTimestamp-update-example[]
-			Bid bid = entityManager.find(Bid.class, 1L);
+			Bid bid = entityManager.find(Bid.class, SequenceHelper.getId( scope, 1L ) );
 
 			bid.setUpdatedBy("John Doe Jr.");
 			bid.setCents(160 * 100L);

@@ -11,9 +11,11 @@ import java.util.List;
 
 import org.hibernate.cfg.AvailableSettings;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
 import org.hibernate.testing.orm.junit.Setting;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import jakarta.persistence.Column;
@@ -36,6 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DateCompositeCustomTypeTest {
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support comparing TIMESTAMP")
 	public void testDateCompositeCustomType(EntityManagerFactoryScope scope) {
 		final Date date = Date.from( Instant.now() );
 		final Payment payment = new Payment();
