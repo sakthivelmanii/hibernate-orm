@@ -9,12 +9,17 @@ import java.util.Iterator;
 import org.hibernate.Transaction;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.mapping.Column;
+import org.hibernate.mapping.Index;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.UniqueKey;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialect;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -47,6 +52,7 @@ public class QuoteGlobalTest {
 
 	@Test
 	@JiraKey(value = "HHH-7890")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsUniqueConstraintInColumnDefinition.class)
 	public void testQuotedUniqueConstraint(SessionFactoryScope scope) {
 		Iterator<UniqueKey> itr = scope.getMetadataImplementor().getEntityBinding(Person.class.getName())
 				.getTable().getUniqueKeys().values().iterator();
@@ -54,6 +60,22 @@ public class QuoteGlobalTest {
 			UniqueKey uk = itr.next();
 			assertEquals( 1, uk.getColumns().size() );
 			assertEquals( "name", uk.getColumn( 0 ).getName() );
+			return;
+		}
+		fail( "GLOBALLY_QUOTED_IDENTIFIERS caused the unique key creation to fail." );
+	}
+
+	@Test
+	@JiraKey(value = "HHH-7890")
+	@RequiresDialect(SpannerPostgreSQLDialect.class )
+	public void testQuotedUniqueConstraint2(SessionFactoryScope scope) {
+		Iterator<Index> itr = scope.getMetadataImplementor().getEntityBinding(Person.class.getName())
+				.getTable().getIndexes().values().iterator();
+		while ( itr.hasNext() ) {
+			Index uk = itr.next();
+			assertTrue(uk.isUnique());
+			assertEquals( 1, uk.getSelectables().size() );
+			assertEquals( "name", uk.getSelectables().get( 0 ).getText() );
 			return;
 		}
 		fail( "GLOBALLY_QUOTED_IDENTIFIERS caused the unique key creation to fail." );

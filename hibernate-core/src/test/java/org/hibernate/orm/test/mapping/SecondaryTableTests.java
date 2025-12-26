@@ -6,10 +6,12 @@ package org.hibernate.orm.test.mapping;
 
 import java.util.Date;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -38,6 +40,7 @@ public class SecondaryTableTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Unable to resolve argument type")
 	public void updateOnSecondaryTableColumn(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

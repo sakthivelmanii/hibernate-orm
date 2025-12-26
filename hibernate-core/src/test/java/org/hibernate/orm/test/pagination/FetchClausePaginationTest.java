@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.hibernate.community.dialect.DerbyDialect;
 
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.domain.StandardDomainModel;
 import org.hibernate.testing.orm.domain.gambit.EntityOfLists;
 import org.hibernate.testing.orm.domain.gambit.EnumValue;
@@ -66,6 +67,7 @@ public class FetchClausePaginationTest {
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsWithTies.class)
 	@SkipForDialect(dialectClass = DerbyDialect.class, reason = "Derby only supports row_number, but this requires the dense_rank window function")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "A bug in Spanner PG where it's not returning all the matching rows")
 	public void testFetchWithTies(SessionFactoryScope scope) {
 		scope.inSession(
 				session -> {

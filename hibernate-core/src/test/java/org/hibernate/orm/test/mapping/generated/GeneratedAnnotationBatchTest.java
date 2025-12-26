@@ -14,6 +14,7 @@ import org.hibernate.annotations.Generated;
 import org.hibernate.cfg.AvailableSettings;
 
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -72,7 +73,7 @@ public class GeneratedAnnotationBatchTest {
 	@Test
 	public void testUpdate(SessionFactoryScope scope) {
 		final Instant originalInstant = scope.fromTransaction( session -> session.createQuery(
-				"from GeneratedEntity where id = 1L",
+				"from GeneratedEntity where id = " + SequenceHelper.getId( scope, 1L ),
 				GeneratedEntity.class
 		).getSingleResult().getUpdateTimestamp() );
 		scope.inTransaction( session -> {

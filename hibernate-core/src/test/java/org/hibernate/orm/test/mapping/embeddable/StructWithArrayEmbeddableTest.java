@@ -31,6 +31,7 @@ import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.PostgresPlusDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.procedure.ProcedureCall;
 import org.hibernate.procedure.ProcedureParameter;
 
@@ -75,6 +76,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @ServiceRegistry(settings = @Setting(name = AvailableSettings.COLUMN_ORDERING_STRATEGY, value = "legacy"))
 @DomainModel(annotatedClasses = StructWithArrayEmbeddableTest.StructHolder.class)
 @SessionFactory
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support user defined types")
 public class StructWithArrayEmbeddableTest implements AdditionalMappingContributor {
 	@Override
 	public void contribute(

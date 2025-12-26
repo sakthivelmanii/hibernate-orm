@@ -15,6 +15,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.SybaseDialect;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -50,6 +51,7 @@ public class NamedEnumEnumerateValueTests {
 	@Test
 	@DomainModel(annotatedClasses = Person.class)
 	@SessionFactory
+	@SkipForDialect(dialectClass =  SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support ENUM types")
 	void testBasicUsage(SessionFactoryScope scope) {
 		scope.inTransaction( (session) -> {
 			session.persist( new Person( 1, "John", Gender.MALE ) );
@@ -74,6 +76,7 @@ public class NamedEnumEnumerateValueTests {
 	@DomainModel(annotatedClasses = Person.class)
 	@SessionFactory
 	@Test
+	@SkipForDialect(dialectClass =  SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support ENUM types")
 	void testNulls(SessionFactoryScope scope) {
 		scope.inTransaction( (session) -> {
 			session.persist( new Person( 1, "John", null ) );

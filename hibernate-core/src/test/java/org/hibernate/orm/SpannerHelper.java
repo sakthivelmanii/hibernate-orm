@@ -7,6 +7,7 @@ package org.hibernate.orm;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModelScope;
+import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 
 public class SpannerHelper {
@@ -16,6 +17,10 @@ public class SpannerHelper {
 
 	public static boolean isSpannerDatabase(DomainModelScope scope) {
 		return isSpannerDatabase( scope.getDomainModel().getDatabase().getDialect() );
+	}
+
+	public static boolean isSpannerDatabase(EntityManagerFactoryScope scope) {
+		return isSpannerDatabase( scope.getDialect() );
 	}
 
 	public static boolean isSpannerDatabase(Dialect dialect) {

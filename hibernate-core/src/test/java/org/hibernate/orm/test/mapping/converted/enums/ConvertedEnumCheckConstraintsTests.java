@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.type.SqlTypes;
 
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
@@ -81,6 +83,7 @@ public class ConvertedEnumCheckConstraintsTests {
 	@DomainModel(annotatedClasses = Person.class)
 	@SessionFactory(useCollectingStatementInspector = true)
 	@RequiresDialectFeature( feature = DialectFeatureChecks.SupportsColumnCheck.class )
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner rethrow the exception on commit")
 	@Test
 	void verifyCheckConstraints(SessionFactoryScope scope) {
 		scope.inTransaction( (session) -> session.doWork( (connection) -> {
@@ -92,6 +95,7 @@ public class ConvertedEnumCheckConstraintsTests {
 				fail( "Expecting a failure" );
 			}
 			catch (SQLException expected) {
+				System.out.println( expected.getMessage() );
 			}
 		} ) );
 	}

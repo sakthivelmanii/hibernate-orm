@@ -507,7 +507,7 @@ public class PostgreSQLDialect extends Dialect {
 				: "cast(?3+" + intervalPattern( unit ) + " as " + temporalType.name().toLowerCase() + ")";
 	}
 
-	private static String intervalPattern(TemporalUnit unit) {
+	protected static String intervalPattern(TemporalUnit unit) {
 		return switch (unit) {
 			case NANOSECOND -> "(?2)/1e3*interval '1 microsecond'";
 			case NATIVE -> "(?2)*interval '1 second'";
