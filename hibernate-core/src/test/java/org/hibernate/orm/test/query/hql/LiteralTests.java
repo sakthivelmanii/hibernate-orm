@@ -96,7 +96,7 @@ public class LiteralTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support time with timezone")
 	public void testJdbcTimeLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -107,18 +107,7 @@ public class LiteralTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
-	public void testJdbcDateLiteral(SessionFactoryScope scope) {
-		scope.inTransaction(
-				session -> {
-					session.createQuery( "from EntityOfBasics e1 where e1.theDate = {d 1999-12-31}" ).list();
-					session.createQuery( "from EntityOfBasics e1 where e1.theDate = {d '1999-12-31'}" ).list();
-				}
-		);
-	}
-
-	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestamp without time zone")
 	public void testJdbcTimestampLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -129,7 +118,16 @@ public class LiteralTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
+	public void testJdbcDateLiteral(SessionFactoryScope scope) {
+		scope.inTransaction(
+				session -> {
+					session.createQuery( "from EntityOfBasics e1 where e1.theDate = {d 1999-12-31}" ).list();
+					session.createQuery( "from EntityOfBasics e1 where e1.theDate = {d '1999-12-31'}" ).list();
+				}
+		);
+	}
+
+	@Test
 	public void testLocalDateLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -139,7 +137,7 @@ public class LiteralTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support time with timezone")
 	public void testLocalTimeLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -149,7 +147,7 @@ public class LiteralTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestamp without time zone")
 	public void testDateTimeLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -176,7 +174,7 @@ public class LiteralTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestamp without time zone")
 	public void testTimestampLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -189,7 +187,6 @@ public class LiteralTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testTimestampLiteralWithOffset(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -214,7 +211,6 @@ public class LiteralTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testTimestampLiteralWithZoneRegionId(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -229,7 +225,6 @@ public class LiteralTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testDateLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -240,7 +235,7 @@ public class LiteralTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support time with time zone")
 	public void testTimeLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -253,7 +248,7 @@ public class LiteralTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support timestamp without time zone")
 	public void testSelectDatetimeLiterals(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -288,7 +283,6 @@ public class LiteralTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	public void testBooleanLiteral(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

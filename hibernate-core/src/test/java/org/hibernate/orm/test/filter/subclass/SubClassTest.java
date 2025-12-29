@@ -13,12 +13,15 @@ import org.hibernate.SharedSessionContract;
 import org.hibernate.engine.spi.SessionImplementor;
 import org.hibernate.orm.test.filter.AbstractStatefulStatelessFilterTest;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public abstract class SubClassTest extends AbstractStatefulStatelessFilterTest {
 
 	@BeforeEach

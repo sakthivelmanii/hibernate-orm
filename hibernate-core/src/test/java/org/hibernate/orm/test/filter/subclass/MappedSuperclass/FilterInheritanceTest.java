@@ -13,8 +13,10 @@ import java.util.function.Consumer;
 import org.hibernate.SharedSessionContract;
 import org.hibernate.orm.test.filter.AbstractStatefulStatelessFilterTest;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +31,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 				Animal.class, Human.class, Mammal.class
 		}
 )
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class FilterInheritanceTest extends AbstractStatefulStatelessFilterTest {
 
 	@BeforeEach

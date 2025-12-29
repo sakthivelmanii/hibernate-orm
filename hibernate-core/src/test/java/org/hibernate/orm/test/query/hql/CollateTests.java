@@ -32,7 +32,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @ServiceRegistry
 @DomainModel( standardModels = StandardDomainModel.GAMBIT )
 @SessionFactory
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class CollateTests {
 
 	@BeforeAll
@@ -51,6 +50,7 @@ public class CollateTests {
 	}
 
 	@Test @RequiresDialect(PostgreSQLDialect.class)
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Collations are not supported")
 	public void testCollatePostgreSQL(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

@@ -11,7 +11,9 @@ import jakarta.persistence.criteria.Root;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategy;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl;
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -139,6 +141,7 @@ public class ReferencedColumnNameTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testManyToMany(SessionFactoryScope scope) {
 		House wh = new House();
 		Inhabitant b = new Inhabitant();
@@ -215,6 +218,7 @@ public class ReferencedColumnNameTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testManyToOneInsideComponentReferencedColumn(SessionFactoryScope scope) {
 		HousePlaces house = new HousePlaces();
 		house.places = new Places();

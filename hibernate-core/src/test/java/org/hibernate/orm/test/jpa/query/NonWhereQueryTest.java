@@ -7,8 +7,6 @@ package org.hibernate.orm.test.jpa.query;
 import java.util.Objects;
 import java.util.UUID;
 
-import org.hibernate.dialect.SpannerPostgreSQLDialect;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.testing.util.uuid.SafeRandomUUIDGenerator;
 
 import jakarta.persistence.Column;
@@ -35,7 +33,6 @@ import org.junit.jupiter.api.BeforeAll;
 				NonWhereQueryTest.TestUser.class
 		}
 )
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column yet")
 public class NonWhereQueryTest {
 
 	@BeforeAll

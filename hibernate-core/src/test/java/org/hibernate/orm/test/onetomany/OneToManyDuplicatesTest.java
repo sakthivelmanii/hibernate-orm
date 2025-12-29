@@ -66,7 +66,7 @@ public class OneToManyDuplicatesTest {
 
 		scope.inTransaction( session -> {
 			UserContact userContact = session.find( UserContact.class,
-					SequenceHelper.getId( scope.getSessionFactory().getJdbcServices().getDialect(), 1L, 1L, false ) );
+					SequenceHelper.getId( scope, 1L) );
 			assertEquals( 1, userContact.getContactInfos().size() );
 		});
 	}

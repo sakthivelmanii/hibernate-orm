@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.dialect.MySQLDialect;
-import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.domain.StandardDomainModel;
 import org.hibernate.testing.orm.domain.gambit.EntityOfBasics;
@@ -35,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ServiceRegistry
 @DomainModel(standardModels = StandardDomainModel.GAMBIT)
 @SessionFactory
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class OrderedSetAggregateTest {
 
 	@BeforeEach

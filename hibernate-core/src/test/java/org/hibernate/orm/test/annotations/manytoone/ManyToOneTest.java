@@ -5,7 +5,6 @@
 package org.hibernate.orm.test.annotations.manytoone;
 
 import org.hibernate.Hibernate;
-import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.orm.SequenceHelper;
 import org.hibernate.orm.test.annotations.Company;
 import org.hibernate.orm.test.annotations.Customer;
@@ -13,12 +12,13 @@ import org.hibernate.orm.test.annotations.Discount;
 import org.hibernate.orm.test.annotations.Flight;
 import org.hibernate.orm.test.annotations.Passport;
 import org.hibernate.orm.test.annotations.Ticket;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.Setting;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -189,7 +189,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testCompositeFK(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction(  (session) -> {
 			var ppk = new ParentPk();
@@ -246,7 +246,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testManyToOneNonPk(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( (session) -> {
 			var order = new Order();
@@ -268,7 +268,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testManyToOneNonPkSecondaryTable(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( (session) -> {
 			var order = new Order();
@@ -290,7 +290,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testTwoManyToOneNonPk(SessionFactoryScope factoryScope) {
 		//2 many-to-one non pk pointing to the same referencedColumnName should not fail
 		factoryScope.inTransaction( (session) -> {
@@ -314,7 +314,7 @@ public class ManyToOneTest {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support Integer sequence key")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testFormulaOnOtherSide(SessionFactoryScope factoryScope) {
 		factoryScope.inTransaction( (session) -> {
 			var frame = new Frame();

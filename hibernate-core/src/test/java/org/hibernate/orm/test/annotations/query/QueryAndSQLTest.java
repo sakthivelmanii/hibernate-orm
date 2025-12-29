@@ -20,6 +20,8 @@ import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.stat.Statistics;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.type.StandardBasicTypes;
 
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -561,6 +563,7 @@ public class QueryAndSQLTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIdentityColumns.class)
 	public void testDiscriminator(SessionFactoryScope scope) {
 		scope.inSession(
 				session -> {

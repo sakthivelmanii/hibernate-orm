@@ -10,10 +10,12 @@ import java.util.stream.Collectors;
 
 import org.hibernate.annotations.BatchSize;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -36,6 +38,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 		useCollectingStatementInspector = true
 )
 @JiraKey( value = "HHH-16005")
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIdentityColumns.class)
 public class BatchPaginationTest {
 
 	@BeforeAll

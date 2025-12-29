@@ -7,9 +7,11 @@ package org.hibernate.orm.test.jpa.emops;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
 
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 })
 public class MergeTest {
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testMergeWithIndexColumn(EntityManagerFactoryScope scope) {
 		scope.inEntityManager(
 				entityManager -> {
@@ -63,6 +66,7 @@ public class MergeTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testMergeManyToMany(EntityManagerFactoryScope scope) {
 		scope.inEntityManager(
 				entityManager -> {
@@ -106,6 +110,7 @@ public class MergeTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testMergeManyToManyWithDeference(EntityManagerFactoryScope scope) {
 		scope.inEntityManager(
 				entityManager -> {

@@ -4,7 +4,6 @@
  */
 package org.hibernate.orm.test.mapping.identifier.uuid.time;
 
-import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.id.uuid.CustomVersionOneStrategy;
 import org.hibernate.orm.test.mapping.identifier.uuid.Helper;
 
@@ -14,7 +13,6 @@ import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.ServiceRegistryScope;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -35,7 +33,6 @@ public class TimeBasedUuidGenerationTests {
 	@ServiceRegistry
 	@DomainModel(annotatedClasses = Book.class)
 	@SessionFactory
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	void testUsage(SessionFactoryScope scope) {
 		scope.inTransaction( (session) -> {
 			session.persist( new Book() );

@@ -17,7 +17,7 @@ import jakarta.persistence.ManyToOne;
 
 import org.hibernate.cfg.AvailableSettings;
 
-import org.hibernate.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.bytecode.enhancement.CustomEnhancementContext;
 import org.hibernate.testing.bytecode.enhancement.extension.BytecodeEnhanced;
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -28,7 +28,6 @@ import org.hibernate.testing.orm.junit.Setting;
 
 import org.hibernate.orm.test.bytecode.enhancement.lazy.proxy.inlinedirtychecking.DirtyCheckEnhancementContext;
 import org.hibernate.orm.test.bytecode.enhancement.lazy.proxy.inlinedirtychecking.NoDirtyCheckEnhancementContext;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -93,14 +92,13 @@ public class SharingReferenceTest {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support integer and sequential columns")
 	public void testFind(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
-					Ceo ceo = session.find( Ceo.class, 1L );
+					Ceo ceo = session.find( Ceo.class, SequenceHelper.getId( scope, 1L ) );
 					assertEquals( "Jill", ceo.getName() );
 
-					Worker worker = session.find( Worker.class, 1L );
+					Worker worker = session.find( Worker.class, SequenceHelper.getId( scope, 1L ) );
 					assertEquals( worker.getName(), "James" );
 
 					Supervisor supervisor = worker.getSupervisor();

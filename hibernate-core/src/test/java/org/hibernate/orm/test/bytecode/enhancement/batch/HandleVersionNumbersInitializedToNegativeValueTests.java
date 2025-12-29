@@ -7,7 +7,6 @@ package org.hibernate.orm.test.bytecode.enhancement.batch;
 import jakarta.persistence.*;
 import org.hibernate.Hibernate;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.*;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +30,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 		}
 )
 @SessionFactory
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 class HandleVersionNumbersInitializedToNegativeValueTests {
 
 	@Test @JiraKey("HHH-18883")

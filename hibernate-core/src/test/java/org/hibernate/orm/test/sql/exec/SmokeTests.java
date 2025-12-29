@@ -59,7 +59,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 		}
 )
 @SessionFactory(exportSchema = true)
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 public class SmokeTests {
 
 	@BeforeEach
@@ -302,6 +301,7 @@ public class SmokeTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 	public void testQueryConcurrency(SessionFactoryScope scope) throws InterruptedException {
 		final StatisticsImplementor statistics = scope.getSessionFactory().getStatistics();
 		statistics.clear();

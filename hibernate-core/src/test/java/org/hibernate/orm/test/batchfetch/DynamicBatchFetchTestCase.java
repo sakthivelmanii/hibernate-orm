@@ -9,8 +9,10 @@ import java.util.stream.IntStream;
 
 import org.hibernate.cfg.AvailableSettings;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -30,6 +32,7 @@ import static org.junit.Assert.assertNotNull;
 				@Setting(name = AvailableSettings.DEFAULT_BATCH_FETCH_SIZE, value = "15")
 		}
 )
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIdentityColumns.class)
 public class DynamicBatchFetchTestCase {
 
 	@Test

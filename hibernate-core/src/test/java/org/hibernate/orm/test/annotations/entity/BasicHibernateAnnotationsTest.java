@@ -101,7 +101,7 @@ public class BasicHibernateAnnotationsTest {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsExpectedLobUsagePattern.class)
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner emulator doesn't support concurrent requests")
 	public void testVersioning(SessionFactoryScope scope) {
 		Forest forest = new Forest();
 		forest.setName( "Fontainebleau" );
@@ -281,6 +281,7 @@ public class BasicHibernateAnnotationsTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testFilterOnCollection(SessionFactoryScope scope) {
 		Topic t = new Topic();
 		scope.inTransaction(
@@ -316,6 +317,7 @@ public class BasicHibernateAnnotationsTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testCascadedDeleteOfChildEntitiesBug2(SessionFactoryScope scope) {
 		// Relationship is one SoccerTeam to many Players.
 		// Create a SoccerTeam (parent) and three Players (child).
@@ -367,6 +369,7 @@ public class BasicHibernateAnnotationsTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testCascadedDeleteOfChildOneToOne(SessionFactoryScope scope) {
 		// create two single player teams (for one versus one match of soccer)
 		// and associate teams with players via the special OneVOne methods.
@@ -417,6 +420,7 @@ public class BasicHibernateAnnotationsTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testFilter(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -457,6 +461,7 @@ public class BasicHibernateAnnotationsTest {
 	 * defined on a parent MappedSuperclass(s)
 	 */
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testInheritFiltersFromMappedSuperclass(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

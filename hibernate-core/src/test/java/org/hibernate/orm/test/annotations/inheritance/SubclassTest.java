@@ -15,7 +15,9 @@ import org.hibernate.orm.test.annotations.inheritance.singletable.Noise;
 import org.hibernate.orm.test.annotations.inheritance.singletable.Rock;
 import org.hibernate.query.Query;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.orm.test.annotations.A320;
@@ -131,6 +133,7 @@ public class SubclassTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testFormula(SessionFactoryScope scope) {
 		scope.inTransaction(
 				s -> {
