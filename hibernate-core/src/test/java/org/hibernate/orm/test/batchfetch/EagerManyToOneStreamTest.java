@@ -101,7 +101,7 @@ public class EagerManyToOneStreamTest {
 				session -> {
 					StringBuilder sb = new StringBuilder("select c from Child as c ");
 					if ( SpannerHelper.isSpannerDatabase( scope ) ) {
-						sb.append( "order by c.id");
+						sb.append( "order by c.id desc");
 					}
 					Query<Child> query = session
 							.createQuery( sb.toString(), Child.class );

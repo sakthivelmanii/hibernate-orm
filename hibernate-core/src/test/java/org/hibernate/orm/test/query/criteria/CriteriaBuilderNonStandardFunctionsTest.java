@@ -54,7 +54,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @DomainModel(standardModels = StandardDomainModel.GAMBIT)
 @SessionFactory
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class CriteriaBuilderNonStandardFunctionsTest {
 
 	private final static String DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
@@ -137,6 +136,7 @@ public class CriteriaBuilderNonStandardFunctionsTest {
 
 	@Test
 	@RequiresDialect(PostgreSQLDialect.class)
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INET type")
 	public void testSqlCustomType(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			HibernateCriteriaBuilder cb = session.getCriteriaBuilder();
@@ -182,6 +182,7 @@ public class CriteriaBuilderNonStandardFunctionsTest {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsFormat.class)
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner has Los Angelos as default time zone")
 	public void testFormatWithJavaTimeLocalDateTime(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			HibernateCriteriaBuilder cb = session.getCriteriaBuilder();
@@ -202,6 +203,7 @@ public class CriteriaBuilderNonStandardFunctionsTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner has Los Angelos as default time zone")
 	public void testExtractFunctions(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			HibernateCriteriaBuilder cb = session.getCriteriaBuilder();
@@ -229,6 +231,7 @@ public class CriteriaBuilderNonStandardFunctionsTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support pg_catalog.overlay function")
 	public void testOverlay(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			HibernateCriteriaBuilder cb = session.getCriteriaBuilder();
@@ -272,6 +275,7 @@ public class CriteriaBuilderNonStandardFunctionsTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support left or right function")
 	public void testLeftRight(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -322,6 +326,7 @@ public class CriteriaBuilderNonStandardFunctionsTest {
 
 	@Test
 	@RequiresDialect(PostgreSQLDialect.class)
+	@SkipForDialect(dialectClass =  SpannerPostgreSQLDialect.class, reason = " Collations are not supported")
 	public void testCollatePostgreSQL(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			HibernateCriteriaBuilder cb = session.getCriteriaBuilder();
@@ -345,6 +350,7 @@ public class CriteriaBuilderNonStandardFunctionsTest {
 
 	@Test
 	@SkipForDialect(dialectClass = CockroachDialect.class, reason = "Cockroach has unreliable support for numeric types in log function")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support log(b, n) function")
 	public void testLog(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			HibernateCriteriaBuilder cb = session.getCriteriaBuilder();
@@ -363,6 +369,7 @@ public class CriteriaBuilderNonStandardFunctionsTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support pi function")
 	public void testPi(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			HibernateCriteriaBuilder cb = session.getCriteriaBuilder();
@@ -418,6 +425,7 @@ public class CriteriaBuilderNonStandardFunctionsTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support hyperbolic functions")
 	public void testHyperbolic(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			HibernateCriteriaBuilder cb = session.getCriteriaBuilder();
@@ -439,6 +447,7 @@ public class CriteriaBuilderNonStandardFunctionsTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support pi function")
 	public void testDegrees(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			HibernateCriteriaBuilder cb = session.getCriteriaBuilder();
@@ -452,6 +461,7 @@ public class CriteriaBuilderNonStandardFunctionsTest {
 
 	@Test
 	@JiraKey("HHH-16185")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support trunc(numeric) and sign(numeric)")
 	public void testNumericTruncFunction(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			final CriteriaBuilder cb = session.getCriteriaBuilder();
@@ -481,6 +491,7 @@ public class CriteriaBuilderNonStandardFunctionsTest {
 	@Test
 	@JiraKey("HHH-16130")
 	@RequiresDialectFeature( feature = DialectFeatureChecks.SupportsDateTimeTruncation.class )
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner has Los Angelos as default time zone")
 	public void testDateTruncFunction(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			HibernateCriteriaBuilder cb = session.getCriteriaBuilder();

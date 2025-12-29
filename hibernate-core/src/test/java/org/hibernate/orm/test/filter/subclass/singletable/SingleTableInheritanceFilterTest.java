@@ -18,8 +18,10 @@ import org.hibernate.annotations.FilterDef;
 import org.hibernate.orm.test.filter.AbstractStatefulStatelessFilterTest;
 import org.hibernate.query.MutationQuery;
 import org.hibernate.query.Query;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 
 import org.junit.jupiter.api.AfterEach;
@@ -42,6 +44,7 @@ import java.util.function.Consumer;
 				SingleTableInheritanceFilterTest.ChildEntityTwo.class
 		}
 )
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class SingleTableInheritanceFilterTest extends AbstractStatefulStatelessFilterTest {
 
 	@AfterEach

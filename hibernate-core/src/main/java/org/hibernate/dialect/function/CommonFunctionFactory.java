@@ -174,6 +174,15 @@ public class CommonFunctionFactory {
 				.register();
 	}
 
+	public void log10_spanner() {
+		functionRegistry.patternAggregateDescriptorBuilder( "log10", "dlog10(?1)" )
+				.setExactArgumentCount( 1 )
+				.setParameterTypes(NUMERIC)
+				.setInvariantType(doubleType)
+				.setArgumentListSignature( "(NUMERIC arg)" )
+				.register();
+	}
+
 	/**
 	 * For Oracle and HANA
 	 */

@@ -20,9 +20,11 @@ import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.RequiresDialect;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.Test;
@@ -671,6 +673,7 @@ public class IndexedCollectionTest {
 
 	@Test
 	@JiraKey(value = "HHH-8879")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testMapKeyEmbeddableWithEntityKey(SessionFactoryScope scope) {
 		Session s = scope.getSessionFactory().openSession();
 		Transaction tx;
@@ -715,6 +718,7 @@ public class IndexedCollectionTest {
 
 	@Test
 	@JiraKey(value = "HHH-8994")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testEmbeddableWithEntityKey(SessionFactoryScope scope) {
 		Session s = scope.getSessionFactory().openSession();
 		Transaction tx;

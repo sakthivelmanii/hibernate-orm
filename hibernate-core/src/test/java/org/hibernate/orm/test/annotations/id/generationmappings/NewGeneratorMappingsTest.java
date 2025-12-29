@@ -13,8 +13,10 @@ import org.hibernate.id.enhanced.TableGenerator;
 import org.hibernate.orm.test.annotations.id.generationmappings.sub.DedicatedSequenceEntity1;
 import org.hibernate.orm.test.annotations.id.generationmappings.sub.DedicatedSequenceEntity2;
 import org.hibernate.persister.entity.EntityPersister;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -55,6 +57,7 @@ public class NewGeneratorMappingsTest  {
 
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testMinimalSequenceEntity(SessionFactoryScope scope) {
 		final EntityPersister persister = scope.getSessionFactory()
 				.getRuntimeMetamodels()
@@ -73,6 +76,7 @@ public class NewGeneratorMappingsTest  {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testCompleteSequenceEntity(SessionFactoryScope scope) {
 		final EntityPersister persister = scope.getSessionFactory()
 				.getRuntimeMetamodels()
@@ -87,6 +91,7 @@ public class NewGeneratorMappingsTest  {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testAutoEntity(SessionFactoryScope scope) {
 		final EntityPersister persister = scope.getSessionFactory().getRuntimeMetamodels().getMappingMetamodel().getEntityDescriptor(AutoEntity.class.getName());
 		IdentifierGenerator generator = persister.getIdentifierGenerator();
@@ -98,6 +103,7 @@ public class NewGeneratorMappingsTest  {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testTablePerClassAutoEntity(SessionFactoryScope scope) {
 		final EntityPersister persister = scope.getSessionFactory().getRuntimeMetamodels().getMappingMetamodel().getEntityDescriptor(AbstractTPCAutoEntity.class.getName());
 		IdentifierGenerator generator = persister.getIdentifierGenerator();
@@ -110,6 +116,7 @@ public class NewGeneratorMappingsTest  {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testMinimalTableEntity(SessionFactoryScope scope) {
 		final EntityPersister persister = scope.getSessionFactory().getRuntimeMetamodels().getMappingMetamodel().getEntityDescriptor(MinimalTableEntity.class.getName());
 		IdentifierGenerator generator = persister.getIdentifierGenerator();

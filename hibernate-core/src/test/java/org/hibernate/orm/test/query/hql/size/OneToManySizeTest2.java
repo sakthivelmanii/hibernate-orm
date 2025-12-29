@@ -9,9 +9,11 @@ import java.util.Locale;
 
 import org.hibernate.Hibernate;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.jdbc.SQLStatementInspector;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.AfterEach;
@@ -29,6 +31,7 @@ import static org.junit.Assert.assertTrue;
 		annotatedClasses = { Skill.class, Teacher.class, Student.class }
 )
 @SessionFactory( useCollectingStatementInspector = true )
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class OneToManySizeTest2 {
 	@Test
 	public void testSize(SessionFactoryScope scope) {

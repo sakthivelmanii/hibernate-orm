@@ -6,7 +6,9 @@ package org.hibernate.orm.test.annotations.cascade;
 
 import java.util.ArrayList;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.Test;
@@ -33,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class CascadeTest {
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testPersist(SessionFactoryScope scope) {
 		Tooth leftTooth = new Tooth();
 		scope.inTransaction(
@@ -53,6 +56,7 @@ public class CascadeTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testMerge(SessionFactoryScope scope) {
 		Tooth t = new Tooth();
 		Tooth rightTooth = new Tooth();

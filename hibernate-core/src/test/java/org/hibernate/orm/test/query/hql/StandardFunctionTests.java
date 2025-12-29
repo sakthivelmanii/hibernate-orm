@@ -46,7 +46,6 @@ import static org.hibernate.testing.orm.domain.gambit.EntityOfBasics.Gender.FEMA
 @ServiceRegistry
 @DomainModel( standardModels = StandardDomainModel.GAMBIT )
 @SessionFactory
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class StandardFunctionTests {
 
 	@BeforeAll
@@ -155,6 +154,7 @@ public class StandardFunctionTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support time type")
 	public void localTimeTests(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -256,6 +256,7 @@ public class StandardFunctionTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support mul_d_interval")
 	public void testTimestampAddDiffFunctions(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -402,6 +403,7 @@ public class StandardFunctionTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support mul_d_interval")
 	public void testIntervalAddExpressions(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -438,6 +440,7 @@ public class StandardFunctionTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support mul_d_interval")
 	public void testIntervalSubExpressions(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -476,6 +479,7 @@ public class StandardFunctionTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support mul_d_interval")
 	public void testIntervalAddSubExpressions(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -494,6 +498,7 @@ public class StandardFunctionTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support mul_d_interval")
 	public void testIntervalScaleExpressions(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -525,6 +530,7 @@ public class StandardFunctionTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support age function")
 	public void testIntervalDiffExpressions(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -697,6 +703,7 @@ public class StandardFunctionTests {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsExtractDayOfWeekYearMonth.class)
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support time without time zone")
 	public void testExtractFunctionWithAssertions(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -951,6 +958,7 @@ public class StandardFunctionTests {
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsFormat.class)
 	@SkipForDialect(dialectClass = CockroachDialect.class, reason = "unknown signature: experimental_strftime(time, string)") // could cast the first argument to timestamp to workaround this
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner has Los Angelos as default time zone")
 	public void testFormatTime(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -968,6 +976,7 @@ public class StandardFunctionTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support pi function")
 	public void testPi(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -980,6 +989,7 @@ public class StandardFunctionTests {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support pi function")
 	public void testDegreesRadians(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -997,6 +1007,7 @@ public class StandardFunctionTests {
 
 	@Test
 	@SkipForDialect(dialectClass = CockroachDialect.class, reason = "unknown signature: log(int, int)") // could cast an argument to double to workaround this
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support log(b, n) function")
 	public void testLog(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

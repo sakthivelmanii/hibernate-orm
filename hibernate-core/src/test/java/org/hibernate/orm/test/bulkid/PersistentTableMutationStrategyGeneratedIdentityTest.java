@@ -20,6 +20,7 @@ import org.hibernate.testing.orm.junit.SettingProvider;
 				)
 		}
 )
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class PersistentTableMutationStrategyGeneratedIdentityTest
 		extends AbstractMutationStrategyGeneratedIdentityTest {
 

@@ -5,7 +5,9 @@
 package org.hibernate.orm.test.annotations.array;
 
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.orm.test.annotations.array.Contest.Month;
@@ -20,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 @DomainModel(annotatedClasses = { Competitor.class, Contest.class})
 @SessionFactory
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class ArrayTest {
 
 	@Test

@@ -223,7 +223,6 @@ public class EntityResultTests extends AbstractUsageTest {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 	public void testConvertedAttributes(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

@@ -24,7 +24,9 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import org.hibernate.Session;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.Test;
@@ -51,6 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MapKeyAttributeConverterTest {
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testImplicitType(SessionFactoryScope scope) {
 		MapEntity found = scope.fromTransaction( session -> {
 			MapValue mapValue = create();
@@ -70,6 +73,7 @@ public class MapKeyAttributeConverterTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testExplicitType(SessionFactoryScope scope) {
 		MapEntity found = scope.fromTransaction( session -> {
 			MapValue mapValue = create();
@@ -90,6 +94,7 @@ public class MapKeyAttributeConverterTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testEnumDefaultType(SessionFactoryScope scope) {
 		MapEntity found = scope.fromTransaction( session -> {
 			MapValue mapValue = create();
@@ -128,6 +133,7 @@ public class MapKeyAttributeConverterTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testEnumExplicitStringType(SessionFactoryScope scope) {
 		MapEntity found = scope.fromTransaction( session -> {
 			MapValue mapValue = create();
@@ -223,6 +229,7 @@ public class MapKeyAttributeConverterTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testEnumImplicitOverriddenType(SessionFactoryScope scope) {
 		MapEntity found = scope.fromTransaction( session -> {
 			MapValue mapValue = create();

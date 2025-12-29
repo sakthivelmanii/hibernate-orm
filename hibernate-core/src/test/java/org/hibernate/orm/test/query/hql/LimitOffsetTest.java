@@ -7,10 +7,8 @@ package org.hibernate.orm.test.query.hql;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -20,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Jpa(annotatedClasses = LimitOffsetTest.Sortable.class)
 class LimitOffsetTest {
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 	void testLimitOffset(EntityManagerFactoryScope scope) {
 		scope.inTransaction( session -> {
 			session.persist( new Sortable() );

@@ -12,9 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Query;
 
 import org.hibernate.dialect.PostgreSQLDialect;
-import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.query.NativeQuery;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.type.StandardBasicTypes;
 
 import org.hibernate.testing.orm.junit.DomainModel;
@@ -37,7 +35,6 @@ import static org.hamcrest.Matchers.notNullValue;
 @RequiresDialect(value = PostgreSQLDialect.class)
 @DomainModel(annotatedClasses = { PostgreSQLUUIDTest.Book.class })
 @SessionFactory
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class PostgreSQLUUIDTest {
 
 	private UUID id;

@@ -25,10 +25,10 @@ import org.junit.jupiter.api.Test;
 @SessionFactory
 @ServiceRegistry(settings = @Setting(name = QuerySettings.JSON_FUNCTIONS_ENABLED, value = "true"))
 @RequiresDialectFeature( feature = DialectFeatureChecks.SupportsJsonArrayAgg.class)
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support UUID column")
 public class JsonArrayAggregateTest {
 
 	@Test
+	@SkipForDialect( reason = "Aggregate functions with FILTER clauses are not supported", dialectClass = SpannerPostgreSQLDialect.class)
 	public void testSimple(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			//tag::hql-json-arrayagg-example[]
@@ -38,6 +38,7 @@ public class JsonArrayAggregateTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass =  SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support jsonb_agg function")
 	public void testNull(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			//tag::hql-json-arrayagg-null-example[]
@@ -47,6 +48,7 @@ public class JsonArrayAggregateTest {
 	}
 
 	@Test
+	@SkipForDialect( reason = "Aggregate functions with FILTER clauses are not supported", dialectClass = SpannerPostgreSQLDialect.class)
 	public void testOrderBy(SessionFactoryScope scope) {
 		scope.inSession( em -> {
 			//tag::hql-json-arrayagg-order-by-example[]

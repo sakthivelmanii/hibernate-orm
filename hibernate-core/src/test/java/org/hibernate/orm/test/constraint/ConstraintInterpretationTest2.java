@@ -21,7 +21,6 @@ import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 @Jpa(annotatedClasses = {ConstraintInterpretationTest2.Enttity1.class, ConstraintInterpretationTest2.Entity2.class})
 public class ConstraintInterpretationTest2 {
 	@Test void testNotNullPrimaryKey(EntityManagerFactoryScope scope) {
@@ -41,7 +39,7 @@ public class ConstraintInterpretationTest2 {
 			catch (ConstraintViolationException cve) {
 				assertEquals( ConstraintViolationException.ConstraintKind.NOT_NULL, cve.getKind() );
 				// DB2 and Informix error messages don't contain the primary key constraint name
-				if ( !(scope.getDialect() instanceof DB2Dialect) && !(scope.getDialect() instanceof InformixDialect) ) {
+				if ( !(scope.getDialect() instanceof DB2Dialect) && !(scope.getDialect() instanceof InformixDialect) && !(scope.getDialect() instanceof SpannerPostgreSQLDialect)) {
 					assertTrue( cve.getConstraintName().toLowerCase().endsWith( "id" ) );
 				}
 			}
@@ -68,7 +66,7 @@ public class ConstraintInterpretationTest2 {
 			catch (ConstraintViolationException cve) {
 				assertEquals( ConstraintViolationException.ConstraintKind.NOT_NULL, cve.getKind() );
 				// DB2 error message doesn't contain constraint or column name
-				if ( !(scope.getDialect() instanceof DB2Dialect) ) {
+				if ( !(scope.getDialect() instanceof DB2Dialect) && !(scope.getDialect() instanceof SpannerPostgreSQLDialect)) {
 					assertTrue( cve.getConstraintName().toLowerCase().endsWith( "name" ) );
 				}
 			}
@@ -84,7 +82,7 @@ public class ConstraintInterpretationTest2 {
 			catch (ConstraintViolationException cve) {
 				assertEquals( ConstraintViolationException.ConstraintKind.UNIQUE, cve.getKind() );
 				// DB2 error message doesn't contain unique constraint name
-				if ( !(scope.getDialect() instanceof DB2Dialect) ) {
+				if ( !(scope.getDialect() instanceof DB2Dialect) && !(scope.getDialect() instanceof SpannerPostgreSQLDialect) ) {
 					assertTrue( cve.getConstraintName().toLowerCase().contains( "ssnuk" ) );
 				}
 			}
@@ -100,7 +98,7 @@ public class ConstraintInterpretationTest2 {
 			catch (ConstraintViolationException cve) {
 				assertEquals( ConstraintViolationException.ConstraintKind.CHECK, cve.getKind() );
 				// CockroachDB error messages don't contain the check constraint name
-				if ( !(scope.getDialect() instanceof CockroachDialect) ) {
+				if ( !(scope.getDialect() instanceof CockroachDialect) && !(scope.getDialect() instanceof SpannerPostgreSQLDialect) ) {
 					assertTrue( cve.getConstraintName().toLowerCase().endsWith( "namecheck" ) );
 				}
 			}
@@ -115,7 +113,7 @@ public class ConstraintInterpretationTest2 {
 			catch (ConstraintViolationException cve) {
 				assertEquals( ConstraintViolationException.ConstraintKind.FOREIGN_KEY, cve.getKind() );
 				// HANA error messages don't contain the foreign key constraint name
-				if ( !(scope.getDialect() instanceof HANADialect) ) {
+				if ( !(scope.getDialect() instanceof HANADialect) && !(scope.getDialect() instanceof SpannerPostgreSQLDialect)) {
 					assertTrue(  cve.getConstraintName().toLowerCase().endsWith( "id2to1fk" ) );
 				}
 			}

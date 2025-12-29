@@ -15,8 +15,10 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.Version;
 import org.hibernate.InstantiationException;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.AfterEach;
@@ -38,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 )
 @SessionFactory
 @JiraKey("HHH-19868")
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class SelectWithWrongResultTypeTest {
 
 	@BeforeEach

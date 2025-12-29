@@ -13,8 +13,10 @@ import org.hibernate.Hibernate;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.metamodel.CollectionClassification;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -325,6 +327,7 @@ public class ManyToManyTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testOrderByEmployee(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -361,6 +364,7 @@ public class ManyToManyTest {
 
 	// HHH-4394
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testOrderByContractor(SessionFactoryScope scope) {
 		scope.inTransaction(
 				sesssion -> {
@@ -407,6 +411,7 @@ public class ManyToManyTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testRemoveInBetween(SessionFactoryScope scope) {
 		Employer e = new Employer();
 		Employee ee1 = new Employee();
@@ -481,6 +486,7 @@ public class ManyToManyTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testSelf(SessionFactoryScope scope) {
 		Friend friend = new Friend();
 		Friend sndF = new Friend();

@@ -17,7 +17,6 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.PersistentClass;
@@ -36,7 +35,6 @@ import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.SettingProvider;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.testing.util.ServiceRegistryUtil;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -129,7 +127,7 @@ public class OneToManyTest {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "ID doesn't fit into Integer")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testListWithBagSemanticAndOrderBy(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -177,7 +175,7 @@ public class OneToManyTest {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "ID doesn't fit into Integer")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testUnidirectionalDefault(SessionFactoryScope scope) {
 		Trainer t = new Trainer();
 		t.setName( "First trainer" );
@@ -227,6 +225,7 @@ public class OneToManyTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testUnidirectionalExplicit(SessionFactoryScope scope) {
 		Trainer t = new Trainer();
 		t.setName( "First trainer" );
@@ -279,6 +278,7 @@ public class OneToManyTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testFetching(SessionFactoryScope scope) {
 		Troop troop = new Troop();
 		Soldier rambo = new Soldier();
@@ -505,6 +505,7 @@ public class OneToManyTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testJoinColumns(SessionFactoryScope scope) {
 		Parent p = new Parent();
 		ParentPk pk = new ParentPk();

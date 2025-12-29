@@ -7,8 +7,10 @@ package org.hibernate.orm.test.entitygraph;
 import java.util.List;
 
 import org.hibernate.testing.jdbc.SQLStatementInspector;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.BeforeAll;
@@ -43,6 +45,7 @@ import static org.hibernate.jpa.SpecHints.HINT_SPEC_FETCH_GRAPH;
 @SessionFactory( useCollectingStatementInspector = true )
 @Jira( "https://hibernate.atlassian.net/browse/HHH-17629" )
 @Jira( "https://hibernate.atlassian.net/browse/HHH-18378" )
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class EntityGraphAndJoinTest {
 	@BeforeAll
 	public void setUp(SessionFactoryScope scope) {

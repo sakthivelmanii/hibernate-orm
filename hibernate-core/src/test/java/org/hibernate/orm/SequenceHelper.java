@@ -10,24 +10,17 @@ import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 
 public class SequenceHelper {
-	public static long getId(SessionFactoryScope scope, long index) {
-		return getId( scope, 1L, index );
+
+	public static long getId(SessionFactoryScope scope, long startWith) {
+		return getId( scope.getSessionFactory().getJdbcServices().getDialect(), startWith );
 	}
 
-	public static long getId(EntityManagerFactoryScope scope, long n) {
-		return getId( scope.getDialect(), 1L, n );
+	public static long getId(EntityManagerFactoryScope scope, long startWith) {
+		return getId( scope.getDialect(), startWith);
 	}
 
-	public static long getId(SessionFactoryScope scope, long startsWith, long index) {
-		return getId( scope.getSessionFactory().getJdbcServices().getDialect(), startsWith, index );
-	}
-
-	private static long getId(Dialect dialect, long startsWith, long index) {
-		return getId(dialect, startsWith, index, true );
-	}
-
-	public static long getId(Dialect dialect, long startsWith, long index, boolean shouldSubtract) {
-		return dialect instanceof SpannerPostgreSQLDialect ? (Long.reverse(startsWith) >>> 1) + (shouldSubtract ? index - 50: 0) : index;
+	public static long getId(Dialect dialect, long startsWith) {
+		return dialect instanceof SpannerPostgreSQLDialect ? Long.reverse(startsWith) >>> 1 : startsWith;
 	}
 
 

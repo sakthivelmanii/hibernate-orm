@@ -7,11 +7,11 @@ package org.hibernate.orm.test.jpa.orphan.onetomany.embedded;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.Jpa;
-import org.hibernate.testing.orm.junit.SkipForDialect;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 		OneToManyInEmbeddedTest.ChildEntity.class,
 		OneToManyInEmbeddedTest.ParentEntity.class
 } )
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support @Generated Integer column")
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class OneToManyInEmbeddedTest {
 	@BeforeAll
 	public void setUp(EntityManagerFactoryScope scope) {

@@ -20,6 +20,7 @@ import org.hibernate.boot.spi.MetadataBuildingContext;
 import org.hibernate.dialect.aggregate.AggregateSupport;
 import org.hibernate.dialect.aggregate.SpannerPostgreSQLAggregateSupport;
 import org.hibernate.dialect.function.CommonFunctionFactory;
+import org.hibernate.dialect.function.PostgreSQLTruncFunction;
 import org.hibernate.dialect.function.PostgreSQLTruncRoundFunction;
 import org.hibernate.dialect.lock.PessimisticLockStyle;
 import org.hibernate.dialect.lock.internal.LockingSupportSimple;
@@ -186,11 +187,17 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
 		functionRegistry.register(
 				"round", new PostgreSQLTruncRoundFunction( "round", false ));
+		functionContributions.getFunctionRegistry().register(
+				"trunc",
+				new PostgreSQLTruncFunction( true, functionContributions.getTypeConfiguration() )
+		);
+
 		// Register Spanner specific function
 		commonFunctionFactory.length_characterLength_spanner("");
 		commonFunctionFactory.arrayLength_spanner();
 		commonFunctionFactory.position_spanner();
 		commonFunctionFactory.locate_Spanner();
+		commonFunctionFactory.log10_spanner();
 
 		// Replace functions
 		commonFunctionFactory.jsonArrayAgg_postgresql( false );
@@ -198,6 +205,7 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		commonFunctionFactory.localtimeLocaltimestamp_spanner();
 
 		// Remove unsupported PG functions
+		functionRegistry.unregister( "array_append" );
 		functionRegistry.unregister( "array_append" );
 		functionRegistry.unregister( "array_fill" );
 		functionRegistry.unregister( "array_fill_list" );
@@ -210,6 +218,8 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		functionRegistry.unregister( "array_position" );
 		functionRegistry.unregister( "array_positions" );
 
+		functionRegistry.unregister( "json_arrayagg" );
+		functionRegistry.unregister( "json_insert" );
 		functionRegistry.unregister( "json_query" );
 		functionRegistry.unregister( "json_table" );
 		functionRegistry.unregister( "json_value" );
@@ -702,9 +712,10 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	}
 
 	private @Nullable JDBCException handleConstraintViolatedException(SQLException sqlException, String message, String sql) {
-		if (sqlException.getErrorCode() == 6 || (message != null && message.contains("Cannot specify a null value for column"))) {
-			return new ConstraintViolationException(message, sqlException, sql);
-		} else if (message != null && message.contains( "does not specify a non-null value for NOT NULL column" )) {
+		if (sqlException.getErrorCode() == 6) {
+			return new ConstraintViolationException(message, sqlException, ConstraintViolationException.ConstraintKind.UNIQUE, null);
+		} else if (message != null && (message.contains( "does not specify a non-null value for NOT NULL column" ) ||
+									message.contains("Cannot specify a null value for column"))) {
 			return new ConstraintViolationException(message, sqlException, ConstraintViolationException.ConstraintKind.NOT_NULL, null);
 		} else if (sqlException.getErrorCode() == 11 || (message != null && message.contains("Check constraint"))) {
 			return new ConstraintViolationException(message, sqlException, ConstraintViolationException.ConstraintKind.CHECK, null);

@@ -5,8 +5,10 @@
 package org.hibernate.orm.test.annotations.sharedfk;
 
 import org.hibernate.PropertyValueException;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.Test;
@@ -21,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @JiraKey(value = "JPA-46")
 @SessionFactory
 @DomainModel(annotatedClasses = {AbstractChild.class, Parent.class, ConcreteChild1.class, ConcreteChild2.class})
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIdentityColumns.class)
 public class TestDiscriminatedOneToMany {
 	@Test
 	void test(SessionFactoryScope scope) {

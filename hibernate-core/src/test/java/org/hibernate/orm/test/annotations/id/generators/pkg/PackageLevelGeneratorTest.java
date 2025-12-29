@@ -35,9 +35,9 @@ public class PackageLevelGeneratorTest {
 			s.persist(entity2);
 			s.persist(entity3);
 			s.persist(entity4);
-			assertEquals( SequenceHelper.getId( scope, 42, 1 ), entity1.id);
-			assertEquals( SequenceHelper.getId( scope, 42, 1 ), entity2.id);
-			assertEquals( SequenceHelper.getId( scope, 42, 1 ), entity3.id);
+			assertEquals( SequenceHelper.getId( scope, 42), entity1.id);
+			assertEquals( SequenceHelper.getId( scope, 42), entity2.id);
+			assertEquals( SequenceHelper.getId( scope, 42), entity3.id);
 			assertEquals(70, entity4.id);
 		});
 	}

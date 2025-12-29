@@ -28,7 +28,6 @@ import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.ValueGenerationType;
 import org.hibernate.dialect.Dialect;
-import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.generator.EventType;
 import org.hibernate.generator.OnExecutionGenerator;
 
@@ -38,7 +37,6 @@ import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -56,7 +54,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @RequiresDialectFeature( feature = DialectFeatureChecks.CurrentTimestampHasMicrosecondPrecision.class )
 @RequiresDialectFeature( feature = DialectFeatureChecks.UsesStandardCurrentTimestampFunction.class )
 @DomainModel( annotatedClasses = DefaultGeneratedValueIdentityTest.TheEntity.class )
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INTEGER sequences")
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 @SessionFactory
 @SuppressWarnings("JUnitMalformedDeclaration")
 public class DefaultGeneratedValueIdentityTest {

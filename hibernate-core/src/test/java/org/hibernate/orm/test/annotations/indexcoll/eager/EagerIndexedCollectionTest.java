@@ -9,7 +9,9 @@ import org.hibernate.mapping.Collection;
 import org.hibernate.mapping.Column;
 import org.hibernate.orm.test.annotations.indexcoll.Gas;
 import org.hibernate.orm.test.annotations.indexcoll.GasKey;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.AfterEach;
@@ -68,6 +70,7 @@ public class EagerIndexedCollectionTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testRealMap(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {

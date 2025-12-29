@@ -137,6 +137,12 @@ abstract public class DialectFeatureChecks {
 		}
 	}
 
+	public static class SupportsIntegerSequences implements DialectFeatureCheck {
+		public boolean apply(Dialect dialect) {
+			return !(dialect instanceof SpannerPostgreSQLDialect);
+		}
+	}
+
 	public static class SupportsLobValueChangePropagation implements DialectFeatureCheck {
 		public boolean apply(Dialect dialect) {
 			return dialect.supportsLobValueChangePropagation();
@@ -417,7 +423,7 @@ abstract public class DialectFeatureChecks {
 		public boolean apply(Dialect dialect) {
 			return dialect instanceof DB2Dialect
 				|| dialect instanceof OracleDialect
-				|| dialect instanceof PostgreSQLDialect
+				|| (dialect instanceof PostgreSQLDialect && !(dialect instanceof SpannerPostgreSQLDialect))
 				|| dialect instanceof SQLServerDialect
 				|| dialect instanceof DerbyDialect
 				|| dialect instanceof MySQLDialect && !(dialect instanceof TiDBDialect)
@@ -429,7 +435,7 @@ abstract public class DialectFeatureChecks {
 		public boolean apply(Dialect dialect) {
 			return dialect instanceof DB2Dialect
 				|| dialect instanceof OracleDialect
-				|| dialect instanceof PostgreSQLDialect
+				|| (dialect instanceof PostgreSQLDialect && !(dialect instanceof SpannerPostgreSQLDialect))
 				|| dialect instanceof SQLServerDialect;
 		}
 	}
@@ -462,7 +468,7 @@ abstract public class DialectFeatureChecks {
 	public static class SupportsCharCodeConversion implements DialectFeatureCheck {
 		public boolean apply(Dialect dialect) {
 			// Derby doesn't support the `ASCII` or `CHR` functions
-			return !( dialect instanceof DerbyDialect );
+			return !( dialect instanceof DerbyDialect  || dialect instanceof SpannerPostgreSQLDialect);
 		}
 	}
 
@@ -672,6 +678,7 @@ abstract public class DialectFeatureChecks {
 					|| dialect instanceof DerbyDialect
 					|| dialect instanceof FirebirdDialect
 					|| dialect instanceof InformixDialect
+					|| dialect instanceof SpannerPostgreSQLDialect
 					|| dialect instanceof DB2Dialect db2 && db2.getDB2Version().isBefore( 11 ) );
 		}
 	}

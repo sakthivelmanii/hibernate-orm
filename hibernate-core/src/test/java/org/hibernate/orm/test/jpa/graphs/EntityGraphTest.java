@@ -37,8 +37,10 @@ import jakarta.persistence.criteria.Root;
 import jakarta.persistence.metamodel.Attribute;
 import jakarta.persistence.metamodel.PluralAttribute;
 import org.hibernate.Hibernate;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.util.uuid.SafeRandomUUIDGenerator;
 
 import org.hibernate.testing.orm.junit.JiraKey;
@@ -267,6 +269,7 @@ public class EntityGraphTest {
 
 	@Test
 	@JiraKey(value = "HHH-9735")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void loadIsMemberQueriedCollection(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( em -> {
 			em.getTransaction().begin();
@@ -341,6 +344,7 @@ public class EntityGraphTest {
 
 	@Test
 	@JiraKey(value = "HHH-15964")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void paginationOverCollectionFetch(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( em -> {
 			em.getTransaction().begin();
@@ -387,6 +391,7 @@ public class EntityGraphTest {
 
 	@Test
 	@JiraKey(value = "HHH-15964")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void paginationOverEagerCollectionWithEmptyEG(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( em -> {
 			em.getTransaction().begin();
@@ -547,6 +552,7 @@ public class EntityGraphTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testTreatedElementSubgraph(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( em -> {
 			em.getTransaction().begin();
@@ -601,6 +607,7 @@ public class EntityGraphTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testTreatedElementSubgraph2(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( em -> {
 			em.getTransaction().begin();

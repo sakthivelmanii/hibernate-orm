@@ -14,14 +14,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
-import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -37,7 +35,7 @@ import org.junit.jupiter.api.Test;
 		TestFlushModeWithIdentitySelfReferenceTest.SelfRefEntityWithEmbeddable.class
 })
 @SessionFactory
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support INTEGER sequences")
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class TestFlushModeWithIdentitySelfReferenceTest {
 	@AfterEach
 	void tearDown(SessionFactoryScope factoryScope) {
