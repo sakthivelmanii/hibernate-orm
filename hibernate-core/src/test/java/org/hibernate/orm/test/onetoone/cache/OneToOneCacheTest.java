@@ -13,8 +13,10 @@ import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.stat.spi.StatisticsImplementor;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.FailureExpected;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -37,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 				@Setting(name = AvailableSettings.USE_SECOND_LEVEL_CACHE, value = "true"),
 		}
 )
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class OneToOneCacheTest {
 
 	private <TPerson extends Person, TDetails extends Details> void OneToOneTest(

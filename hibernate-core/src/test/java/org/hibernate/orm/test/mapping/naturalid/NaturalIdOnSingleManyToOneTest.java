@@ -8,8 +8,10 @@ import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.NaturalIdCache;
 import org.hibernate.cfg.AvailableSettings;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -38,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 @SessionFactory
 @ServiceRegistry(settings = @Setting(name = AvailableSettings.USE_QUERY_CACHE, value = "true"))
 @JiraKey(value = "HHH-14943")
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class NaturalIdOnSingleManyToOneTest {
 
 	@AfterEach

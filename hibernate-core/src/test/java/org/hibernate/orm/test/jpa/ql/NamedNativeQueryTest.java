@@ -12,7 +12,9 @@ import org.hibernate.query.Query;
 import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.dialect.SQLServerDialect;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.SkipForDialect;
@@ -28,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 @DomainModel(annotatedClasses = { FromEntity.class, DestinationEntity.class })
 @SessionFactory
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class NamedNativeQueryTest {
 
 	private FromEntity createFrom(SessionFactoryScope scope, String name, String lastName) {

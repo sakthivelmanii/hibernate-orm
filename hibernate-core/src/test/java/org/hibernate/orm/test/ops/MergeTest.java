@@ -785,6 +785,7 @@ public class MergeTest extends AbstractOperationTestCase {
 	@SuppressWarnings("unchecked")
 	@Test
 	@SkipForDialect(dialectClass = HANADialect.class, reason = " HANA doesn't support tables consisting of only a single auto-generated column")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testMergeManyToManyWithCollectionDeference(SessionFactoryScope scope) {
 		// setup base data...
 		Competition competition = new Competition();

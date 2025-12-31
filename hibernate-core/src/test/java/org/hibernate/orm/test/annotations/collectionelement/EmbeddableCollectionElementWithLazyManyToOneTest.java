@@ -39,11 +39,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 		}
 )
 @SessionFactory
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class EmbeddableCollectionElementWithLazyManyToOneTest {
 
 	@Test
 	@JiraKey(value = "???")
-	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testLazyManyToOneInEmbeddable(SessionFactoryScope scope) {
 		Parent p = new Parent();
 		p.containedChild = new ContainedChild( new Child() );
@@ -68,7 +68,6 @@ public class EmbeddableCollectionElementWithLazyManyToOneTest {
 
 	@Test
 	@JiraKey(value = "???")
-	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testLazyManyToOneInCollectionElementEmbeddable(SessionFactoryScope scope) {
 		Parent p = new Parent();
 		p.containedChildren.add( new ContainedChild( new Child() ) );

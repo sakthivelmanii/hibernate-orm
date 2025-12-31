@@ -13,9 +13,11 @@ import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
 
 import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.Setting;
 
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 		annotatedClasses = {AbstractSubqueryInSelectClauseTest.Person.class, AbstractSubqueryInSelectClauseTest.Document.class},
 		integrationSettings = {@Setting(name = AvailableSettings.JPA_QUERY_COMPLIANCE, value = "true")}
 )
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class SubqueryInSelectClauseJpaComplianceTest extends AbstractSubqueryInSelectClauseTest {
 
 	@Test

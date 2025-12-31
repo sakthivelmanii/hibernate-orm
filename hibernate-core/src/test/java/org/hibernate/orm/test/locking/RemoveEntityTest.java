@@ -12,8 +12,10 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.OptimisticLockType;
 import org.hibernate.annotations.OptimisticLocking;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.JiraKey;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.AfterEach;
@@ -42,6 +44,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 )
 @SessionFactory
 @JiraKey("HHH-16816")
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class RemoveEntityTest {
 	private static final String EMPLOYEE_TO_DELETE_MAIL = "demo-user@mail.com";
 

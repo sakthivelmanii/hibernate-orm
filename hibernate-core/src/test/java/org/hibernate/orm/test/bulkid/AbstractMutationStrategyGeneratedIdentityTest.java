@@ -32,7 +32,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 		}
 )
 @SessionFactory
-//@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public abstract class AbstractMutationStrategyGeneratedIdentityTest {
 
 	@BeforeEach

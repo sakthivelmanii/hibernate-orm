@@ -5,10 +5,12 @@
 package org.hibernate.orm.test.jpa.criteria;
 
 import org.hibernate.testing.jdbc.SQLStatementInspector;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.Jpa;
 
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +30,7 @@ import jakarta.persistence.criteria.Root;
 	useCollectingStatementInspector = true
 )
 @Jira( value = "https://hibernate.atlassian.net/browse/HHH-8891")
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class WrappedEntityCriteriaTest {
 
 	@BeforeEach

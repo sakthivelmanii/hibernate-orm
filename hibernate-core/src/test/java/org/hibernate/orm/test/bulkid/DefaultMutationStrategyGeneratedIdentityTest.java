@@ -8,6 +8,7 @@ import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIdentityColumns.class)
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class DefaultMutationStrategyGeneratedIdentityTest extends AbstractMutationStrategyGeneratedIdentityTest {
 
 }

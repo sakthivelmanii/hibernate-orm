@@ -14,10 +14,12 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.Jpa;
 
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,6 +27,7 @@ import org.junit.jupiter.api.Test;
 @Jpa(
 		annotatedClasses = {AbstractSubqueryInSelectClauseTest.Person.class, AbstractSubqueryInSelectClauseTest.Document.class}
 )
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class SubqueryInSelectClauseTest extends AbstractSubqueryInSelectClauseTest {
 
 	@Test

@@ -50,6 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 		}
 )
 @SessionFactory
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class MapKeyAttributeConverterTest {
 
 	@Test
@@ -172,6 +173,7 @@ public class MapKeyAttributeConverterTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testEnumImplicitType(SessionFactoryScope scope) {
 		MapEntity found = scope.fromTransaction( session -> {
 			MapValue mapValue = create();
@@ -210,6 +212,7 @@ public class MapKeyAttributeConverterTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testEnumImplicitOverrideStringType(SessionFactoryScope scope) {
 		MapEntity found = scope.fromTransaction( session -> {
 			MapValue mapValue = create();

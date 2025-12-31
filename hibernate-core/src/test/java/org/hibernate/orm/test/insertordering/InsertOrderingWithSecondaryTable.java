@@ -26,13 +26,16 @@ import jakarta.persistence.SecondaryTable;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.junit.jupiter.api.Test;
 
 /**
  * @author Chris Cranford
  */
 @JiraKey(value = "HHH-11714")
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class InsertOrderingWithSecondaryTable extends BaseInsertOrderingTest {
 
 	@Override

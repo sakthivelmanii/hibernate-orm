@@ -12,10 +12,12 @@ import java.util.Set;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
 
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -28,6 +30,7 @@ import org.junit.jupiter.api.Test;
 		Cat.class,
 		Decorate.class
 })
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class FlushTest {
 	private static Set<String> names = namesSet();
 

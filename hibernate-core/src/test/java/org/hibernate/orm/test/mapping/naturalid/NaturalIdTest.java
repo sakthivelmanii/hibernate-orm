@@ -17,7 +17,9 @@ import org.hibernate.annotations.NaturalIdCache;
 import org.hibernate.metamodel.mapping.EntityMappingType;
 import org.hibernate.metamodel.mapping.NaturalIdMapping;
 import org.hibernate.query.Query;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -140,6 +142,7 @@ public class NaturalIdTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testManyToOneNaturalLoadByNaturalId(SessionFactoryScope factoryScope) {
 		saveSomeCitizens( factoryScope );
 

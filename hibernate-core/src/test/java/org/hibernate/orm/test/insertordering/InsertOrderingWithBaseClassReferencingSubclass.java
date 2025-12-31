@@ -13,8 +13,10 @@ import jakarta.persistence.ManyToOne;
 
 import org.hibernate.cfg.Environment;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -40,6 +42,7 @@ import org.junit.jupiter.api.Test;
 				@Setting(name = Environment.STATEMENT_BATCH_SIZE, value = "10")
 		}
 )
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class InsertOrderingWithBaseClassReferencingSubclass {
 
 	@Test

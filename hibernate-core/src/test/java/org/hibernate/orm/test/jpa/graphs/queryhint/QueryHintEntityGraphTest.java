@@ -20,9 +20,11 @@ import org.hibernate.orm.test.jpa.graphs.Manager;
 import org.hibernate.orm.test.jpa.graphs.Market;
 import org.hibernate.orm.test.jpa.graphs.Student;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.Setting;
 import org.hibernate.testing.transaction.TransactionUtil2;
@@ -441,6 +443,7 @@ public class QueryHintEntityGraphTest {
 
 	@Test
 	@JiraKey(value = "HHH-11569")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testCollectionSizeLoadedWithGraph(EntityManagerFactoryScope scope) {
 		scope.inTransaction( entityManager -> {
 

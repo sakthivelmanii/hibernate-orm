@@ -1252,6 +1252,7 @@ public class LockTest extends EntityManagerFactoryBasedFunctionalTest {
 	@SkipForDialect(dialectClass = FirebirdDialect.class, reason = "Seems like FK constraint checks are not compatible with exclusive locks")
 	@SkipForDialect(dialectClass = AltibaseDialect.class, reason = "FK constraint checks are not compatible with exclusive locks")
 	@SkipForDialect(dialectClass = GaussDBDialect.class, reason = "The USTORE storage engine does not support For Key Share and For No Key Update")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testLockUpdateFkTarget() {
 		assertTimeout( Duration.ofSeconds(70), () -> {
 			Lock lock1 = new Lock();
