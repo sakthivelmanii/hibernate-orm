@@ -83,7 +83,7 @@ import static org.hibernate.cfg.SchemaToolingSettings.HBM2DDL_JDBC_METADATA_EXTR
 		SchemaUpdateTest.InheritanceChildEntity.class,
 		SchemaUpdateTest.InheritanceSecondChildEntity.class
 })
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support having two tables with same name differed only by case")
 public class SchemaUpdateTest implements ServiceRegistryProducer {
 	public static Collection<JdbcMetadataAccessStrategy> parameters() {
 		return List.of(

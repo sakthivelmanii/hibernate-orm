@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 @SessionFactory
 @DomainModel(annotatedClasses = {AbstractChild.class, Parent.class, ConcreteChild1.class, ConcreteChild2.class})
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIdentityColumns.class)
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class TestDiscriminatedOneToMany {
 	@Test
 	void test(SessionFactoryScope scope) {

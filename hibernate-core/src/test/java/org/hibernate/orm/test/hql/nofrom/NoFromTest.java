@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import org.hibernate.orm.SequenceHelper;
+import org.hibernate.orm.SpannerHelper;
 import org.hibernate.query.SemanticException;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -41,8 +42,13 @@ public class NoFromTest {
 		scope.inSession( s -> {
 			List<Thing> things = s.createSelectionQuery("order by id desc", Thing.class).getResultList();
 			assertEquals(2, things.size());
-			assertEquals(SequenceHelper.getId( scope, 2L ), things.get(0).id);
-			assertEquals(SequenceHelper.getId( scope, 1L ), things.get(1).id);
+			if ( SpannerHelper.isSpannerDatabase( scope ) ) {
+				assertEquals(SequenceHelper.getId( scope, 1L ), things.get(0).id);
+				assertEquals(SequenceHelper.getId( scope, 2L ), things.get(1).id);
+			} else {
+				assertEquals(2L, things.get(0).id);
+				assertEquals(1L, things.get(1).id);
+			}
 		});
 	}
 

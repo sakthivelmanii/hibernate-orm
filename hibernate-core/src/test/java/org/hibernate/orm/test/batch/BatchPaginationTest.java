@@ -39,6 +39,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 )
 @JiraKey( value = "HHH-16005")
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIdentityColumns.class)
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class BatchPaginationTest {
 
 	@BeforeAll

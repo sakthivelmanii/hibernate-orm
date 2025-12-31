@@ -18,7 +18,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -33,6 +35,7 @@ public class ElementCollectionTest extends BaseInsertOrderingTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testBatchOrdering() {
 		sessionFactoryScope().inTransaction( session -> {
 			Task task = new Task();

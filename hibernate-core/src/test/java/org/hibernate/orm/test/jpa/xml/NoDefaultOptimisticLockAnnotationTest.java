@@ -5,9 +5,11 @@
 package org.hibernate.orm.test.jpa.xml;
 
 import org.hibernate.testing.jdbc.SQLStatementInspector;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,6 +20,7 @@ import org.junit.jupiter.api.Test;
 		annotatedClasses = {Consumer.class, ConsumerItem.class},
 		useCollectingStatementInspector = true
 )
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 class NoDefaultOptimisticLockAnnotationTest {
 
 	private static SQLStatementInspector statementInspector;

@@ -9,8 +9,10 @@ import jakarta.persistence.OptimisticLockException;
 
 import org.hibernate.cfg.AvailableSettings;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.Setting;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -27,6 +29,7 @@ import org.junit.jupiter.api.Test;
 		},
 		integrationSettings = { @Setting(name = AvailableSettings.STATEMENT_BATCH_SIZE, value = "0") }
 )
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class RemoveTest {
 
 	@AfterEach

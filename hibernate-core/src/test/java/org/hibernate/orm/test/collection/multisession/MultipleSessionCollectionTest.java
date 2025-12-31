@@ -142,6 +142,7 @@ public class MultipleSessionCollectionTest {
 
 	@Test
 	@JiraKey(value = "HHH-9518")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner emulator doesn't support concurrent requests")
 	public void testCopyUninitializedCollectionReferenceAfterGet(SessionFactoryScope scope) {
 		Parent parent = new Parent();
 		Child c = new Child();
@@ -226,6 +227,7 @@ public class MultipleSessionCollectionTest {
 
 	@Test
 	@JiraKey(value = "HHH-9518")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner emulator doesn't support concurrent requests")
 	public void testCopyInitializedCollectionReferenceToNewEntityCollectionRoleAfterGet(SessionFactoryScope scope) {
 		Parent parent = new Parent();
 		Child c = new Child();

@@ -33,6 +33,7 @@ import static org.junit.Assert.assertNotNull;
 		}
 )
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIdentityColumns.class)
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class DynamicBatchFetchTestCase {
 
 	@Test

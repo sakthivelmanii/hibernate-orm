@@ -11,13 +11,11 @@ import java.util.Properties;
 import org.hibernate.SessionFactoryObserver;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Environment;
-import org.hibernate.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.jdbc.connections.internal.DriverManagerConnectionProvider;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.internal.util.PropertiesHelper;
 import org.hibernate.jpa.boot.spi.Bootstrap;
 import org.hibernate.jpa.boot.spi.EntityManagerFactoryBuilder;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.tool.schema.Action;
 
 import org.hibernate.testing.orm.jpa.PersistenceUnitDescriptorAdapter;
@@ -53,7 +51,6 @@ import static org.hibernate.testing.jdbc.GradleParallelTestingResolver.*;
 )
 @DomainModel( annotatedClasses = SimpleEntity.class )
 @SessionFactory
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
 public class JakartaSchemaToolingTests {
 	@Test
 	public void testSchemaCreation() {

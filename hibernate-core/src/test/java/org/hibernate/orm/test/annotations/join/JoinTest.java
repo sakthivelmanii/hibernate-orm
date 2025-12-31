@@ -13,7 +13,9 @@ import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.mapping.Join;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
@@ -186,6 +188,7 @@ public class JoinTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testUniqueConstaintOnSecondaryTable(SessionFactoryScope scope) {
 		Cat cat = new Cat();
 		cat.setStoryPart2( "My long story" );

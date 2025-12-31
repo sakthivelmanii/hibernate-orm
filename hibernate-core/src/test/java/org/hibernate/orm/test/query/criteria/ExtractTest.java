@@ -22,7 +22,9 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @Jpa
 class ExtractTest {
-	@Test void testLocalDate(EntityManagerFactoryScope scope) {
+	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner has Los Angelos as default time zone")
+	void testLocalDate(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( entityManager -> {
 			var builder = entityManager.getCriteriaBuilder();
 			var query = builder.createQuery( Object[].class );

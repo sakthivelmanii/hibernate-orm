@@ -6,6 +6,8 @@ package org.hibernate.orm.test.annotations.lob;
 
 
 import org.hibernate.dialect.SybaseDialect;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.SkipForDialect;
@@ -47,6 +49,7 @@ public abstract class AbstractLobTest<B extends AbstractBook, C extends Abstract
 	protected abstract Integer getId(C compiledCode);
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testSerializableToBlob(SessionFactoryScope scope) {
 		B book = createBook();
 		Editor editor = new Editor();
@@ -121,6 +124,7 @@ public abstract class AbstractLobTest<B extends AbstractBook, C extends Abstract
 
 	@Test
 	@SkipForDialect(dialectClass = SybaseDialect.class, matchSubTypes = true)
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testBinary(SessionFactoryScope scope) {
 
 		C cc = createCompiledCode();

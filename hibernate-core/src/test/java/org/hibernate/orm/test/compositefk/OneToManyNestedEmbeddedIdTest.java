@@ -7,9 +7,11 @@ package org.hibernate.orm.test.compositefk;
 import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 		OneToManyNestedEmbeddedIdTest.ParentEntity.class,
 })
 @JiraKey("HHH-15865")
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class OneToManyNestedEmbeddedIdTest {
 	@AfterEach
 	public void tearDown(EntityManagerFactoryScope scope) {

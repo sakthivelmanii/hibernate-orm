@@ -229,6 +229,47 @@ public enum Database {
 		public Dialect createDialect(DialectResolutionInfo info) {
 			return new SpannerDialect( info );
 		}
+
+		@Override
+		public boolean matchesResolutionInfo(DialectResolutionInfo info) {
+			try {
+				if (info.getDatabaseMetadata().getURL().contains( "dialect=postgresql" ) ) {
+					return false;
+				}
+			}
+			catch (SQLException ignored) {
+			}
+			return super.matchesResolutionInfo( info );
+		}
+
+		@Override
+		public boolean productNameMatches(String databaseName) {
+			return databaseName.startsWith( "Google Cloud Spanner" );
+		}
+		@Override
+		public String getDriverClassName(String jdbcUrl) {
+			return "com.google.cloud.spanner.jdbc.JdbcDriver";
+		}
+	},
+
+	SPANNER_PG {
+		@Override
+		public Dialect createDialect(DialectResolutionInfo info) {
+			return new SpannerPostgreSQLDialect( info );
+		}
+
+		@Override
+		public boolean matchesResolutionInfo(DialectResolutionInfo info) {
+			try {
+				if (info.getDatabaseMetadata().getURL().contains( "dialect=postgresql" ) ) {
+					return true;
+				}
+			}
+			catch (SQLException ignored) {
+			}
+			return super.matchesResolutionInfo( info );
+		}
+
 		@Override
 		public boolean productNameMatches(String databaseName) {
 			return databaseName.startsWith( "Google Cloud Spanner" );

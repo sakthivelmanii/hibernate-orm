@@ -15,9 +15,11 @@ import jakarta.persistence.TableGenerator;
 
 import org.hibernate.Session;
 
+import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
 
+import org.hibernate.testing.orm.junit.Setting;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,8 +31,8 @@ import static org.hamcrest.core.Is.is;
  * @author Andrea Boriero
  */
 @Jpa(annotatedClasses = {
-		DefaultInitialValueTableGeneratorConfiguredTest.Product.class
-})
+		DefaultInitialValueTableGeneratorConfiguredTest.Product.class,
+}, integrationSettings = {@Setting(name = AvailableSettings.PREFERRED_POOLED_OPTIMIZER, value = "pooled")})
 public class DefaultInitialValueTableGeneratorConfiguredTest {
 
 	@AfterEach

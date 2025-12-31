@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import org.hibernate.annotations.EmbeddableInstantiator;
 import org.hibernate.metamodel.spi.ValueAccess;
 
+import org.hibernate.orm.SequenceHelper;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
@@ -37,7 +38,7 @@ public class EmbeddableInstantiatorTest {
 		Wrapper wrapper = new Wrapper();
 		LocalDate aValue = LocalDate.now();
 		String bValue = "Foo";
-		int cValue = 1;
+		long cValue = SequenceHelper.getId( scope, 1L );
 
 		wrapper.myRecord = new MyRecord( cValue, bValue, aValue );
 
@@ -66,7 +67,7 @@ public class EmbeddableInstantiatorTest {
 
 	@Embeddable
 	@EmbeddableInstantiator(MyRecord.MyRecordInstantiator.class)
-	public record MyRecord(int c, String b, LocalDate a) {
+	public record MyRecord(long c, String b, LocalDate a) {
 
 		public static class MyRecordInstantiator implements org.hibernate.metamodel.spi.EmbeddableInstantiator {
 
@@ -82,7 +83,7 @@ public class EmbeddableInstantiatorTest {
 
 			@Override
 			public Object instantiate(ValueAccess valueAccess) {
-				return new MyRecord( valueAccess.getValue( 2, Integer.class ), valueAccess.getValue( 1, String.class ),
+				return new MyRecord( valueAccess.getValue( 2, Long.class ), valueAccess.getValue( 1, String.class ),
 									valueAccess.getValue( 0, LocalDate.class )
 				);
 			}

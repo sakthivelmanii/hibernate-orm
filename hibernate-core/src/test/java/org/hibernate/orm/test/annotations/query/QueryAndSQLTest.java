@@ -564,6 +564,7 @@ public class QueryAndSQLTest {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIdentityColumns.class)
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void testDiscriminator(SessionFactoryScope scope) {
 		scope.inSession(
 				session -> {

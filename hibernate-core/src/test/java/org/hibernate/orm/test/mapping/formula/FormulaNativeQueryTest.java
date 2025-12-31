@@ -17,8 +17,10 @@ import org.hibernate.annotations.Formula;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.DomainModel;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.junit.jupiter.api.AfterEach;
@@ -37,6 +39,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @DomainModel( annotatedClasses = FormulaNativeQueryTest.Foo.class )
 @SessionFactory
 @JiraKey(value = "HHH-7525")
+@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 public class FormulaNativeQueryTest {
 
 	@BeforeEach

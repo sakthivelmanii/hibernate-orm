@@ -120,7 +120,7 @@ public abstract class AbstractMutationStrategyCompositeIdTest {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "##FIXIT##")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Unable to resolve argument type")
 	public void testInsertSelect(SessionFactoryScope scope) {
 		scope.inTransaction( session -> {
 			final int insertCount = session.createMutationQuery(

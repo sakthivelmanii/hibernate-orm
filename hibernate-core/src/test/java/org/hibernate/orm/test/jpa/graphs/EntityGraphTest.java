@@ -64,6 +64,7 @@ public class EntityGraphTest {
 
 	@Test
 	@JiraKey(value = "HHH-8857")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void loadMultipleAssociations(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( em -> {
 			em.getTransaction().begin();
@@ -134,6 +135,7 @@ public class EntityGraphTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void loadInverseCollection(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( em -> {
 			em.getTransaction().begin();
@@ -461,6 +463,7 @@ public class EntityGraphTest {
 
 	@Test
 	@JiraKey("HHH-17192")
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsIntegerSequences.class)
 	public void joinedInheritanceWithSubEntityAttributeFiltering(EntityManagerFactoryScope scope) {
 		scope.inEntityManager( em -> {
 			em.getTransaction().begin();
