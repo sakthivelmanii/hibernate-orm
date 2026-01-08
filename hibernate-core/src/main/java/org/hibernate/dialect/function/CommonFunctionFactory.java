@@ -174,6 +174,15 @@ public class CommonFunctionFactory {
 				.register();
 	}
 
+	public void log10_spanner() {
+		functionRegistry.patternAggregateDescriptorBuilder( "log10", "dlog10(?1)" )
+				.setExactArgumentCount( 1 )
+				.setParameterTypes(NUMERIC)
+				.setInvariantType(doubleType)
+				.setArgumentListSignature( "(NUMERIC arg)" )
+				.register();
+	}
+
 	/**
 	 * For Oracle and HANA
 	 */
@@ -1504,6 +1513,14 @@ public class CommonFunctionFactory {
 				.register();
 	}
 
+	public void localtimeLocaltimestamp_spanner() {
+		//these functions return times without timezones
+		functionRegistry.registerAlternateKey( "localtime", "current_timestamp" );
+		functionRegistry.registerAlternateKey( "localtimestamp", "current_timestamp" );
+		functionRegistry.registerAlternateKey( "local_time", "current_timestamp" );
+		functionRegistry.registerAlternateKey( "local_datetime", "current_timestamp" );
+	}
+
 	public void trigonometry() {
 		functionRegistry.namedDescriptorBuilder( "sin" )
 				.setInvariantType(doubleType)
@@ -1600,6 +1617,14 @@ public class CommonFunctionFactory {
 		functionRegistry.register(
 				"character_length",
 				new LengthFunction( "character_length", "character_length(?1)", clobPattern, typeConfiguration )
+		);
+		functionRegistry.registerAlternateKey( "length", "character_length" );
+	}
+
+	public void length_characterLength_spanner(String clobPattern) {
+		functionRegistry.register(
+				"character_length",
+				new LengthFunction( "character_length", "length(?1)", clobPattern, typeConfiguration )
 		);
 		functionRegistry.registerAlternateKey( "length", "character_length" );
 	}
@@ -1706,6 +1731,15 @@ public class CommonFunctionFactory {
 				.register();
 	}
 
+	public void position_spanner() {
+		functionRegistry.patternDescriptorBuilder( "position", "strpos(?2,?1)" )
+				.setInvariantType(integerType)
+				.setExactArgumentCount( 2 )
+				.setParameterTypes(STRING, STRING)
+				.setArgumentListSignature( "(STRING pattern, STRING string)" )
+				.register();
+	}
+
 	public void locate() {
 		functionRegistry.namedDescriptorBuilder( "locate" )
 				.setInvariantType(integerType)
@@ -1726,6 +1760,20 @@ public class CommonFunctionFactory {
 				.setArgumentListSignature( "(STRING pattern, STRING string[, INTEGER start])" )
 				.register();
 		functionRegistry.registerAlternateKey( "locate", "charindex" );
+	}
+
+	/**
+	 * locate() for Spanner
+	 */
+	public void locate_Spanner() {
+		functionRegistry.registerBinaryTernaryPattern(
+						"locate",
+						integerType,
+						"strpos(?2, ?1)", "strpos(?2, substr(?1, ?3))",
+						STRING, STRING, INTEGER,
+						typeConfiguration
+				)
+				.setArgumentListSignature( "(STRING pattern, STRING string[, INTEGER start])" );
 	}
 
 	/**
@@ -2971,6 +3019,23 @@ public class CommonFunctionFactory {
 				"array_positions_list",
 				new OracleArrayPositionsFunction( true, typeConfiguration )
 		);
+	}
+
+	/**
+	 * Spanner PostgreSQL dialect array_length() function
+	 */
+	public void arrayLength_spanner() {
+		functionRegistry.patternDescriptorBuilder( "array_length", "array_length(?1, 1)" )
+				.setReturnTypeResolver( StandardFunctionReturnTypeResolvers.invariant( integerType ) )
+				.setArgumentsValidator(
+						StandardArgumentsValidators.composite(
+								StandardArgumentsValidators.exactly( 1 ),
+								ArrayArgumentValidator.DEFAULT_INSTANCE
+						)
+				)
+				.setArgumentListSignature( "(ARRAY array)" )
+				.register();
+		functionRegistry.register( "length", new DynamicDispatchFunction( functionRegistry,  "character_length", "array_length" ) );
 	}
 
 	/**
