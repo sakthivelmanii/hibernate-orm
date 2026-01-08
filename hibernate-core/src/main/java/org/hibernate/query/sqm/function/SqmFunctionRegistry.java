@@ -241,6 +241,22 @@ public class SqmFunctionRegistry {
 	}
 
 	/**
+	 * Unregister a function descriptor by name
+	 */
+	public void unregister(String registrationKey) {
+		functionMap.remove( registrationKey );
+		alternateKeyMap.remove(  registrationKey );
+
+		for ( Map.Entry<String, String> entrySet: alternateKeyMap.unmodifiableEntrySet()) {
+			if (entrySet.getValue().equals( registrationKey )) {
+				alternateKeyMap.remove( entrySet.getKey() );
+			}
+		}
+
+		setReturningFunctionMap.remove( registrationKey );
+	}
+
+	/**
 	 * Get a builder for creating and registering a name-based ordered set-aggregate function descriptor
 	 * using the passed name as both the registration key and underlying SQL
 	 * function name
