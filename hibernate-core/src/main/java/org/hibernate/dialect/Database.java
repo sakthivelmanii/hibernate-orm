@@ -231,7 +231,22 @@ public enum Database {
 		}
 		@Override
 		public boolean productNameMatches(String databaseName) {
-			return databaseName.startsWith( "Google Cloud Spanner" );
+			return databaseName.equals( "Google Cloud Spanner" );
+		}
+		@Override
+		public String getDriverClassName(String jdbcUrl) {
+			return "com.google.cloud.spanner.jdbc.JdbcDriver";
+		}
+	},
+
+	SPANNER_PG {
+		@Override
+		public Dialect createDialect(DialectResolutionInfo info) {
+			return new SpannerPostgreSQLDialect( info );
+		}
+		@Override
+		public boolean productNameMatches(String databaseName) {
+			return databaseName.equals( "Google Cloud Spanner PostgreSQL" );
 		}
 		@Override
 		public String getDriverClassName(String jdbcUrl) {
