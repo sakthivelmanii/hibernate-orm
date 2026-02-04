@@ -220,7 +220,7 @@ public class PostgreSQLDatabaseCleaner implements DatabaseCleaner {
 			}
 		}
 		catch (SQLException e) {
-			throw new RuntimeException( e );
+//			throw new RuntimeException( e );
 		}
 		return false;
 	}
