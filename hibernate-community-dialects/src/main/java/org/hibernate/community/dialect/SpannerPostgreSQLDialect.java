@@ -4,6 +4,9 @@
  */
 package org.hibernate.community.dialect;
 
+
+import org.checkerframework.checker.nullness.qual.Nullable;
+import org.hibernate.JDBCException;
 import org.hibernate.ScrollMode;
 import org.hibernate.community.dialect.aggregate.SpannerPostgreSQLAggregateSupport;
 import org.hibernate.community.dialect.sequence.SpannerPostgreSQLSequenceSupport;
@@ -17,6 +20,8 @@ import org.hibernate.dialect.unique.AlterTableUniqueIndexDelegate;
 import org.hibernate.dialect.unique.UniqueDelegate;
 import org.hibernate.engine.jdbc.dialect.spi.DialectResolutionInfo;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.exception.spi.SQLExceptionConversionDelegate;
 import org.hibernate.procedure.internal.StandardCallableStatementSupport;
 import org.hibernate.procedure.spi.CallableStatementSupport;
 import org.hibernate.sql.ast.SqlAstTranslator;
@@ -25,6 +30,10 @@ import org.hibernate.sql.ast.spi.StandardSqlAstTranslatorFactory;
 import org.hibernate.sql.ast.tree.Statement;
 import org.hibernate.sql.exec.spi.JdbcOperation;
 import org.hibernate.tool.schema.internal.StandardTableExporter;
+
+import java.sql.SQLException;
+import java.util.Optional;
+import java.util.regex.Pattern;
 
 import static org.hibernate.type.SqlTypes.BIGINT;
 import static org.hibernate.type.SqlTypes.BLOB;
@@ -43,6 +52,10 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
 	private final UniqueDelegate SPANNER_UNIQUE_DELEGATE = new AlterTableUniqueIndexDelegate( this );
 	private final StandardTableExporter SPANNER_TABLE_EXPORTER = new SpannerPostgreSQLTableExporter( this );
+
+	private final Pattern NOT_NULL_CONSTRAINT_PATTERN = Pattern.compile( ".*(must not be NULL in table|does not specify a non-null value for NOT NULL column|Cannot specify a null value for column).*" );
+	private final Pattern FOREIGN_KEY_CONSTRAINT_PATTERN = Pattern.compile( ".*Foreign key.*(constraint violation on table|constraint violation when deleting or updating referenced key|violated on table).*" );
+	private final Pattern CHECK_CONSTRAINT_PATTERN = Pattern.compile( ".*Check constraint.*" );
 
 	public SpannerPostgreSQLDialect() {
 		super();
@@ -269,6 +282,33 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	@Override
 	public boolean supportsRecursiveCTE() {
 		return false;
+	}
+
+	@Override
+	public SQLExceptionConversionDelegate buildSQLExceptionConversionDelegate() {
+		return this::handleConstraintViolatedException;
+	}
+
+	private @Nullable JDBCException handleConstraintViolatedException(SQLException sqlException, String message, String sql) {
+		if (sqlException.getErrorCode() == 6) {
+			return new ConstraintViolationException( message, sqlException, ConstraintViolationException.ConstraintKind.UNIQUE, null );
+		}
+		else if (matches( NOT_NULL_CONSTRAINT_PATTERN, message )) {
+			return new ConstraintViolationException( message, sqlException, ConstraintViolationException.ConstraintKind.NOT_NULL, null );
+		}
+		else if (sqlException.getErrorCode() == 11 || matches( CHECK_CONSTRAINT_PATTERN, message )) {
+			return new ConstraintViolationException( message, sqlException, ConstraintViolationException.ConstraintKind.CHECK, null );
+		}
+		else if(matches( FOREIGN_KEY_CONSTRAINT_PATTERN, message )) {
+			return new ConstraintViolationException( message, sqlException, ConstraintViolationException.ConstraintKind.FOREIGN_KEY, null );
+		}
+		else {
+			return null;
+		}
+	}
+
+	private boolean matches(Pattern pattern, String message) {
+		return Optional.ofNullable( message ).map( m -> pattern.matcher( m ).matches() ).orElse( false );
 	}
 
 	@Override
