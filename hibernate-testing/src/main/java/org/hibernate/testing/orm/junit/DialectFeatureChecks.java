@@ -170,6 +170,9 @@ abstract public class DialectFeatureChecks {
 
 	public static class SupportsIdentityColumns implements DialectFeatureCheck {
 		public boolean apply(Dialect dialect) {
+			if ( dialect instanceof SpannerPostgreSQLDialect ) {
+				return false;
+			}
 			return dialect.getIdentityColumnSupport().supportsIdentityColumns();
 		}
 	}
