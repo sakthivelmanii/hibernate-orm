@@ -10,6 +10,8 @@ import org.hibernate.sql.ast.tree.Statement;
 import org.hibernate.sql.ast.tree.cte.CteMaterialization;
 import org.hibernate.sql.ast.tree.predicate.LikePredicate;
 import org.hibernate.sql.exec.spi.JdbcOperation;
+import org.hibernate.sql.ast.tree.from.NamedTableReference;
+import org.hibernate.sql.ast.tree.update.UpdateStatement;
 
 public class SpannerPostgreSQLSqlAstTranslator<T extends JdbcOperation> extends PostgreSQLSqlAstTranslator<T> {
 
@@ -21,6 +23,18 @@ public class SpannerPostgreSQLSqlAstTranslator<T extends JdbcOperation> extends 
 	@Override
 	protected void renderMaterializationHint(CteMaterialization materialization) {
 		// NO-OP
+	}
+
+	@Override
+	protected void renderFromClauseAfterUpdateSet(UpdateStatement statement) {
+		// Spanner does not support UPDATE ... FROM
+	}
+
+	@Override
+	protected void renderDmlTargetTableExpression(NamedTableReference tableReference) {
+		appendSql( tableReference.getTableExpression() );
+		registerAffectedTable( tableReference );
+		renderTableReferenceIdentificationVariable( tableReference );
 	}
 
 	@Override
