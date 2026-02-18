@@ -162,6 +162,20 @@ abstract public class DialectFeatureChecks {
 		}
 	}
 
+	public static class SupportIncrementByInSequence implements DialectFeatureCheck {
+		@Override
+		public boolean apply(Dialect dialect) {
+			return !(dialect instanceof SpannerPostgreSQLDialect);
+		}
+	}
+
+	public static class SupportsNumericPrimaryKey implements DialectFeatureCheck {
+		@Override
+		public boolean apply(Dialect dialect) {
+			return !(dialect instanceof SpannerPostgreSQLDialect);
+		}
+	}
+
 	public static class UsesInputStreamToInsertBlob implements DialectFeatureCheck {
 		public boolean apply(Dialect dialect) {
 			return dialect.useInputStreamToInsertBlob();
@@ -170,6 +184,9 @@ abstract public class DialectFeatureChecks {
 
 	public static class SupportsIdentityColumns implements DialectFeatureCheck {
 		public boolean apply(Dialect dialect) {
+			if ( dialect instanceof SpannerPostgreSQLDialect ) {
+				return false;
+			}
 			return dialect.getIdentityColumnSupport().supportsIdentityColumns();
 		}
 	}
@@ -1346,6 +1363,20 @@ abstract public class DialectFeatureChecks {
 			return !(dialect instanceof SybaseASEDialect aseDialect)
 					// The jconn driver apparently doesn't support unicode characters
 					|| aseDialect.getDriverKind() == SybaseDriverKind.JTDS;
+		}
+	}
+
+	public static class SupportsTimestampComparison implements DialectFeatureCheck {
+		@Override
+		public boolean apply(Dialect dialect) {
+			return !(dialect instanceof SpannerPostgreSQLDialect);
+		}
+	}
+
+	public static class SupportsArbitraryEscapeCharInLike implements DialectFeatureCheck {
+		@Override
+		public boolean apply(Dialect dialect) {
+			return !(dialect instanceof SpannerPostgreSQLDialect);
 		}
 	}
 

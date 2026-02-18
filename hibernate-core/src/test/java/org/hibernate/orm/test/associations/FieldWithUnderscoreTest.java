@@ -8,13 +8,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 @SessionFactory
 @DomainModel(annotatedClasses = {FieldWithUnderscoreTest.A.class, FieldWithUnderscoreTest.B.class})
+@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support table name starts underscore")
 public class FieldWithUnderscoreTest {
 
 	@Test void test(SessionFactoryScope scope) {

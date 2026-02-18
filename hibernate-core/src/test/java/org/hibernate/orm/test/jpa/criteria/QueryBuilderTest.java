@@ -70,6 +70,12 @@ public class QueryBuilderTest {
 
 	@Test
 	public void testEqualityComparisonLiteralConversion(EntityManagerFactoryScope scope) {
+		try {
+			System.out.println("DEBUG DIALECT: " + Class.forName("org.hibernate.community.dialect.SpannerPostgreSQLDialect")
+					.getProtectionDomain().getCodeSource().getLocation());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		scope.inTransaction( entityManager -> {
 
 			CriteriaBuilder cb = entityManager.getCriteriaBuilder();

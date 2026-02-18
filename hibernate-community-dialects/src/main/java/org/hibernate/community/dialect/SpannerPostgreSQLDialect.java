@@ -468,6 +468,16 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	}
 
 	@Override
+	public String getDual() {
+		return "unnest(ARRAY[1])";
+	}
+
+	@Override
+	public String getFromDualForSelectOnly() {
+		return " from " + getDual() + " dual";
+	}
+
+	@Override
 	public boolean supportsRecursiveCTE() {
 		return false;
 	}
