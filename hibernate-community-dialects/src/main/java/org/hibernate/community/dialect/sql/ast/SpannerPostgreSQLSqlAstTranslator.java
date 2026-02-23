@@ -10,6 +10,8 @@ import org.hibernate.sql.ast.tree.Statement;
 import org.hibernate.sql.ast.tree.cte.CteMaterialization;
 import org.hibernate.sql.ast.tree.predicate.LikePredicate;
 import org.hibernate.sql.exec.spi.JdbcOperation;
+import org.hibernate.dialect.function.array.DdlTypeHelper;
+import org.hibernate.sql.ast.tree.expression.CastTarget;
 
 public class SpannerPostgreSQLSqlAstTranslator<T extends JdbcOperation> extends PostgreSQLSqlAstTranslator<T> {
 
@@ -21,6 +23,17 @@ public class SpannerPostgreSQLSqlAstTranslator<T extends JdbcOperation> extends 
 	@Override
 	protected void renderMaterializationHint(CteMaterialization materialization) {
 		// NO-OP
+	}
+
+	@Override
+	public void visitCastTarget(CastTarget castTarget) {
+		final String castTypeName = DdlTypeHelper.getCastTypeName(castTarget, getSessionFactory().getTypeConfiguration());
+		if (castTypeName.toLowerCase().contains("character varying[]")
+			|| castTypeName.toLowerCase().contains("character varying array")) {
+			appendSql( "text[]" );
+		} else {
+			appendSql( castTypeName );
+		}
 	}
 
 	@Override

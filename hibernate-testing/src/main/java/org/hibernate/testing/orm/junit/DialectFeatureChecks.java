@@ -991,6 +991,9 @@ abstract public class DialectFeatureChecks {
 
 	public static class SupportsGenerateSeries implements DialectFeatureCheck {
 		public boolean apply(Dialect dialect) {
+			if ( dialect instanceof SpannerPostgreSQLDialect ) {
+				return false;
+			}
 			return definesSetReturningFunction( dialect, "generate_series" );
 		}
 	}

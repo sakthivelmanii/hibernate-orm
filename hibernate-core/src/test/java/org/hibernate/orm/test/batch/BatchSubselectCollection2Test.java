@@ -312,4 +312,38 @@ public class BatchSubselectCollection2Test {
 			return entityD;
 		}
 	}
+
+	@Test
+	public void testRawSQL(SessionFactoryScope scope) {
+		scope.inTransaction(
+				session -> {
+					// Check EntityB IDs first
+					List<Object> bIds = session.createNativeQuery("select id from ENTITY_B").list();
+					System.out.println("EntityB IDs: " + bIds);
+
+					// Check EntityC content
+					List<Object[]> cs = session.createNativeQuery("select id, ENTITY_B from ENTITY_C").list();
+					System.out.println("EntityC rows: ");
+					for (Object[] row : cs) {
+						System.out.println("C: " + row[0] + ", B_FK: " + row[1]);
+					}
+
+					// Check Subquery result
+					List<Object> subResult = session.createNativeQuery(
+							"select ob1_0.id from ENTITY_D ed1_0 left join ENTITY_B ob1_0 on ob1_0.id=ed1_0.OPENING_B left join ENTITY_B cb1_0 on cb1_0.id=ed1_0.CLOSING_B")
+							.list();
+					System.out.println("Subquery result: " + subResult);
+
+					// Check Full Query
+					String sql = "select loec1_0.ENTITY_B,loec1_0.id from ENTITY_C loec1_0 where loec1_0.ENTITY_B in (select ob1_0.id from ENTITY_D ed1_0 left join ENTITY_B ob1_0 on ob1_0.id=ed1_0.OPENING_B left join ENTITY_B cb1_0 on cb1_0.id=ed1_0.CLOSING_B)";
+					List<Object[]> result = session.createNativeQuery(sql).list();
+					System.out.println("Full Query Result Size: " + result.size());
+					if (!result.isEmpty()) {
+						Object[] row = result.get(0);
+						System.out.println("Type of ENTITY_B: " + (row[0] == null ? "null" : row[0].getClass().getName()));
+						System.out.println("Type of id: " + (row[1] == null ? "null" : row[1].getClass().getName()));
+					}
+					assertThat(result).isNotEmpty();
+				});
+	}
 }

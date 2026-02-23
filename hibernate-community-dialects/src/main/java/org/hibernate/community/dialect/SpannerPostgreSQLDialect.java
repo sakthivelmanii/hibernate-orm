@@ -14,6 +14,19 @@ import org.hibernate.boot.model.TypeContributions;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.community.dialect.aggregate.SpannerPostgreSQLAggregateSupport;
 import org.hibernate.community.dialect.sequence.SpannerPostgreSQLSequenceSupport;
+import org.hibernate.community.dialect.function.SpannerPostgreSQLArrayConstructorFunction;
+import org.hibernate.community.dialect.function.SpannerPostgreSQLJsonArrayAggFunction;
+import org.hibernate.community.dialect.function.SpannerPostgreSQLJsonArrayAppendFunction;
+import org.hibernate.community.dialect.function.SpannerPostgreSQLJsonArrayFunction;
+import org.hibernate.community.dialect.function.SpannerPostgreSQLJsonExistsFunction;
+import org.hibernate.community.dialect.function.SpannerPostgreSQLJsonInsertFunction;
+import org.hibernate.community.dialect.function.SpannerPostgreSQLJsonMergepatchFunction;
+import org.hibernate.community.dialect.function.SpannerPostgreSQLJsonObjectFunction;
+import org.hibernate.community.dialect.function.SpannerPostgreSQLJsonQueryFunction;
+import org.hibernate.community.dialect.function.SpannerArrayIncludesFunction;
+import org.hibernate.community.dialect.function.SpannerArrayIntersectsFunction;
+import org.hibernate.community.dialect.function.SpannerArrayContainsFunction;
+import org.hibernate.community.dialect.function.SpannerPostgreSQLJsonValueFunction;
 import org.hibernate.community.dialect.sql.ast.SpannerPostgreSQLSqlAstTranslator;
 import org.hibernate.dialect.DatabaseVersion;
 import org.hibernate.dialect.PostgreSQLDialect;
@@ -59,6 +72,13 @@ import org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
+import org.hibernate.boot.model.FunctionContributions;
+import org.hibernate.type.BasicType;
+import org.hibernate.type.BasicTypeRegistry;
+import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.type.spi.TypeConfiguration;
+import org.hibernate.query.sqm.function.SqmFunctionRegistry;
+
 import static org.hibernate.sql.ast.internal.NonLockingClauseStrategy.NON_CLAUSE_STRATEGY;
 import static org.hibernate.type.SqlTypes.BIGINT;
 import static org.hibernate.type.SqlTypes.BLOB;
@@ -67,8 +87,10 @@ import static org.hibernate.type.SqlTypes.CLOB;
 import static org.hibernate.type.SqlTypes.DECIMAL;
 import static org.hibernate.type.SqlTypes.FLOAT;
 import static org.hibernate.type.SqlTypes.INTEGER;
+import static org.hibernate.type.SqlTypes.NCHAR;
 import static org.hibernate.type.SqlTypes.NCLOB;
 import static org.hibernate.type.SqlTypes.NUMERIC;
+import static org.hibernate.type.SqlTypes.NVARCHAR;
 import static org.hibernate.type.SqlTypes.SMALLINT;
 import static org.hibernate.type.SqlTypes.TIME;
 import static org.hibernate.type.SqlTypes.TIMESTAMP;
@@ -76,6 +98,8 @@ import static org.hibernate.type.SqlTypes.TIMESTAMP_UTC;
 import static org.hibernate.type.SqlTypes.TIMESTAMP_WITH_TIMEZONE;
 import static org.hibernate.type.SqlTypes.TINYINT;
 import static org.hibernate.type.SqlTypes.VARCHAR;
+import static org.hibernate.type.SqlTypes.LONG32VARCHAR;
+import static org.hibernate.type.SqlTypes.LONG32NVARCHAR;
 
 public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
@@ -116,10 +140,6 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 
 	public SpannerPostgreSQLDialect(DatabaseVersion version) {
 		super( MINIMUM_POSTGRES_VERSION );
-	}
-
-	@Override
-	protected void registerArrayFunctions(CommonFunctionFactory functionFactory) {
 	}
 
 	@Override
@@ -288,6 +308,21 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 						.withTypeCapacity( 53, "double precision" )
 						.build()
 		);
+
+		for (int code : new int[] { VARCHAR, CHAR, NCHAR, NVARCHAR, LONG32VARCHAR, LONG32NVARCHAR, CLOB, NCLOB }) {
+			ddlTypeRegistry.addDescriptor(
+					CapacityDependentDdlType.builder(code, "text", "text", this)
+							.withTypeCapacity(getMaxVarcharLength(), "character varying($l)")
+							.build());
+		}
+	}
+
+	@Override
+	public String castType(int code) {
+		return switch (code) {
+			case VARCHAR, CHAR, NCHAR, NVARCHAR, LONG32VARCHAR, LONG32NVARCHAR, CLOB, NCLOB -> "text";
+			default -> super.castType(code);
+		};
 	}
 
 	@Override
@@ -543,6 +578,45 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	@Override
 	public CallableStatementSupport getCallableStatementSupport() {
 		return StandardCallableStatementSupport.NO_REF_CURSOR_INSTANCE;
+	}
+
+	@Override
+	public void initializeFunctionRegistry(FunctionContributions functionContributions) {
+		super.initializeFunctionRegistry(functionContributions);
+		final BasicTypeRegistry basicTypeRegistry = functionContributions.getTypeConfiguration().getBasicTypeRegistry();
+		final BasicType<String> stringType = basicTypeRegistry.resolve(StandardBasicTypes.STRING);
+
+		final TypeConfiguration typeConfiguration = functionContributions.getTypeConfiguration();
+		final SqmFunctionRegistry functionRegistry = functionContributions.getFunctionRegistry();
+
+		functionRegistry.register("array", new SpannerPostgreSQLArrayConstructorFunction(false));
+		functionRegistry.register("list", new SpannerPostgreSQLArrayConstructorFunction(true));
+		functionRegistry.register("array_list", new SpannerPostgreSQLArrayConstructorFunction(true));
+		functionRegistry.register("json_array", new SpannerPostgreSQLJsonArrayFunction(typeConfiguration));
+		functionRegistry.register("json_object", new SpannerPostgreSQLJsonObjectFunction(typeConfiguration));
+		functionRegistry.register("json_insert", new SpannerPostgreSQLJsonInsertFunction(typeConfiguration));
+		functionRegistry.register("json_exists", new SpannerPostgreSQLJsonExistsFunction(typeConfiguration));
+		functionRegistry.register("json_query", new SpannerPostgreSQLJsonQueryFunction(typeConfiguration));
+		functionRegistry.register("json_array_append",
+				new SpannerPostgreSQLJsonArrayAppendFunction(false, typeConfiguration));
+		functionRegistry.register("json_value", new SpannerPostgreSQLJsonValueFunction(typeConfiguration));
+		functionRegistry.register("json_mergepatch", new SpannerPostgreSQLJsonMergepatchFunction(typeConfiguration));
+		functionRegistry.register("json_arrayagg", new SpannerPostgreSQLJsonArrayAggFunction(typeConfiguration));
+		functionRegistry.register("array_includes", new SpannerArrayIncludesFunction(false, typeConfiguration));
+		functionRegistry.register("array_includes_nullable", new SpannerArrayIncludesFunction(true, typeConfiguration));
+		functionRegistry.register("array_intersects", new SpannerArrayIntersectsFunction(false, typeConfiguration));
+		functionRegistry.register("array_intersects_nullable", new SpannerArrayIntersectsFunction(true, typeConfiguration));
+		functionRegistry.register("array_contains", new SpannerArrayContainsFunction(false, typeConfiguration));
+		functionRegistry.register("array_contains_nullable", new SpannerArrayContainsFunction(true, typeConfiguration));
+
+		functionContributions.getFunctionRegistry().registerPattern(
+				"cardinality",
+				"array_length(?1, 1)",
+				functionContributions.getTypeConfiguration().getBasicTypeForJavaType(Integer.class));
+		functionContributions.getFunctionRegistry().registerPattern(
+				"array_length",
+				"array_length(?1, 1)",
+				functionContributions.getTypeConfiguration().getBasicTypeForJavaType(Integer.class));
 	}
 
 	public boolean useIntegerForPrimaryKey() {

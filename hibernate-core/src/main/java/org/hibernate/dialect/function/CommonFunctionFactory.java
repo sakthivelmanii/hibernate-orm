@@ -31,6 +31,7 @@ import org.hibernate.dialect.function.xml.SQLServerXmlForestFunction;
 import org.hibernate.dialect.function.xml.SQLServerXmlPiFunction;
 import org.hibernate.dialect.function.xml.SQLServerXmlQueryFunction;
 import org.hibernate.dialect.function.xml.SQLServerXmlTableFunction;
+
 import org.hibernate.dialect.function.xml.SybaseASEXmlTableFunction;
 import org.hibernate.dialect.function.xml.XmlAggFunction;
 import org.hibernate.dialect.function.xml.XmlConcatFunction;
@@ -2768,6 +2769,7 @@ public class CommonFunctionFactory {
 		functionRegistry.register( "array_list", new ArrayConstructorFunction( true, false ) );
 	}
 
+
 	/**
 	 * Oracle array() constructor function
 	 */
@@ -3826,6 +3828,10 @@ public class CommonFunctionFactory {
 	public void jsonArray_postgresql() {
 		functionRegistry.register( "json_array", new PostgreSQLJsonArrayFunction( typeConfiguration ) );
 	}
+
+	/**
+	 * Spanner PostgreSQL json_array() function
+	 */
 
 	/**
 	 * H2 json_arrayagg() function
