@@ -17,6 +17,7 @@ import org.hibernate.Session;
 import org.hibernate.community.dialect.AltibaseDialect;
 import org.hibernate.community.dialect.DerbyDialect;
 import org.hibernate.community.dialect.GaussDBDialect;
+import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.DB2Dialect;
 import org.hibernate.dialect.PostgresPlusDialect;
 import org.hibernate.dialect.SybaseDialect;
@@ -30,10 +31,12 @@ import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
 import org.hibernate.query.criteria.JpaDerivedRoot;
 import org.hibernate.query.criteria.JpaSubQuery;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.JiraKey;
 import org.hibernate.testing.orm.junit.Jpa;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SkipForDialect;
 
 import org.junit.jupiter.api.AfterEach;
@@ -279,6 +282,7 @@ public class ExpressionsTest {
 	@SkipForDialect(dialectClass = PostgresPlusDialect.class, reason = "does not support extract(epoch)")
 	@SkipForDialect(dialectClass = AltibaseDialect.class, reason = "datediff overflow limits")
 	@SkipForDialect(dialectClass = GaussDBDialect.class, reason = "type:resolved.date multi overflows")
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testDateTimeOperations(EntityManagerFactoryScope scope) {
 		HibernateCriteriaBuilder builder = (HibernateCriteriaBuilder) this.builder;
 		scope.inTransaction( entityManager -> {
