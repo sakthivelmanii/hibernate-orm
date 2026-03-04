@@ -4616,4 +4616,64 @@ public class CommonFunctionFactory {
 	public void xmltable_sybasease() {
 		functionRegistry.register( "xmltable", new SybaseASEXmlTableFunction( typeConfiguration ) );
 	}
+
+	public void registerSpannerFunctions() {
+		functionRegistry.patternDescriptorBuilder("log10", "log(?1)")
+				.setExactArgumentCount(1)
+				.setParameterTypes(NUMERIC)
+				.setInvariantType(doubleType)
+				.register();
+
+		functionRegistry.patternDescriptorBuilder("power", "power(?1::float8, ?2::float8)")
+				.setExactArgumentCount(2)
+				.setParameterTypes(NUMERIC)
+				.setInvariantType(doubleType)
+				.register();
+
+		functionRegistry.patternDescriptorBuilder("sqrt", "sqrt(?1::float8)")
+				.setExactArgumentCount(1)
+				.setParameterTypes(NUMERIC)
+				.setInvariantType(doubleType)
+				.register();
+
+		functionRegistry.namedDescriptorBuilder( "substr" )
+				.setInvariantType(stringType)
+				.setArgumentCountBetween( 2, 3 )
+				.setParameterTypes(STRING, INTEGER, INTEGER)
+				.setArgumentListSignature( "(STRING string, INTEGER start[, INTEGER length])" )
+				.register();
+		functionRegistry.registerAlternateKey( "substring", "substr" );
+
+		functionRegistry.patternDescriptorBuilder("position", "strpos(?2, ?1)")
+				.setInvariantType(integerType)
+				.setExactArgumentCount(2)
+				.setParameterTypes(STRING, STRING)
+				.setArgumentListSignature("(STRING pattern in STRING string)")
+				.register();
+
+		functionRegistry.patternDescriptorBuilder( "log", "ln(cast(?2 as float8))/ln(cast(?1 as  float8))" )
+				.setExactArgumentCount( 2 )
+				.setParameterTypes(NUMERIC, NUMERIC)
+				.setInvariantType(doubleType)
+				.setArgumentListSignature("(NUMERIC base, NUMERIC arg)")
+				.register();
+
+		functionRegistry.patternDescriptorBuilder( "sinh", "(exp(?1) - exp(-?1)) / 2" )
+				.setExactArgumentCount( 1 )
+				.setParameterTypes(NUMERIC)
+				.setInvariantType(doubleType)
+				.register();
+
+		functionRegistry.patternDescriptorBuilder( "cosh", "(exp(?1) + exp(-?1)) / 2" )
+				.setExactArgumentCount( 1 )
+				.setParameterTypes(NUMERIC)
+				.setInvariantType(doubleType)
+				.register();
+
+		functionRegistry.patternDescriptorBuilder( "tanh", "(exp(?1) - exp(-?1)) / (exp(?1) + exp(-?1))" )
+				.setExactArgumentCount( 1 )
+				.setParameterTypes(NUMERIC)
+				.setInvariantType(doubleType)
+				.register();
+	}
 }

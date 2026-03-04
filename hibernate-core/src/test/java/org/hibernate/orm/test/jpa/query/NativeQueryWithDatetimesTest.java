@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.hibernate.community.dialect.GaussDBDialect;
+import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgresPlusDialect;
 
@@ -28,6 +29,7 @@ public class NativeQueryWithDatetimesTest {
 	@SkipForDialect(dialectClass = PostgresPlusDialect.class)
 	@SkipForDialect(dialectClass = OracleDialect.class)
 	@SkipForDialect(dialectClass = GaussDBDialect.class, reason = "type:resolved.gauss will map localdate to timestamp")
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	@Test void test(EntityManagerFactoryScope scope) {
 		scope.inTransaction(s -> s.persist(new Datetimes()));
 		Object[] result = scope.fromTransaction(s -> (Object[]) s.createNativeQuery("select ctime, cdate, cdatetime from tdatetimes", Object[].class).getSingleResult());

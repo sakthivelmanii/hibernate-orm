@@ -76,7 +76,7 @@ public class AssignedInitialValueTableGeneratorConfiguredTest {
 							connection -> {
 								try (Statement statement = connection.createStatement()) {
 									ResultSet resultSet = statement.executeQuery(
-											"select product_id from table_identifier" );
+											"select product_id from table_identifier order by product_id" );
 									resultSet.next();
 									int productIdValue = resultSet.getInt( 1 );
 									assertThat( productIdValue, is( 12 ) );

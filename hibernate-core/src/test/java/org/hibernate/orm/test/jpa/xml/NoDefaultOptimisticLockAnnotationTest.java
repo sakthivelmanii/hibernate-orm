@@ -54,7 +54,14 @@ class NoDefaultOptimisticLockAnnotationTest {
 			consumer.getConsumerItems().add( inventory );
 		} );
 
-		statementInspector.assertIsInsert( 1 );
+		// Spanner generates extra select queries for sequence values, so strict
+		// positional assertions fail.
+		// We use count-based assertions for Spanner to avoid this brittleness.
+		if (scope.getDialect().getClass().getName().contains("SpannerPostgreSQLDialect")) {
+			statementInspector.assertInsertCount(1);
+		} else {
+			statementInspector.assertIsInsert(1);
+		}
 		statementInspector.assertNoUpdate();
 	}
 }

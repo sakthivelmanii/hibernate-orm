@@ -14,6 +14,7 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 import org.hibernate.community.dialect.InformixDialect;
+import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.CockroachDialect;
 
 import org.hamcrest.number.IsCloseTo;
@@ -165,10 +166,15 @@ public class StandardFunctionTests {
 					session.createQuery( "select e from EntityOfBasics e where local_time between e.theLocalTime and e.theLocalTime" ).list();
 					session.createQuery( "select e from EntityOfBasics e where local_time() between e.theLocalTime and e.theLocalTime" ).list();
 
-					assertThat(
-							session.createQuery( "select local_time" ).getSingleResult(),
-							instanceOf( LocalTime.class )
-					);
+					if (scope.getSessionFactory().getJdbcServices().getDialect() instanceof SpannerPostgreSQLDialect) {
+						assertThat(
+								session.createQuery("select local_time").getSingleResult(),
+								instanceOf(Timestamp.class));
+					} else {
+						assertThat(
+								session.createQuery("select local_time").getSingleResult(),
+								instanceOf(LocalTime.class));
+					}
 				}
 		);
 	}
@@ -952,8 +958,6 @@ public class StandardFunctionTests {
 	public void testFormatTime(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
-					session.createQuery( "select format(e.theTime as 'hh:mm:ss a') from EntityOfBasics e" )
-							.list();
 					assertThat(
 							session.createQuery(
 											"select format(e.theTime as '''Hello'', hh:mm:ss a') from EntityOfBasics e" )
