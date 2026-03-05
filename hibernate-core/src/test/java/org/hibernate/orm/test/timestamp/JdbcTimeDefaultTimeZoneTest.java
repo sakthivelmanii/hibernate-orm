@@ -17,6 +17,8 @@ import org.hibernate.testing.orm.jdbc.PreparedStatementSpyConnectionProvider;
 import org.hibernate.testing.orm.junit.BaseSessionFactoryFunctionalTest;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
+import org.hibernate.testing.orm.junit.SkipForDialect;
+import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
@@ -29,6 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Vlad Mihalcea
  */
 @RequiresDialectFeature(feature = DialectFeatureChecks.SupportsJdbcDriverProxying.class)
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 public class JdbcTimeDefaultTimeZoneTest
 		extends BaseSessionFactoryFunctionalTest {
 

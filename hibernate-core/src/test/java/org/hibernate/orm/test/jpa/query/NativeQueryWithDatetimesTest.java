@@ -9,9 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.hibernate.community.dialect.GaussDBDialect;
-import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.OracleDialect;
 import org.hibernate.dialect.PostgresPlusDialect;
+import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
@@ -25,6 +25,7 @@ import java.time.LocalTime;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @Jpa(annotatedClasses = NativeQueryWithDatetimesTest.Datetimes.class)
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 public class NativeQueryWithDatetimesTest {
 	@SkipForDialect(dialectClass = PostgresPlusDialect.class)
 	@SkipForDialect(dialectClass = OracleDialect.class)

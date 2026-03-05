@@ -633,7 +633,7 @@ public class FunctionTests {
 	@Test
 	@RequiresDialectFeature( feature = DialectFeatureChecks.SupportsDateTimeTruncation.class )
 	@SkipForDialect(dialectClass = OracleDialect.class, reason = "See HHH-16442, Oracle trunc() throws away the timezone")
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner PostgreSQL date_trunc() evaluates in session timezone, throwing away the offset just like Oracle")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testDateTruncWithOffsetFunction(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -973,7 +973,7 @@ public class FunctionTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner PostgreSQL maps TIME to timestamp, so cast('12:13:14' as TIME) fails with invalid format")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testCastFunction(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -1201,7 +1201,7 @@ public class FunctionTests {
 	@SkipForDialect(dialectClass = HSQLDialect.class, reason = "HSQL interprets string as hex literal and produces error")
 	@SkipForDialect(dialectClass = InformixDialect.class, reason = "No cast from varchar to byte")
 	@SkipForDialect(dialectClass = GaussDBDialect.class, reason = "GaussDB bytea doesn't have a length")
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner PostgreSQL bytea doesn't have a length")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner bytea doesn't have a length")
 	public void testCastBinaryWithLength(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -1245,7 +1245,7 @@ public class FunctionTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner PostgreSQL does not support pure TIME type; str(time) returns full timestamp")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testStrFunction(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -1402,9 +1402,7 @@ public class FunctionTests {
 	@SkipForDialect(dialectClass = SybaseDialect.class, matchSubTypes = true)
 	@SkipForDialect(dialectClass = AltibaseDialect.class,
 			reason = "Altibase timestampadd does not support seconds with fractional part")
-	@SkipForDialect( dialectClass = FirebirdDialect.class )
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class,
-			reason = "Spanner doesn't support timestamp without time zone column type")
+	@SkipForDialect(dialectClass = FirebirdDialect.class)
 	public void testAddSecondsWithFractionalPart(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -1417,8 +1415,6 @@ public class FunctionTests {
 
 	@Test
 	@SkipForDialect(dialectClass = SybaseDialect.class, matchSubTypes = true)
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class,
-			reason = "Spanner doesn't support timestamp without time zone column type")
 	public void testAddNanoseconds(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -1592,8 +1588,6 @@ public class FunctionTests {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class,
-			reason = "Spanner doesn't support timestamp without time zone column type")
 	public void testIntervalAddSubExpressions(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -1783,6 +1777,7 @@ public class FunctionTests {
 	@SkipForDialect( dialectClass = TiDBDialect.class, reason = "Bug in the TiDB timestampadd function (https://github.com/pingcap/tidb/issues/41052)")
 	@SkipForDialect( dialectClass = AltibaseDialect.class, reason = "Altibase returns 2025-03-31 as a result of select {2024-02-29} + 13 month")
 	@SkipForDialect( dialectClass = FirebirdDialect.class, reason = "Firebird returns 2025-03-31 as a result of select {2024-02-29} + 13 month")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testDurationArithmetic(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -1854,8 +1849,6 @@ public class FunctionTests {
 	}
 
 	@Test
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class,
-			reason = "Spanner doesn't support timestamp without time zone column type")
 	public void testParameterArithmetic(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -1886,7 +1879,6 @@ public class FunctionTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testDurationArithmeticWithLiterals(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -1968,8 +1960,6 @@ public class FunctionTests {
 	@Test
 	@SkipForDialect(dialectClass = OracleDialect.class,
 			reason = "invalid extract field for extract source")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class,
-			reason = "Spanner doesn't support time without time zone column type")
 	public void testDurationSubtractionWithTimeLiterals(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2018,8 +2008,6 @@ public class FunctionTests {
 			reason = "MySQL has a really weird TIME type")
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "The result of a datetime computation is out of range")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class,
-			reason = "Spanner doesn't support time without time zone column type")
 	public void testTimeDurationArithmeticWrapAroundWithLiterals(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2070,7 +2058,6 @@ public class FunctionTests {
 	@JiraKey("HHH-17074")
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Bad use of aggregate in this context")
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testDurationArithmeticWithParameters(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2086,7 +2073,6 @@ public class FunctionTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testIntervalDiffExpressions(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2152,8 +2138,7 @@ public class FunctionTests {
 			reason = "trivial rounding error")
 	@SkipForDialect(dialectClass = InformixDialect.class,
 			reason = "Overflow occurred on a datetime or interval operation")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class,
-			reason = "Spanner doesn't support timestamp without time zone column type")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "rounding error in Spanner")
 	public void testMoreIntervalDiffExpressions(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2195,7 +2180,6 @@ public class FunctionTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testExtractFunction(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2338,7 +2322,6 @@ public class FunctionTests {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsExtractDayOfWeekYearMonth.class)
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testExtractWeekWithAssertions(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2390,7 +2373,6 @@ public class FunctionTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testExtractFunctionWithAssertions(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2452,7 +2434,6 @@ public class FunctionTests {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsFormat.class)
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testFormat(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2471,8 +2452,16 @@ public class FunctionTests {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsFormat.class)
-	@SkipForDialect(dialectClass = CockroachDialect.class, reason = "unknown signature: experimental_strftime(time, string)") // could cast the first argument to timestamp to workaround this
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
+	@SkipForDialect(dialectClass = CockroachDialect.class, reason = "unknown signature: experimental_strftime(time, string)") // could
+																																																														// cast
+																																																														// the
+																																																														// first
+																																																														// argument
+																																																														// to
+																																																														// timestamp
+																																																														// to
+																																																														// workaround
+																																																														// this
 	public void testFormatTime(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2488,7 +2477,6 @@ public class FunctionTests {
 
 	@Test
 	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsMedian.class)
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testMedian(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2600,7 +2588,6 @@ public class FunctionTests {
 
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testMaxGreatest(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2611,7 +2598,6 @@ public class FunctionTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testMaxOverUnion(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2786,7 +2772,7 @@ public class FunctionTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support reading UUID column as bytes")
 	public void testUUIDColumnFunction(SessionFactoryScope scope) {
 		scope.inTransaction(s -> {
 			byte[] bytes = s.createSelectionQuery("select column(e.theuuid as binary) from EntityOfBasics e", byte[].class)

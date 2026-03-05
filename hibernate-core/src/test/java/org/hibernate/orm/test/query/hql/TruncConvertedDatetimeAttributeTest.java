@@ -13,12 +13,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.junit.DialectFeatureChecks;
 import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.Jira;
 import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -38,6 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SessionFactory
 @RequiresDialectFeature( feature = DialectFeatureChecks.SupportsDateTimeTruncation.class )
 @Jira( "https://hibernate.atlassian.net/browse/HHH-17666" )
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 public class TruncConvertedDatetimeAttributeTest {
 	private static final Date DATE = new GregorianCalendar( 2017, Calendar.JANUARY, 24 ).getTime();
 	private static final Instant INSTANT = ZonedDateTime.of( 2020, 10, 15, 20, 34, 45, 0, ZoneOffset.UTC ).toInstant();

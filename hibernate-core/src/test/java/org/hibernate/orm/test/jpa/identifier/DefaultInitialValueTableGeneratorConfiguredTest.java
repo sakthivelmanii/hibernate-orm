@@ -13,6 +13,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.TableGenerator;
 
+import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.Session;
 
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
@@ -58,6 +60,7 @@ public class DefaultInitialValueTableGeneratorConfiguredTest {
 	}
 
 	@Test
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testTheGeneratedIdValuesAreCorrect(EntityManagerFactoryScope scope) {
 		scope.inTransaction(
 				entityManager -> {

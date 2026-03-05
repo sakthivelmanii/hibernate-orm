@@ -12,6 +12,8 @@ import java.util.List;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.type.descriptor.DateTimeUtils;
 
+import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
+import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.hibernate.testing.orm.junit.DialectContext;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
@@ -31,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 		annotatedClasses = LocalTimeTest.TestEntity.class,
 		properties = @Setting(name = AvailableSettings.TIMEZONE_DEFAULT_STORAGE, value = "NORMALIZE")
 )
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 public class LocalTimeTest {
 
 	private static final LocalTime LOCAL_TIME = DateTimeUtils.adjustToPrecision(

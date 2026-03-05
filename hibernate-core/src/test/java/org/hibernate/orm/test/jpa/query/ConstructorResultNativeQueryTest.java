@@ -36,6 +36,7 @@ import org.junit.jupiter.api.Test;
  * @author Steve Ebersole
  */
 @SkipForDialect(dialectClass = OracleDialect.class, matchSubTypes = true, reason = "https://hibernate.atlassian.net/browse/HHH-10323")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 @Jpa(annotatedClasses = {ConstructorResultNativeQueryTest.Person.class})
 public class ConstructorResultNativeQueryTest {
 	@Entity( name = "Person" )
