@@ -13,11 +13,14 @@ import org.hibernate.ScrollMode;
 import org.hibernate.Timeouts;
 import org.hibernate.boot.model.FunctionContributions;
 import org.hibernate.boot.model.TypeContributions;
+
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.community.dialect.aggregate.SpannerPostgreSQLAggregateSupport;
 import org.hibernate.community.dialect.sequence.SpannerPostgreSQLSequenceSupport;
 import org.hibernate.community.dialect.sql.ast.SpannerPostgreSQLSqlAstTranslator;
 import org.hibernate.dialect.DatabaseVersion;
+import org.hibernate.dialect.function.InsertSubstringOverlayEmulation;
+import org.hibernate.query.sqm.CastType;
 import org.hibernate.dialect.FunctionalDependencyAnalysisSupport;
 import org.hibernate.dialect.FunctionalDependencyAnalysisSupportImpl;
 import org.hibernate.dialect.PostgreSQLDialect;
@@ -77,6 +80,8 @@ import org.hibernate.tool.schema.extract.spi.InformationExtractor;
 import org.hibernate.tool.schema.internal.StandardTableExporter;
 import org.hibernate.type.descriptor.jdbc.BlobJdbcType;
 import org.hibernate.type.descriptor.jdbc.ClobJdbcType;
+import org.hibernate.type.descriptor.jdbc.SpannerLocalDateTimeJdbcType;
+import org.hibernate.type.descriptor.jdbc.SpannerLocalTimeJdbcType;
 import org.hibernate.type.descriptor.jdbc.SpannerTimeJdbcType;
 import org.hibernate.type.descriptor.sql.internal.ArrayDdlTypeImpl;
 import org.hibernate.type.descriptor.sql.internal.CapacityDependentDdlType;
@@ -178,16 +183,17 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 				new SpannerPostgreSQLRegexpLikeFunction(functionContributions.getTypeConfiguration()));
 		functionRegistry.register( "locate",
 				new SpannerPostgreSQLLocateFunction(  functionContributions.getTypeConfiguration() ) );
+
 		functionRegistry.register(
-				"round",
-				new SpannerPostgreSQLTruncRoundFunction( "round", false ) );
+				"round", new SpannerPostgreSQLTruncRoundFunction("round"));
 		functionRegistry.register(
 				"trunc",
-				new SpannerPostgreSQLTruncFunction(true, functionContributions.getTypeConfiguration()));
-		functionRegistry.registerAlternateKey( "truncate", "date_trunc" );
+				new SpannerPostgreSQLTruncFunction(functionContributions.getTypeConfiguration()));
+		functionRegistry.registerAlternateKey("truncate", "trunc");
+
 		functionRegistry.register(
 				"overlay",
-				new SpannerPostgreSQLOverlayEmulation(functionContributions.getTypeConfiguration(), false));
+				new InsertSubstringOverlayEmulation(functionContributions.getTypeConfiguration(), false));
 
 		// Postgres uses # instead of ^ for XOR
 		functionRegistry.patternDescriptorBuilder( "bitxor", "(?1#?2)" )
@@ -473,16 +479,18 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		final var jdbcTypeRegistry = typeContributions.getTypeConfiguration()
 				.getJdbcTypeRegistry();
 
-		jdbcTypeRegistry.addDescriptor(SpannerTimeJdbcType.INSTANCE);
+		jdbcTypeRegistry.addDescriptor( SpannerLocalDateTimeJdbcType.INSTANCE );
+		jdbcTypeRegistry.addDescriptor( SpannerLocalTimeJdbcType.INSTANCE );
+		jdbcTypeRegistry.addDescriptor( SpannerTimeJdbcType.INSTANCE );
 		jdbcTypeRegistry.addDescriptor( Types.BLOB, BlobJdbcType.BLOB_BINDING );
 		jdbcTypeRegistry.addDescriptor( Types.CLOB, ClobJdbcType.CLOB_BINDING );
-		jdbcTypeRegistry.addDescriptor(PostgreSQLUUIDJdbcType.INSTANCE);
+		jdbcTypeRegistry.addDescriptor( PostgreSQLUUIDJdbcType.INSTANCE );
 
 		// Replace the standard array constructor
-		jdbcTypeRegistry.addTypeConstructor(PostgreSQLArrayJdbcTypeConstructor.INSTANCE);
+		jdbcTypeRegistry.addTypeConstructor( PostgreSQLArrayJdbcTypeConstructor.INSTANCE );
 
-		jdbcTypeRegistry.addDescriptorIfAbsent(PostgreSQLCastingJsonJdbcType.JSONB_INSTANCE);
-		jdbcTypeRegistry.addTypeConstructorIfAbsent(PostgreSQLCastingJsonArrayJdbcTypeConstructor.JSONB_INSTANCE);
+		jdbcTypeRegistry.addDescriptorIfAbsent( PostgreSQLCastingJsonJdbcType.JSONB_INSTANCE );
+		jdbcTypeRegistry.addTypeConstructorIfAbsent( PostgreSQLCastingJsonArrayJdbcTypeConstructor.JSONB_INSTANCE );
 	}
 
 	@Override
@@ -606,6 +614,17 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 		return "cast(" + pattern + " as bigint)";
 	}
 
+	@Override
+	public String castPattern(CastType from, CastType to) {
+		if (from == CastType.STRING && to == CastType.TIME) {
+			return "cast('1970-01-01 ' || ?1 as timestamp with time zone)";
+		}
+		if (from == CastType.TIME && to == CastType.STRING) {
+			return "to_char(?1, 'HH24:MI:SS.MS')";
+		}
+		return super.castPattern(from, to);
+	}
+
 	private static String intervalPattern(TemporalUnit unit) {
 		return switch (unit) {
 			case NANOSECOND -> "cast(concat(cast((?2)/1e3 as text), ' microsecond') as interval)";
@@ -678,6 +697,11 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	// ALL subqueries with operators other than <>/!= are not supported
 	@Override
 	public boolean supportsRowValueConstructorSyntaxInQuantifiedPredicates() {
+		return false;
+	}
+
+	@Override
+	public boolean supportsValuesList() {
 		return false;
 	}
 

@@ -22,9 +22,9 @@ import org.hibernate.type.spi.TypeConfiguration;
 public class SpannerPostgreSQLTruncFunction extends PostgreSQLTruncFunction {
 	private final SpannerPostgreSQLTruncRoundFunction spannerPostgreSQLTruncRoundFunction;
 
-	public SpannerPostgreSQLTruncFunction(boolean supportsTwoArguments, TypeConfiguration typeConfiguration) {
-		super(supportsTwoArguments, typeConfiguration);
-		this.spannerPostgreSQLTruncRoundFunction = new SpannerPostgreSQLTruncRoundFunction("trunc", supportsTwoArguments);
+	public SpannerPostgreSQLTruncFunction(TypeConfiguration typeConfiguration) {
+		super(false, typeConfiguration);
+		this.spannerPostgreSQLTruncRoundFunction = new SpannerPostgreSQLTruncRoundFunction("trunc");
 	}
 
 	@Override

@@ -14,7 +14,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.dialect.PostgreSQLDialect;
-import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 
 import org.hibernate.testing.orm.jdbc.TimeZoneConnectionProvider;
@@ -64,7 +63,6 @@ public class JdbcTimestampWithoutUTCTimeZoneTest extends BaseSessionFactoryFunct
 
 	@Test
 	@SkipForDialect(dialectClass = CockroachDialect.class, reason = "https://github.com/cockroachdb/cockroach/issues/3781")
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testTimeZone() {
 		inTransaction( session -> {
 			Person person = new Person();

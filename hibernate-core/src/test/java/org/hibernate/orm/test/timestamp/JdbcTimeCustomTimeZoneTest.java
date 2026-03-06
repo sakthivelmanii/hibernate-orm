@@ -37,7 +37,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 @SkipForDialect(dialectClass = InformixDialect.class,
 	reason = "Informix JDBC driver seems to misinterpret the JDBC time zone")
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
+@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class,
+		reason = "Spanner PG sends UTC as Timezone for Time types to avoid timezone issues")
 public class JdbcTimeCustomTimeZoneTest
 		extends BaseSessionFactoryFunctionalTest {
 

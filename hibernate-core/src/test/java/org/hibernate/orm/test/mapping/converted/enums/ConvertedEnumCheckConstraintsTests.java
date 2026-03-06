@@ -84,7 +84,7 @@ public class ConvertedEnumCheckConstraintsTests {
 	@SessionFactory(useCollectingStatementInspector = true)
 	@RequiresDialectFeature( feature = DialectFeatureChecks.SupportsColumnCheck.class )
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner enforces check constraints at commit time")
 	void verifyCheckConstraints(SessionFactoryScope scope) {
 		scope.inTransaction( (session) -> session.doWork( (connection) -> {
 			try (PreparedStatement statement = connection.prepareStatement( "insert into persons (id, gender) values (?, ?)" ) ) {

@@ -39,8 +39,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DomainModel( annotatedClasses = TruncConvertedDatetimeAttributeTest.TestEntity.class )
 @SessionFactory
 @RequiresDialectFeature( feature = DialectFeatureChecks.SupportsDateTimeTruncation.class )
-@Jira( "https://hibernate.atlassian.net/browse/HHH-17666" )
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
+@Jira("https://hibernate.atlassian.net/browse/HHH-17666")
 public class TruncConvertedDatetimeAttributeTest {
 	private static final Date DATE = new GregorianCalendar( 2017, Calendar.JANUARY, 24 ).getTime();
 	private static final Instant INSTANT = ZonedDateTime.of( 2020, 10, 15, 20, 34, 45, 0, ZoneOffset.UTC ).toInstant();
@@ -56,6 +55,7 @@ public class TruncConvertedDatetimeAttributeTest {
 	}
 
 	@Test
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "Emulator bug with date_trunc")
 	public void testTruncSelection(SessionFactoryScope scope) {
 		scope.inSession( session -> {
 			assertThat( session.createQuery(
@@ -70,6 +70,7 @@ public class TruncConvertedDatetimeAttributeTest {
 	}
 
 	@Test
+	@RequiresDialectFeature(feature = DialectFeatureChecks.SupportsTimestampComparison.class)
 	public void testTruncComparison(SessionFactoryScope scope) {
 		scope.inSession( session -> {
 			assertThat( session.createQuery(

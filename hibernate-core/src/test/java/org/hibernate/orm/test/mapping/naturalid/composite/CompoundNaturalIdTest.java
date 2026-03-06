@@ -6,7 +6,6 @@ package org.hibernate.orm.test.mapping.naturalid.composite;
 
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.query.criteria.HibernateCriteriaBuilder;
 import org.hibernate.query.criteria.JpaCriteriaQuery;
@@ -48,7 +47,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 		dialectClass = CockroachDialect.class,
 		reason = "On CockroachDB the difference between simple and compound natural id is very high"
 )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 public class CompoundNaturalIdTest {
 
 	private static final int OBJECT_NUMBER = 2000;

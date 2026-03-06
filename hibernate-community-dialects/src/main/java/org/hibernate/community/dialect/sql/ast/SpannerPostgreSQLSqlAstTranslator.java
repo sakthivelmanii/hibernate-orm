@@ -70,6 +70,7 @@ public class SpannerPostgreSQLSqlAstTranslator<T extends JdbcOperation> extends 
 		}
 	}
 
+	@Override
 	protected void renderLikePattern(Expression pattern, Expression escapeCharacter) {
 		if (escapeCharacter == null) {
 			super.renderLikePattern( pattern, escapeCharacter );
@@ -94,6 +95,7 @@ public class SpannerPostgreSQLSqlAstTranslator<T extends JdbcOperation> extends 
 		// Spanner doesn't support passing escape character other than "\"
 	}
 
+	@Override
 	protected void renderSelectExpression(Expression expression) {
 		if (getStatement() instanceof InsertSelectStatement
 				&& expression instanceof Literal) {

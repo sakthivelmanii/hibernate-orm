@@ -10,7 +10,6 @@ import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
-import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.testing.orm.domain.userguide.Account;
 import org.hibernate.testing.orm.domain.userguide.Call;
 import org.hibernate.testing.orm.domain.userguide.Partner;
@@ -19,7 +18,6 @@ import org.hibernate.testing.orm.domain.userguide.Person;
 import org.hibernate.testing.orm.domain.userguide.Phone;
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
 import org.hibernate.testing.orm.junit.Jpa;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -37,7 +35,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 				Partner.class
 		}
 )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 public class BatchTests {
 
 	@Test

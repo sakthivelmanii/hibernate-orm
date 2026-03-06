@@ -4,7 +4,6 @@
  */
 package org.hibernate.orm.test.bulkid;
 
-import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.dialect.CockroachDialect;
 import org.hibernate.testing.orm.junit.SkipForDialect;
 
@@ -16,9 +15,8 @@ import org.hibernate.testing.orm.junit.SkipForDialect;
  */
 @SkipForDialect(
 		dialectClass = CockroachDialect.class,
-		reason = "Amount of rows lengthens the transaction time, leading to retry errors on CockroachDB: https://www.cockroachlabs.com/docs/v24.3/transaction-retry-error-reference.html#retry_commit_deadline_exceeded"
+		reason = "Amount of rows lengthens the transaction time, leading to retry errors on CockroachDB: https://www.cockroachlabs.c	om/docs/v24.3/transaction-retry-error-reference.html#retry_commit_deadline_exceeded"
 )
-@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 public class OracleInlineMutationStrategyIdTest extends InlineMutationStrategyIdTest {
 
 	@Override

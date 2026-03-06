@@ -7,10 +7,8 @@ package org.hibernate.orm.test.quote;
 import org.hibernate.Transaction;
 import org.hibernate.boot.spi.MetadataImplementor;
 import org.hibernate.cfg.AvailableSettings;
-import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 import org.hibernate.mapping.Column;
 import org.hibernate.mapping.Index;
-import org.hibernate.mapping.Selectable;
 import org.hibernate.mapping.Table;
 import org.hibernate.mapping.UniqueKey;
 

@@ -13,8 +13,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.TableGenerator;
 
-import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
-import org.hibernate.testing.orm.junit.SkipForDialect;
+import org.hibernate.testing.orm.junit.DialectFeatureChecks;
+import org.hibernate.testing.orm.junit.RequiresDialectFeature;
 import org.hibernate.Session;
 
 import org.hibernate.testing.orm.junit.EntityManagerFactoryScope;
@@ -60,7 +60,7 @@ public class AssignedInitialValueTableGeneratorConfiguredTest {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
+	@RequiresDialectFeature( feature = DialectFeatureChecks.SupportPooledSequences.class )
 	public void testTheGeneratedIdValuesAreCorrect(EntityManagerFactoryScope scope) {
 		scope.inTransaction(
 				entityManager -> {

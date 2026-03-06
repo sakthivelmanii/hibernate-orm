@@ -633,7 +633,7 @@ public class FunctionTests {
 	@Test
 	@RequiresDialectFeature( feature = DialectFeatureChecks.SupportsDateTimeTruncation.class )
 	@SkipForDialect(dialectClass = OracleDialect.class, reason = "See HHH-16442, Oracle trunc() throws away the timezone")
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Emulator bug")
 	public void testDateTruncWithOffsetFunction(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -973,7 +973,6 @@ public class FunctionTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testCastFunction(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -1245,7 +1244,6 @@ public class FunctionTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	public void testStrFunction(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -1777,7 +1775,7 @@ public class FunctionTests {
 	@SkipForDialect( dialectClass = TiDBDialect.class, reason = "Bug in the TiDB timestampadd function (https://github.com/pingcap/tidb/issues/41052)")
 	@SkipForDialect( dialectClass = AltibaseDialect.class, reason = "Altibase returns 2025-03-31 as a result of select {2024-02-29} + 13 month")
 	@SkipForDialect( dialectClass = FirebirdDialect.class, reason = "Firebird returns 2025-03-31 as a result of select {2024-02-29} + 13 month")
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner bug in current_date which is not considering timezone")
 	public void testDurationArithmetic(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2022,7 +2020,8 @@ public class FunctionTests {
 	}
 
 	@Test
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
+	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class,
+			reason = "Spanner bug in current_date which is not considering timezone")
 	public void testDateDurationArithmeticWithLiterals(SessionFactoryScope scope) {
 		scope.inTransaction(
 				session -> {
@@ -2118,6 +2117,8 @@ public class FunctionTests {
 
 	@Test
 	@SkipForDialect(dialectClass = PostgresPlusDialect.class,
+			reason = "PT47H59M59.999999S instead of PT48H")
+	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class,
 			reason = "PT47H59M59.999999S instead of PT48H")
 	public void testIntervalDiffExpressionsWithAssertions(SessionFactoryScope scope) {
 		scope.inTransaction(

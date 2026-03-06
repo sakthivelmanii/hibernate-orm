@@ -25,16 +25,19 @@ import java.time.LocalTime;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @Jpa(annotatedClasses = NativeQueryWithDatetimesTest.Datetimes.class)
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 public class NativeQueryWithDatetimesTest {
 	@SkipForDialect(dialectClass = PostgresPlusDialect.class)
 	@SkipForDialect(dialectClass = OracleDialect.class)
 	@SkipForDialect(dialectClass = GaussDBDialect.class, reason = "type:resolved.gauss will map localdate to timestamp")
-	@SkipForDialect( dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 	@Test void test(EntityManagerFactoryScope scope) {
 		scope.inTransaction(s -> s.persist(new Datetimes()));
 		Object[] result = scope.fromTransaction(s -> (Object[]) s.createNativeQuery("select ctime, cdate, cdatetime from tdatetimes", Object[].class).getSingleResult());
-		assertInstanceOf(LocalTime.class, result[0]);
+		if (scope.getDialect() instanceof SpannerPostgreSQLDialect) {
+			assertInstanceOf(LocalDateTime.class, result[0]);
+		}
+		else {
+			assertInstanceOf( LocalTime.class, result[0] );
+		}
 		assertInstanceOf(LocalDate.class, result[1]);
 		assertInstanceOf(LocalDateTime.class, result[2]);
 //		result = scope.fromTransaction(s -> (Object[]) s.createNativeQuery("select current_time, current_date, current_timestamp from tdatetimes", Object[].class).getSingleResult());

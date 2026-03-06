@@ -17,7 +17,6 @@ import org.hibernate.testing.orm.junit.DomainModel;
 import org.hibernate.testing.orm.junit.RequiresDialect;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
-import org.hibernate.testing.orm.junit.SkipForDialect;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +43,6 @@ public class PostgreSQLTruncRoundFunctionTest {
 
 	@Test
 	@RequiresDialect(PostgreSQLDialect.class)
-	@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "Spanner doesn't support round with 2 parameters")
 	public void testRound(SessionFactoryScope scope) {
 		testFunction( scope, "round", "floor" );
 	}
@@ -93,7 +91,12 @@ public class PostgreSQLTruncRoundFunctionTest {
 							BigDecimal.class
 					).getSingleResult().compareTo( new BigDecimal( "1.78" ) )
 			);
-			assertTrue( sqlStatementInspector.getSqlQueries().get( 0 ).contains( function ) );
+			if (scope.getSessionFactory().getJdbcServices().getDialect() instanceof SpannerPostgreSQLDialect) {
+				assertTrue( sqlStatementInspector.getSqlQueries().get( 0 ).contains( workaround ) );
+			}
+			else {
+				assertTrue( sqlStatementInspector.getSqlQueries().get( 0 ).contains( function ) );
+			}
 		} );
 	}
 }

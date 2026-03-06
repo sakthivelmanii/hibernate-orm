@@ -319,6 +319,7 @@ abstract public class DialectFeatureChecks {
 		public boolean apply(Dialect dialect) {
 			return !( dialect instanceof DB2Dialect
 					|| dialect instanceof DerbyDialect
+					|| dialect instanceof SpannerPostgreSQLDialect
 					|| dialect instanceof FirebirdDialect );
 		}
 	}

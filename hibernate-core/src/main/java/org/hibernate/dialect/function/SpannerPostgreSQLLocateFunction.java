@@ -43,7 +43,8 @@ public class SpannerPostgreSQLLocateFunction extends AbstractSqmSelfRenderingFun
 			sqlAppender.appendSql( ", " );
 			sqlAstArguments.get( 2 ).accept( walker );
 			sqlAppender.appendSql( ")" );
-		} else {
+		}
+		else {
 			sqlAstArguments.get( 1 ).accept( walker );
 		}
 		sqlAppender.append( "," );

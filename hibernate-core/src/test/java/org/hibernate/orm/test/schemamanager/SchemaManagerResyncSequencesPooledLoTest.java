@@ -13,8 +13,6 @@ import org.hibernate.testing.orm.junit.ServiceRegistry;
 import org.hibernate.testing.orm.junit.SessionFactory;
 import org.hibernate.testing.orm.junit.SessionFactoryScope;
 import org.hibernate.testing.orm.junit.Setting;
-import org.hibernate.testing.orm.junit.SkipForDialect;
-import org.hibernate.community.dialect.SpannerPostgreSQLDialect;
 import org.junit.jupiter.api.Test;
 
 import static org.hibernate.cfg.AvailableSettings.PREFERRED_POOLED_OPTIMIZER;
@@ -23,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SessionFactory
 @DomainModel(annotatedClasses = SchemaManagerResyncSequencesPooledLoTest.EntityWithSequence.class)
 @ServiceRegistry(settings = @Setting(name = PREFERRED_POOLED_OPTIMIZER, value = "pooled-lo"))
-@SkipForDialect(dialectClass = SpannerPostgreSQLDialect.class, reason = "FIXIT")
 class SchemaManagerResyncSequencesPooledLoTest {
 	@Test void test(SessionFactoryScope scope) {
 		var schemaManager = scope.getSessionFactory().getSchemaManager();

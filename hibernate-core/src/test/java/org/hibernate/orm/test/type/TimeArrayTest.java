@@ -5,7 +5,6 @@
 package org.hibernate.orm.test.type;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 

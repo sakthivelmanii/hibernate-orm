@@ -70,7 +70,6 @@ public class PostgreSQLTruncRoundFunction extends AbstractSqmFunctionDescriptor 
 			sqlAppender.appendSql( getName() );
 			sqlAppender.appendSql( "(" );
 			firstArg.accept( walker );
-			addTypeCasting(numberOfArguments, sqlAppender);
 			if ( numberOfArguments > 1 ) {
 				sqlAppender.appendSql( ", " );
 				arguments.get( 1 ).accept( walker );
@@ -100,9 +99,6 @@ public class PostgreSQLTruncRoundFunction extends AbstractSqmFunctionDescriptor 
 			secondArg.accept( walker );
 			sqlAppender.appendSql( ")" );
 		}
-	}
-
-	protected void addTypeCasting(int numberOfArguments, SqlAppender sqlAppender) {
 	}
 
 	@Override
