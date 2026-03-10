@@ -19,6 +19,8 @@ import org.hibernate.community.dialect.sequence.SpannerPostgreSQLSequenceSupport
 import org.hibernate.community.dialect.sql.ast.SpannerPostgreSQLSqlAstTranslator;
 import org.hibernate.dialect.DatabaseVersion;
 import org.hibernate.dialect.function.InsertSubstringOverlayEmulation;
+import org.hibernate.dialect.function.json.SpannerPostgreSQLJsonArrayFunction;
+import org.hibernate.dialect.function.json.SpannerPostgreSQLJsonObjectFunction;
 import org.hibernate.query.sqm.CastType;
 import org.hibernate.dialect.FunctionalDependencyAnalysisSupport;
 import org.hibernate.dialect.FunctionalDependencyAnalysisSupportImpl;
@@ -26,6 +28,11 @@ import org.hibernate.dialect.PostgreSQLDialect;
 import org.hibernate.dialect.aggregate.AggregateSupport;
 import org.hibernate.dialect.function.CommonFunctionFactory;
 import org.hibernate.dialect.function.SpannerConcatFunction;
+import org.hibernate.dialect.function.array.SpannerPostgreSQLArrayConcatElementFunction;
+import org.hibernate.dialect.function.array.SpannerPostgreSQLArrayTrimEmulation;
+import org.hibernate.dialect.function.array.SpannerPostgreSQLArrayReplaceFunction;
+import org.hibernate.dialect.function.array.SpannerPostgreSQLArrayRemoveFunction;
+import org.hibernate.dialect.function.array.SpannerPostgreSQLArrayRemoveIndexFunction;
 import org.hibernate.dialect.Replacer;
 import org.hibernate.dialect.function.SpannerPostgreSQLLocateFunction;
 import org.hibernate.dialect.function.SpannerPostgreSQLRegexpLikeFunction;
@@ -209,14 +216,48 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 				.setExactArgumentCount( 2 )
 				.setArgumentTypeResolver( StandardFunctionArgumentTypeResolvers.ARGUMENT_OR_IMPLIED_RESULT_TYPE )
 				.register();
+
+		functionRegistry.register( "json_array",
+				new SpannerPostgreSQLJsonArrayFunction( functionContributions.getTypeConfiguration() ) );
+		functionRegistry.register( "json_object",
+				new SpannerPostgreSQLJsonObjectFunction( functionContributions.getTypeConfiguration() ) );
+
+		functionFactory.unnest_postgresql( false );
+		functionFactory.arrayLength_spanner();
+
+		functionRegistry.register( "array_prepend", new SpannerPostgreSQLArrayConcatElementFunction( true ) );
+		functionRegistry.register( "array_append", new SpannerPostgreSQLArrayConcatElementFunction( false ) );
+		functionRegistry.register( "array_trim", new SpannerPostgreSQLArrayTrimEmulation() );
+		functionRegistry.register( "array_replace", new SpannerPostgreSQLArrayReplaceFunction() );
+		functionRegistry.register( "array_remove", new SpannerPostgreSQLArrayRemoveFunction() );
+		functionRegistry.register( "array_remove_index", new SpannerPostgreSQLArrayRemoveIndexFunction( true ) );
 	}
 
 	@Override
 	protected void registerJsonFunction(CommonFunctionFactory functionFactory) {
+		functionFactory.jsonObject_postgresql();
+		functionFactory.jsonArray_postgresql();
+		functionFactory.jsonSet_postgresql();
+		functionFactory.jsonRemove_postgresql();
+		functionFactory.jsonReplace_postgresql();
+		functionFactory.jsonArrayInsert_postgresql();
 	}
 
 	@Override
 	protected void registerArrayFunctions(CommonFunctionFactory functionFactory) {
+		functionFactory.array_postgresql();
+		functionFactory.arrayAggregate();
+		functionFactory.arrayConcat_postgresql();
+		functionFactory.arrayPrepend_postgresql();
+		functionFactory.arrayAppend_postgresql();
+		functionFactory.arrayContains_postgresql();
+		functionFactory.arrayIntersects_postgresql();
+		functionFactory.arrayGet_bracket();
+		functionFactory.arraySlice_operator();
+		functionFactory.arrayReplace();
+		functionFactory.arrayReverse_unnest();
+		functionFactory.arraySort_unnest();
+		functionFactory.arrayToString_postgresql();
 	}
 
 	@Override
@@ -231,6 +272,14 @@ public class SpannerPostgreSQLDialect extends PostgreSQLDialect {
 	protected void initDefaultProperties() {
 		super.initDefaultProperties();
 		getDefaultProperties().setProperty( AvailableSettings.PREFERRED_POOLED_OPTIMIZER, "none" );
+	}
+
+	@Override
+	public String getArrayTypeName(String javaElementTypeName, String elementTypeName, Integer maxLength) {
+		if ( elementTypeName != null && elementTypeName.equals( "varchar" ) ) {
+			elementTypeName = "text";
+		}
+		return super.getArrayTypeName( javaElementTypeName, elementTypeName, maxLength );
 	}
 
 	@Override
