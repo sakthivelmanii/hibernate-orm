@@ -31,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author Marcel Overdijk
  */
+@org.hibernate.testing.orm.junit.RequiresDialectFeature( feature = org.hibernate.testing.orm.junit.DialectFeatureChecks.SupportsNumericPrimaryKey.class )
 public class MultipleSessionFactoriesProxyTest {
 
 	private SessionFactory produceSessionFactory() {
